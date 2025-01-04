@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Room.module.css";
-import Device from "../RoomDevices/Device";
+// import Device from "../RoomDevices/Device";
 
 export default function Room({ room }) {
   const [devices, setDevices] = useState(room ? room.devices : []);
@@ -32,14 +32,14 @@ export default function Room({ room }) {
         <button>Actions</button>
       </div>
       <table>
-        {devices.map((device, index) => (
+        {/* {devices.map((device, index) => (
           <Device
             isLast={index === devices.length - 1}
             key={"Device List" + device.deviceName}
             device={device}
             deviceName={device.deviceName}
           />
-        ))}
+        ))} */}
       </table>
     </div>
   );

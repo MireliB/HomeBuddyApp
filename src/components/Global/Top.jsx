@@ -11,7 +11,6 @@ import PersoneOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 
 export default function Top() {
-  const [searchField, setSearchField] = useState("");
 
   const theme = useTheme();
 

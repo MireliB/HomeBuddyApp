@@ -67,7 +67,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
   };
 
   return (
-    <Box height="100vh">
+    <Box height="100%">
       {isLoggedIn && (
         <Box
           sx={{
@@ -85,7 +85,11 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
             <Menu iconShape="square">
               <MenuItem
                 onClick={collapsedHandler}
-                icon={isCollapsed ? <MenuIcon /> : undefined}
+                icon={
+                  isCollapsed ? (
+                    <MenuIcon sx={{ color: "#e0e0e0" }} />
+                  ) : undefined
+                }
                 style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
               >
                 {!isCollapsed && (
@@ -97,12 +101,15 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                   >
                     <Typography
                       variant="h4"
-                      color={colors.grey[100]}
+                      color={"#e0e0e0"}
                       fontWeight="bold"
                     >
                       SMART HOME
                     </Typography>
-                    <IconButton onClick={collapsedHandler}>
+                    <IconButton
+                      onClick={collapsedHandler}
+                      sx={{ color: "#e0e0e0" }}
+                    >
                       <MenuIcon />
                     </IconButton>
                   </Box>
@@ -121,7 +128,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                     active={selected === name}
                     onMouseEnter={() => handleMouseEnter(name)}
                     onMouseLeave={handleMouseLeave}
-                    style={{ color: colors.grey[100] }}
+                    style={{ color: "#e0e0e0", textAlign: "left" }}
                   >
                     {name}
                   </MenuItem>
