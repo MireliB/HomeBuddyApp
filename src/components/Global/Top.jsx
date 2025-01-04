@@ -17,7 +17,7 @@ export default function Top() {
   const colors = tokens(theme.palette.mode);
 
   const colorMode = useContext(ColorModeContext);
-
+  const isDarkMode = theme.palette.mode === "dark";
   // const handleSearchChange = (e) => {
   //   const searchTerm = e.target.value;
   //   setSearchField(searchTerm);
@@ -33,13 +33,17 @@ export default function Top() {
       <Box
         display={"flex"}
         alignItems={"center"}
-        backgroundColor={colors.primary[400]}
-        borderRadius={"8px"}
-        sx={{ height: "40px", padding: "0 10px", width: "300px" }}
+        sx={{
+          height: "40px",
+          padding: "0 10px",
+          width: "300px",
+          background: isDarkMode ? "#141b2d" : "#f0f0f0",
+          borderRadius: "8px",
+        }}
       >
         {/* SEARCH */}
         <InputBase
-          sx={{ ml: 2, flex: 1, color: colors.grey[100] }}
+          sx={{ ml: 2, flex: 1, color: isDarkMode ? "white" : "black" }}
           placeholder="Search..."
         />
         <IconButton type="button" sx={{ p: 1 }} />
