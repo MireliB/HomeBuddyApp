@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 
 import { editRoom } from "../../slice/roomSlice";
 import EditRoomDialog from "./EditRoomDialog/EditRoomDialog";
-
+import Cookies from 'js-cookie'
 import axios from "axios";
 
 export default function EditRoom() {
@@ -46,7 +46,7 @@ export default function EditRoom() {
       devices: devices,
     };
 
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
     try {
       const response = await axios.put(
         `http://localhost:4000/room/${room._id}`,

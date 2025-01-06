@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 import { setDevices } from "../../slice/deviceSlice";
 import { setRooms } from "../../slice/roomSlice";
-
+import Cookies from 'js-cookie'
 import axios from "axios";
 
 import { EmptyRoom } from "./EmptyRoom";
@@ -18,7 +18,7 @@ export default function RoomsPage() {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-  const token = localStorage.getItem("token");
+  const token = Cookies.get("token");
 
   const { rooms } = useSelector((state) => state.rooms);
   const { devices } = useSelector((state) => state.devices);

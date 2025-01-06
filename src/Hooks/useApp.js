@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
-
+import Cookies from 'js-cookie'
 const useApp = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const [useEmail, setUserEmail] = useState(() => {
-    const storedUserEmail = window.localStorage.getItem("userEmail");
+    const storedUserEmail = Cookies.get("userEmail");
     return storedUserEmail || "";
   });
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const storedIsLoggedIn = window.localStorage.getItem("isLoggedIn");
+    const storedIsLoggedIn = Cookies.get("isLoggedIn");
 
     return storedIsLoggedIn ? JSON.parse(storedIsLoggedIn) : false;
   });
 
   useEffect(() => {
-    const token = window.localStorage.getItem("token");
+    const token = Cookies.get("token");
 
     if (token) {
       let todayDate = Date.now();
-      const loginTime = JSON.parse(window.localStorage.getItem("loginTime"));
+      const loginTime = JSON.parse(Cookies.get("loginTime"));
       const expirationLoginTime = 8 * 60 * 60 * 1000;
 
       if (loginTime && todayDate - loginTime < expirationLoginTime) {
         setIsLoggedIn(true);
-        setUserEmail(window.localStorage.getItem("userEmail"));
+        setUserEmail(Cookies.get("userEmail"));
       } else {
         handleLogout();
       }
@@ -34,9 +34,9 @@ const useApp = () => {
   const onSubmitLogin = (email) => {
     let todayDate = Date.now();
 
-    window.localStorage.setItem("loginTime", JSON.stringify(todayDate));
-    window.localStorage.setItem("isLoggedIn", JSON.stringify(true));
-    window.localStorage.setItem("userEmail", email);
+    Cookies.set("loginTime", JSON.stringify(todayDate));
+    Cookies.set("isLoggedIn", JSON.stringify(true));
+    Cookies.set("userEmail", email);
 
     setUserEmail(email);
     setIsLoggedIn(true);
@@ -45,10 +45,10 @@ const useApp = () => {
   const handleLogout = () => {
     setIsLoggedIn(false);
 
-    window.localStorage.removeItem("token");
-    window.localStorage.removeItem("loginTime");
-    window.localStorage.removeItem("isLoggedIn");
-    window.localStorage.removeItem("userEmail");
+    Cookies.remove("token");
+    Cookies.remove("loginTime");
+    Cookies.remove("isLoggedIn");
+    Cookies.remove("userEmail");
   };
 
   return {

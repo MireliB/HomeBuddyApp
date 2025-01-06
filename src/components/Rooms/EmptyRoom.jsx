@@ -27,6 +27,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import DeleteRoomDialog from "./DeleteRoomDialog/DeleteRoomDialog";
+import Cookies from 'js-cookie'
 import Header from "../Header";
 
 import axios from "axios";
@@ -90,7 +91,7 @@ export function EmptyRoom({ onAddRoom, rooms, devices }) {
   };
 
   const updateDeviceStatus = async (deviceId, status) => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
 
     await axios.put(
       `http://localhost:4000/device/${deviceId}`,
@@ -128,7 +129,7 @@ export function EmptyRoom({ onAddRoom, rooms, devices }) {
     if (!selectedRoom || !selectedRoom._id) return;
 
     const roomId = selectedRoom._id;
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
 
     if (!token) {
       console.error("No Token found. Please log in again.");

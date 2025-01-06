@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Box, Button, Input, Link, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
-
+import Cookies from 'js-cookie'
 import "./Login.css";
 
 export default function Login({ onLogin }) {
@@ -15,7 +15,7 @@ export default function Login({ onLogin }) {
   const { email, password } = formData;
   
   const [errorMsg, setErrorMsg] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
   const navigateToSignUp = () => nav("/signup");
@@ -27,34 +27,72 @@ export default function Login({ onLogin }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMsg(""); 
+    setLoading(true); 
 
-    await fetch("http://localhost:4000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          return response.json().then((data) => {
-            throw new Error(
-              data.message || "Failed to Login. Please try Again"
-            );
-          });
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Login Response: ", data);
+    if(!formData.email || !formData.password){
+      setErrorMsg("Email and Password are required");
+      setLoading(false);
+      return;
+    }
 
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("loginTime", JSON.stringify(Date.now()));
-        localStorage.setItem("userEmail", email);
-
-        onLogin(email);
-        nav("/dashboard");
+    try{
+      const response = await fetch("http://localhost:4000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: formData.email, password: formData.password }),
       });
+
+      if(!response.ok){
+        const data = await response.json();
+        setErrorMsg(data.message || "Failed to login. Please try again");
+        setLoading(false);
+        return; 
+      }
+      const data = await response.json();
+
+        Cookies.set("token", data.token);
+        Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
+        Cookies.set("userEmail", email, { expires: 7 });
+
+        onLogin(formData.email);
+        nav("/dashboard");
+    }catch(err){
+      setErrorMsg("An error occured. Please try again");
+    }finally{
+      setLoading(false);
+    }
+
+    // await fetch("http://localhost:4000/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ email, password }),
+    // })
+      // .then((response) => {
+      //   if (!response.ok) {
+      //     return response.json().then((data) => {
+      //       setErrorMsg(data.message || "Failed to login. Please try again");
+      //     });
+      //   }
+      //   return response.json();
+      // })
+      // .then((data) => {
+      //   console.log("Login Response: ", data);
+
+      //   Cookies.set("token", data.token);
+      //   Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
+      //   Cookies.set("userEmail", email, { expires: 7 });
+
+      //   onLogin(email);
+      //   nav("/dashboard");
+      // })
+      // .finally(() => {
+      //   setLoading(false);
+      // });
   };
 
   return (
