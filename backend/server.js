@@ -1,9 +1,14 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const cors = require("cors");
+const authenticate = require("./authenticate/authenticate.auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
-const cors = require("cors");
+
+const mongoose = require("mongoose");
+const User = require("./models/User");
+const Device = require("./models/Device");
+const Room = require("./models/Room");
 
 const app = express();
 const PORT = 4000;
@@ -31,57 +36,8 @@ mongoose
   .catch((err) => {
     console.error("MongoDB connection error:", err);
   });
-// mongoose.connect(
-//   "mongodb+srv://<mireloosh2>:<password>@cluster0.xxxxxx.mongodb.net/<dbname>?retryWrites=true&w=majority",
-//   {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   }
-// );
 
-const jwtSecret = process.env.JWT_SECRET || "secret"; // Make sure JWT_SECRET is defined in your .env
-
-// Schemas
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-});
-
-const roomSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  roomType: { type: String, required: true },
-  devices: [{ type: mongoose.Schema.Types.ObjectId, ref: "Device" }],
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-});
-
-const deviceSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  status: { type: String, required: true },
-  room: { type: mongoose.Schema.Types.ObjectId, ref: "Room" },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-});
-
-// Models
-const User = mongoose.model("User", userSchema);
-const Room = mongoose.model("Room", roomSchema);
-const Device = mongoose.model("Device", deviceSchema);
-
-// auth
-const authenticate = (req, res, next) => {
-  const authHeader = req.header("Authorization");
-  if (!authHeader) return res.status(401).json({ message: "Access denied" });
-
-  const token = authHeader.replace("Bearer ", "");
-  if (!token) return res.status(401).json({ message: "Access denied" });
-
-  try {
-    const decoded = jwt.verify(token, jwtSecret);
-    req.userId = decoded.id;
-    next();
-  } catch (error) {
-    res.status(400).json({ message: "Invalid token" });
-  }
-};
+const jwtSecret = process.env.JWT_SECRET || "secret";
 
 // Routes
 app.post("/signUp", async (req, res) => {

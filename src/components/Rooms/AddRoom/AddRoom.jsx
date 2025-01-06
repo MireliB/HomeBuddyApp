@@ -18,6 +18,7 @@ export default function AddRoom() {
   const [roomType, setRoomType] = useState("");
   const [deviceName, setDeviceName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  
   const [status, setStatus] = useState("OFF");
 
   const [loading, setLoading] = useState(false);
@@ -59,12 +60,12 @@ export default function AddRoom() {
 
         if (deviceName) {
           const newDevice = {
+            room: createdRoom._id,
             name: deviceName,
             status,
-            room: createdRoom._id,
           };
           try {
-            await axios.post("http://localhost:4000/device", newDevice, {
+            await axios.post("http://localhost:4000/devices", newDevice, {
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (deviceError) {

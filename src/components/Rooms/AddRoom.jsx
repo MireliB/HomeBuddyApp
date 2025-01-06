@@ -57,7 +57,7 @@ export default function AddRoom() {
 
         dispatch(addRoom(createdRoom));
 
-        if (deviceName) {
+        // if (deviceName) {
           const newDevice = {
             name: deviceName,
             status,
@@ -76,7 +76,7 @@ export default function AddRoom() {
               setErrorMsg("Failed to add device. Please try again.");
             }
           }
-        }
+        // }
 
         setRoomName("");
         setRoomType("");
