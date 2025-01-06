@@ -30,7 +30,7 @@ const navigationItems = [
   { path: "/dashboard", name: "Dashboard", icon: <DashboardIcon /> },
   { path: "/roomsPage", name: "Rooms", icon: <RoomIcon /> },
   { path: "/aboutUs", name: "About", icon: <InfoIcon /> },
-  { path: "/contacts", name: "Contact Information", icon: <HelpIcon /> },
+  { path: "/contacts", name: "Contact", icon: <HelpIcon /> },
   { path: "/finances", name: "Finances", icon: <MoneyIcon /> },
   {
     path: "/notifications",
