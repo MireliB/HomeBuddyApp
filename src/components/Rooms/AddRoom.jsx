@@ -7,7 +7,9 @@ import { Box, Button, Input, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addRoom } from "../../slice/roomSlice";
+
 import Cookies from 'js-cookie'
+
 import Header from "../Header";
 
 export default function AddRoom() {

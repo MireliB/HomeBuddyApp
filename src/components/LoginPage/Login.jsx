@@ -64,35 +64,6 @@ export default function Login({ onLogin }) {
     }finally{
       setLoading(false);
     }
-
-    // await fetch("http://localhost:4000/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ email, password }),
-    // })
-      // .then((response) => {
-      //   if (!response.ok) {
-      //     return response.json().then((data) => {
-      //       setErrorMsg(data.message || "Failed to login. Please try again");
-      //     });
-      //   }
-      //   return response.json();
-      // })
-      // .then((data) => {
-      //   console.log("Login Response: ", data);
-
-      //   Cookies.set("token", data.token);
-      //   Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
-      //   Cookies.set("userEmail", email, { expires: 7 });
-
-      //   onLogin(email);
-      //   nav("/dashboard");
-      // })
-      // .finally(() => {
-      //   setLoading(false);
-      // });
   };
 
   return (
