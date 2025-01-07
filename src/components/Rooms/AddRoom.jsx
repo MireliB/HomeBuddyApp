@@ -59,26 +59,29 @@ export default function AddRoom() {
 
         dispatch(addRoom(createdRoom));
 
-        // if (deviceName) {
-          const newDevice = {
-            name: deviceName,
-            status,
-            room: createdRoom._id,
-          };
+          if (!deviceName.trim()) {
+            setErrorMsg("Device name cannot be empty.");
+            setLoading(false);
+            return;
+          }
+
           try {
+            const newDevice = {
+              name: deviceName,
+              status,
+              room: createdRoom._id,
+            };
+            
             await axios.post("http://localhost:4000/device", newDevice, {
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (deviceError) {
-            if (deviceError.response && deviceError.response.status === 400) {
-              setErrorMsg(
-                "Device with the same name already exist in this room "
-              );
+            if (deviceError.response) {
+              setErrorMsg(deviceError.response.data.message || "Failed to add device. Please try again.");
             } else {
               setErrorMsg("Failed to add device. Please try again.");
             }
           }
-        // }
 
         setRoomName("");
         setRoomType("");
