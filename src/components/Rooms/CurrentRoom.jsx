@@ -31,6 +31,7 @@ import Cookies from 'js-cookie'
 import Header from "../Header";
 
 import axios from "axios";
+import Search from "../Global/Search";
 
 export function CurrentRoom({ onAddRoom, rooms, devices }) {
   const nav = useNavigate();
@@ -298,12 +299,12 @@ export function CurrentRoom({ onAddRoom, rooms, devices }) {
   return (
     <Box m="2dvh">
       <Header
-        title={"Rooms Page"}
+        title={"Rooms"}
         subtitle={
           "This space allows you to create and manage rooms, providing you with control over various technologies within your home."
         }
       />
-
+      <Search/>
       {selectedRoom ? renderRoomDetails() : renderRoomList()}
       
       {!selectedRoom && (

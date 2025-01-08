@@ -18,7 +18,6 @@ export default function Top() {
       display="flex"
       justifyContent="space-between"
       alignItems="center"
-      p={2}
     >
       <Box display="flex" ml="auto">
         <IconButton onClick={colorMode.toggleColorMode}>

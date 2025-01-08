@@ -20,9 +20,14 @@ export default function Dashboard({ isLoggedIn }) {
   const latestRooms = rooms.slice(-3);
   const latestDevices = devices.slice(-3);
 
+  const isDarkMode = theme.palette.mode === "dark";
+
   const handleShowRoomsPage = () => {
     navigate("/roomsPage");
   };
+
+// להוסיף הגדרת nightmode 
+
 
   console.log("devices from redux", devices);
 
@@ -58,35 +63,42 @@ export default function Dashboard({ isLoggedIn }) {
       <Box
         display={"grid"}
         gridTemplateAreas={"repeat(12, 1fr)"}
-        gridAutoRows={"14vh"}
-        gap={"3vh"}
+        gridAutoRows={"100%"}
+        gap={"10%"}
       >
         <Box
-          gridColumn={"span 3"}
-          backgroundColor={colors.primary[400]}
+          gridColumn={"span 4"}
+          backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
           display={"flex"}
           alignItems={"center"}
           justifyContent={"center"}
+          borderRadius={"10px"}
         >
           <StatBox
-            title={"Rooms"}
-            subtitle={`Latest Rooms: ${latestRooms
+            title={"Latest Rooms"}
+            subtitle={` ${latestRooms
               .map((room) => room.name)
               .join(", ")}`}
             icon={
               <RoomIcon
-                sx={{ color: colors.greenAccent[400], fontSize: "2.1vw" }}
+                sx={{
+                  color: isDarkMode ? "#3da58a" : "#2e7c67",
+                  fontSize: "2.1vw",
+                }}
               />
             }
           ></StatBox>
           <StatBox
-            title={"Devices"}
-            subtitle={`Latest Devices: ${latestDevices
+            title={"Latest Devices"}
+            subtitle={` ${latestDevices
               .map((device) => device.name)
               .join(", ")}`}
             icon={
               <DeviceIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "2.1vw" }}
+                sx={{
+                  color: isDarkMode ? "#3da58a" : "#2e7c67",
+                  fontSize: "2.1vw",
+                }}
               />
             }
           ></StatBox>
@@ -95,7 +107,8 @@ export default function Dashboard({ isLoggedIn }) {
         <Box
           gridColumn={"span 8 "}
           gridRow={"span 2"}
-          backgroundColor={colors.primary[400]}
+          backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
+          borderRadius={"10px"}
         >
           <Box
             mt={"25px"}
@@ -106,14 +119,14 @@ export default function Dashboard({ isLoggedIn }) {
           >
             <Box>
               <Typography
-                variant="h5"
-                fontWeight={"600"}
+                variant="h3"
+                fontWeight={"bold"}
                 color={colors.grey[100]}
               >
-                Existing Rooms
+                Room's Active
               </Typography>
               <Typography
-                variant="h5"
+                variant="h3"
                 fontWeight={"500"}
                 color={colors.greenAccent[500]}
               >
