@@ -11,12 +11,12 @@ import Signup from "./components/SignUpPage/Signup.jsx";
 import AboutUs from "./components/AboutUs/AboutUs.jsx";
 import Homepage from "./components/Home/Homepage.jsx";
 import Login from "./components/LoginPage/Login.jsx";
-import AddRoom from "./components/Rooms/AddRoom.jsx";
 import Room from "./components/Rooms/Room.jsx";
 import EditRoom from "./components/Rooms/EditRoom.jsx";
 import Top from "./components/Global/Top.jsx";
 
 import useApp from "./Hooks/useApp.js";
+import AddRoom from "./components/Rooms/AddRoom/AddRoom.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();

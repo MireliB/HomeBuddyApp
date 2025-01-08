@@ -7,7 +7,9 @@ import { Box, Button, Input, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addRoom } from "../../../slice/roomSlice";
+
 import Cookies from 'js-cookie'
+
 import Header from "../../Header";
 
 export default function AddRoom() {
@@ -18,7 +20,6 @@ export default function AddRoom() {
   const [roomType, setRoomType] = useState("");
   const [deviceName, setDeviceName] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  
   const [status, setStatus] = useState("OFF");
 
   const [loading, setLoading] = useState(false);
@@ -58,26 +59,29 @@ export default function AddRoom() {
 
         dispatch(addRoom(createdRoom));
 
-        if (deviceName) {
-          const newDevice = {
-            room: createdRoom._id,
-            name: deviceName,
-            status,
-          };
+          if (!deviceName.trim()) {
+            setErrorMsg("Device name cannot be empty.");
+            setLoading(false);
+            return;
+          }
+
           try {
-            await axios.post("http://localhost:4000/devices", newDevice, {
+            const newDevice = {
+              name: deviceName,
+              status,
+              room: createdRoom._id,
+            };
+            
+            await axios.post("http://localhost:4000/device", newDevice, {
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (deviceError) {
-            if (deviceError.response && deviceError.response.status === 400) {
-              setErrorMsg(
-                "Device with the same name already exist in this room "
-              );
+            if (deviceError.response) {
+              setErrorMsg(deviceError.response.data.message || "Failed to add device. Please try again.");
             } else {
               setErrorMsg("Failed to add device. Please try again.");
             }
           }
-        }
 
         setRoomName("");
         setRoomType("");

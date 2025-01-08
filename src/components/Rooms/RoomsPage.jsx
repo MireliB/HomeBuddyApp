@@ -10,7 +10,7 @@ import { setRooms } from "../../slice/roomSlice";
 import Cookies from 'js-cookie'
 import axios from "axios";
 
-import { EmptyRoom } from "./EmptyRoom";
+import { CurrentRoom } from "./CurrentRoom";
 
 export default function RoomsPage() {
   const nav = useNavigate();
@@ -36,7 +36,6 @@ export default function RoomsPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Fetched Rooms:", roomsResponse.data);
 
       dispatch(setRooms(roomsResponse.data));
 
@@ -45,17 +44,16 @@ export default function RoomsPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Fetched devices:", deviceResponse.data);
 
       dispatch(setDevices(deviceResponse.data));
     } catch (err) {
-      console.error("haha", err);
+      setErrorMsg("Failed fetching rooms and devices", err);
     }
   };
   return (
     <Box className="rooms-page-container">
       {errorMsg && <p>{errorMsg}</p>}
-      <EmptyRoom
+      <CurrentRoom
         onAddRoom={() => nav("/addRoom")}
         rooms={rooms}
         devices={devices}

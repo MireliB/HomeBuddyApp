@@ -105,7 +105,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                       color={"#e0e0e0"}
                       fontWeight="bold"
                     >
-                      SMART HOME
+                      HOME BUDDY
                     </Typography>
                     <IconButton
                       onClick={collapsedHandler}
