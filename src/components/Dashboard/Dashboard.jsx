@@ -26,11 +26,6 @@ export default function Dashboard({ isLoggedIn }) {
     navigate("/roomsPage");
   };
 
-// להוסיף הגדרת nightmode 
-
-
-  console.log("devices from redux", devices);
-
   return (
     <Box m={"2vh"}>
       <Box
@@ -123,7 +118,7 @@ export default function Dashboard({ isLoggedIn }) {
                 fontWeight={"bold"}
                 color={colors.grey[100]}
               >
-                Room's Active
+                Active Rooms
               </Typography>
               <Typography
                 variant="h3"

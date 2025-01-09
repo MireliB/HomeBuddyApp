@@ -2,18 +2,14 @@ const express = require("express");
 
 const router = express.Router();
 
-const authenticate = require("../authenticate/authenticate.auth");
-
 const RoomModel = require("../models/Room");
 const DeviceModel = require("../models/Device");
+
+const authenticate = require("../middleware/authenticate");
 
 router.post("/device", authenticate, async (req, res) => {
   const { name, status, room } = req.body;
   const userId = req.userId;
-
-  if (!name || !status || !room) {
-    return res.status(400).json({ message: "Name, status, and room are required" });
-  }
 
   try {
     const newDevice = new DeviceModel({ name, status, room, user: userId });
