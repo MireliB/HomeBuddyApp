@@ -47,7 +47,10 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
 
   const colors = tokens(theme.palette.mode);
 
+  const isDarkMode = theme.palette.mode === "dark";
+
   const [isCollapsed, setIsCollapsed] = useState(false);
+  
   const [selected, setSelected] = useState("Dashboard");
 
   const nav = useNavigate();
@@ -67,6 +70,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
     }
   };
 
+  // 1F2A40
   return (
     <Box height="100%">
       {isLoggedIn && (
@@ -74,7 +78,8 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
           sx={{
             height: "100vh",
             "& .pro-sidebar-inner, & .pro-icon-wrapper": {
-              background: `${colors.primary[400]} !important`,
+              background: `${isDarkMode ? "#1F2A40" : "#e0e0e0"} !important`,
+              color: `${isDarkMode ? "#e0e0e0" : "#1F2A40"} !important`,
             },
             "& .pro-inner-item": { padding: "5px 35px 5px 20px !important" },
             "& .pro-inner-item:hover": { color: "#868dfb !important" },
@@ -88,7 +93,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                 onClick={collapsedHandler}
                 icon={
                   isCollapsed ? (
-                    <MenuIcon sx={{ color: "#e0e0e0" }} />
+                    <MenuIcon sx={{  color:  isDarkMode ? "#e0e0e0" : "#1F2A40"}} />
                   ) : undefined
                 }
                 style={{ margin: "10px 0 20px 0", color: colors.grey[100] }}
@@ -104,12 +109,17 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                       variant="h4"
                       color={"#e0e0e0"}
                       fontWeight="bold"
+                      sx={{ color:  isDarkMode ? "#e0e0e0" : "#1F2A40"}}
                     >
                       HOME BUDDY
                     </Typography>
                     <IconButton
                       onClick={collapsedHandler}
-                      sx={{ color: "#e0e0e0" }}
+                      sx={{
+                        color: `${
+                          isDarkMode ? "#e0e0e0" : "#1F2A40"
+                        } !important`,
+                      }}
                     >
                       <MenuIcon />
                     </IconButton>
@@ -129,7 +139,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                     active={selected === name}
                     onMouseEnter={() => handleMouseEnter(name)}
                     onMouseLeave={handleMouseLeave}
-                    style={{ color: "#e0e0e0", textAlign: "left" }}
+                    style={{ color:  isDarkMode ? "#e0e0e0" : "#1F2A40", textAlign: "left" }}
                   >
                     {name}
                   </MenuItem>
