@@ -25,12 +25,7 @@ export default function Dashboard({ isLoggedIn }) {
   const handleShowRoomsPage = () => {
     navigate("/roomsPage");
   };
-
-// להוסיף הגדרת nightmode 
-
-
-  console.log("devices from redux", devices);
-
+  
   return (
     <Box m={"2vh"}>
       <Box
