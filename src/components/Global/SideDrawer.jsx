@@ -22,7 +22,7 @@ import {
 } from "@mui/material";
 
 import "react-pro-sidebar/dist/css/styles.css";
-
+import './SideDrawer.module.css'
 import { useNavigate } from "react-router-dom";
 
 const navigationItems = [
@@ -70,15 +70,14 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
     <Box height="100%">
       {isLoggedIn && (
         <Box
-          sx={{
-            height: "100vh",
-            "& .pro-sidebar-inner, & .pro-icon-wrapper": {
-              background: `${isDarkMode ? "#1f2a40" : "#e0e0e0"} !important`,
-            },
-            "& .pro-inner-item": { padding: "5px 35px 5px 20px !important" },
-            "& .pro-inner-item:hover": { color: "#868dfb !important" },
-            "& .pro-menu-item.active": { color: "#6870fa !important", },
-          }}
+        sx={{
+          height: "100vh",
+          "& .pro-sidebar-inner, & .pro-icon-wrapper": {
+            background: `${isDarkMode ? "#1f2a40" : "#e0e0e0"} !important`,
+          },
+          "& .pro-inner-item:hover, & .pro-inner-item.active": { color: "#868dfb !important" },
+          // "& .pro-inner-item.active":{color: "#868dfb !important"},
+        }}
         >
           <CssBaseline />
           <ProSidebar collapsed={isCollapsed}>
@@ -128,7 +127,9 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                     active={selected === name}
                     onMouseEnter={() => handleMouseEnter(name)}
                     onMouseLeave={handleMouseLeave}
-                    style={{ color: isDarkMode ? "#e0e0e0" : "#1f2a40" , fontWeight:"bold", textAlign: "left" }}
+                    style={{ 
+                      color: isDarkMode ? "#e0e0e0" : "#1f2a40" ,
+                       fontWeight:"bold", textAlign: "left" }}
                   >
                     {name}
                   </MenuItem>
