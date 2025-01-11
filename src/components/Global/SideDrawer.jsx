@@ -23,7 +23,6 @@ import {
 
 import "react-pro-sidebar/dist/css/styles.css";
 
-import { tokens } from "../../Theme";
 import { useNavigate } from "react-router-dom";
 
 const navigationItems = [
@@ -45,7 +44,6 @@ const navigationItems = [
 export default function SideDrawer({ onLogout, isLoggedIn }) {
   const theme = useTheme();
 
-  const colors = tokens(theme.palette.mode);
   const isDarkMode = theme.palette.mode === "dark";
 
   const [isCollapsed, setIsCollapsed] = useState(false);

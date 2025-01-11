@@ -16,7 +16,10 @@ router.post("/room", authenticate, async (req, res) => {
     return res.status(400).json({ message: "Name and room type are required" });
   }
   try {
-    const existingRoom = await RoomModel.findOne({ name: roomName, user: userId });
+    const existingRoom = await RoomModel.findOne({
+      name: roomName,
+      user: userId,
+    });
     if (existingRoom) {
       return res
         .status(400)
@@ -38,9 +41,7 @@ router.post("/room", authenticate, async (req, res) => {
     await newRoom.save();
     res.json(newRoom);
   } catch (err) {
-    console.error("Error adding room:", err);
-
-    res.status(500).json({ message: "Server error", err: err.message });
+    res.status(500).json({ message: "Error adding room:", err: err.message });
   }
 });
 
@@ -78,9 +79,7 @@ router.put("/room/:id", authenticate, async (req, res) => {
     }
     res.json(updateRoom);
   } catch (error) {
-    console.error("Error updating room: ", error);
-
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Error updating room: ", error });
   }
 });
 
@@ -100,10 +99,8 @@ router.delete("/room/:id", authenticate, async (req, res) => {
       message: "Room and associated devices deleted successfully.",
     });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error deleting room" });
+    res.status(500).json({ message: "Error deleting room: ", error });
   }
 });
-
 
 module.exports = router;

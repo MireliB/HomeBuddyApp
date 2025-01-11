@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const authRoutes = require("./routes/user.route");
 const roomRoutes = require("./routes/room.route");
 const deviceRoutes = require("./routes/device.route");
+
 const initMongo = require("./db/db");
 
 const app = express();

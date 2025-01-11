@@ -2,6 +2,7 @@ import { Box, Button, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { tokens } from "../../Theme";
+
 import Header from "../Header";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
 import DeviceIcon from "@mui/icons-material/DevicesOutlined";
@@ -42,7 +43,11 @@ export default function Dashboard({ isLoggedIn }) {
           <Button
             variant="contained"
             sx={{
-              backgroundColor: colors.blueAccent[700],
+              backgroundColor: colors.greenAccent[600],
+              '&:hover': {
+                backgroundColor: colors.greenAccent[500],
+
+              },
               color: colors.grey[100],
               fontSize: "0.8vw",
               fontWeight: "bold",
@@ -118,7 +123,7 @@ export default function Dashboard({ isLoggedIn }) {
                 fontWeight={"bold"}
                 color={colors.grey[100]}
               >
-                Room's Active
+                Available Rooms
               </Typography>
               <Typography
                 variant="h3"
