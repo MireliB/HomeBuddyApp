@@ -1,25 +1,40 @@
-import { Box, Button, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { tokens } from "../../Theme";
 
-
 import Header from "../Header";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
 import DeviceIcon from "@mui/icons-material/DevicesOutlined";
-import { RoomOutlined } from "@mui/icons-material";
 
 import StatBox from "../StatBox";
 
-export default function Dashboard({ isLoggedIn }) {
+// TODO :
+// Types of users permissions that need to be added
+// Owner
+// Admin
+// User
+
+// add a welcome user name in Dashboard when the user is logged in - 
+// for now - its by email
+// add an icon to admin if the user is the admin for example - crown
+// add also an icon to user if the user is with regular permissions
+// add an icon to Available Rooms
+// make the lines of latest rooms + devices in the same line like Available rooms
+// check about adding more features into dashboard
+// change login page to Home Buddy Admin
+// create another project of home buddy to the clients at phone
+// change email welcome to user welcome
+
+export default function Dashboard({ isLoggedIn, userEmail }) {
+
   const theme = useTheme();
-  const matches = useMediaQuery('(min-width:600px)');
   const colors = tokens(theme.palette.mode);
 
   const navigate = useNavigate();
 
-  const { rooms } = useSelector((state) => state.rooms);
-  const { devices } = useSelector((state) => state.devices);
+  const { rooms } = useSelector((state) => state.rooms || []);
+  const { devices } = useSelector((state) => state.devices || []);
 
   const latestRooms = rooms.slice(-3) || [];
   const latestDevices = devices.slice(-3) || [];
@@ -29,7 +44,7 @@ export default function Dashboard({ isLoggedIn }) {
   const handleShowRoomsPage = () => {
     navigate("/roomsPage");
   };
-  
+
   return (
     <Box m={"2vh"}>
       <Box
@@ -41,21 +56,26 @@ export default function Dashboard({ isLoggedIn }) {
           title="DASHBOARD"
           subtitle="Welcome to your smart home Dashboard panel! From here, you can manage your home's devices with ease."
         />
+        {isLoggedIn && (
+          <Typography variant="h5" fontWeight={"bold"}>
+            Welcome {userEmail || "User"}
+          </Typography>
+        )}
 
         <Box>
           <Button
             variant="contained"
             sx={{
               backgroundColor: colors.greenAccent[600],
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: colors.greenAccent[500],
-
               },
               color: colors.grey[100],
               fontSize: "100%",
               fontWeight: "bold",
               padding: "4% 10px",
             }}
+            
             onClick={handleShowRoomsPage}
           >
             Move to Rooms Page
@@ -71,7 +91,7 @@ export default function Dashboard({ isLoggedIn }) {
         width={"100%"}
         height={"100%"}
         gap={"16px"}
-        >
+      >
         <Box
           backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
           display={"flex"}
@@ -79,13 +99,14 @@ export default function Dashboard({ isLoggedIn }) {
           justifyContent={"center"}
           borderRadius={"10px"}
           width={"50%"}
-          
         >
           <StatBox
             title={"Latest Rooms"}
-            subtitle={` ${latestRooms.length ? latestRooms
-              .map((room) => room.name)
-              .join(", "): "No rooms available"}`}
+            subtitle={` ${
+              latestRooms.length
+                ? latestRooms.map((room) => room.name).join(", ")
+                : "No rooms available"
+            }`}
             icon={
               <RoomIcon
                 sx={{
@@ -97,9 +118,11 @@ export default function Dashboard({ isLoggedIn }) {
           ></StatBox>
           <StatBox
             title={"Latest Devices"}
-            subtitle={` ${latestDevices.length ? latestDevices
-              .map((device) => device.name)
-              .join(", "): "No devices available"}`}
+            subtitle={` ${
+              latestDevices.length
+                ? latestDevices.map((device) => device.name).join(", ")
+                : "No devices available"
+            }`}
             icon={
               <DeviceIcon
                 sx={{
@@ -118,19 +141,18 @@ export default function Dashboard({ isLoggedIn }) {
           backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
           borderRadius={"10px"}
         >
-          <Box 
+          <Box
             mt={"20px"}
             p={"0 40px"}
             display={"flex"}
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Box height={"208px"}
-            >
+            <Box height={"208px"}>
               <Typography
                 variant="h3"
                 fontWeight={"bold"}
-                color={colors.grey[100]} 
+                color={colors.grey[100]}
               >
                 Available Rooms
               </Typography>
@@ -139,11 +161,19 @@ export default function Dashboard({ isLoggedIn }) {
                 fontWeight={"500"}
                 color={colors.greenAccent[500]}
               >
-                {rooms.length ?rooms.map((room, index) => (
-                  <Typography key={index}>
-                    Room Name: {room.name}, RoomType: {room.roomType}
-                  </Typography>
-                )): "No Available Rooms"}
+                {rooms.length
+                  ? rooms.map((room, index) => (
+                      <Box>
+                        <Typography key={index} fontWeight={"bold"}>
+                          Room Name: {room.name}
+                        </Typography>
+
+                        <Typography key={index} fontWeight={"bold"}>
+                          Room Type: {room.roomType}
+                        </Typography>
+                      </Box>
+                    ))
+                  : "No Available Rooms"}
               </Typography>
             </Box>
           </Box>

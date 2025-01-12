@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 
 const authRoutes = require("./routes/user.route");
 const roomRoutes = require("./routes/room.route");
@@ -11,7 +10,7 @@ const initMongo = require("./db/db");
 const app = express();
 const PORT = 4000;
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 app.use(
   cors({

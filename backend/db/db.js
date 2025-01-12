@@ -14,21 +14,27 @@ mongoose
   });
 
 };
-// const initMongo = () => {
+// const jwtSecret = crypto.randomBytes(64).toString("base64");
+
+// const initMongo = async () => {
 //   const mongoUrl =
-//     "mongodb+srv://mireloosh2:csIGc5lcsaop3VCh@cluster0.qbs1p.mongodb.net/smart-home-rooms";
+//     "mongodb+srv://mireloosh2:<XQDNm8EZK39RzoE9>@home-buddy.vjsju.mongodb.net/?retryWrites=true&w=majority&appName=home-buddy";
 
 //   try {
-//     mongoose.connect(mongoUrl, {
+//     await mongoose.connect(mongoUrl, {
 //       useNewUrlParser: true,
 //       useUnifiedTopology: true,
 //     });
 //     console.log("MongoDB connected successfully");
 //   } catch (error) {
-//     console.log("Mongoose error: ", error);
+//     console.error("Mongoose connection error:", error.message);
+//     process.exit(1); 
 //   }
+
 //   const db = mongoose.connection;
-//   db.on("error", console.error.bind(console, "MongoDB Error connections"));
+//   db.on("connected", () => console.log("Mongoose connected to the database"));
+//   db.on("error", (err) => console.error("Mongoose connection error:", err));
+//   db.on("disconnected", () => console.log("Mongoose disconnected"));
 // };
 
 module.exports = initMongo;

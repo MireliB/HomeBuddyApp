@@ -4,7 +4,7 @@ import Cookies from 'js-cookie'
 const useApp = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const [useEmail, setUserEmail] = useState(() => {
+  const [userEmail, setUserEmail] = useState(() => {
     const storedUserEmail = Cookies.get("userEmail");
     return storedUserEmail || "";
   });
@@ -58,7 +58,7 @@ const useApp = () => {
     isLoggedIn,
     isSidebarOpen,
     setIsSidebarOpen,
-    useEmail,
+     userEmail,
   };
 };
 

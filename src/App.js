@@ -21,7 +21,7 @@ import AddRoom from "./components/Rooms/AddRoom/AddRoom.jsx";
 function App() {
   const [theme, colorMode] = useMode();
 
-  const { onSubmitLogin, handleLogout, isLoggedIn, setIsSidebarOpen } =
+  const { onSubmitLogin, handleLogout, isLoggedIn, setIsSidebarOpen, userEmail} =
     useApp();
 
   const renderRouterPaths = () => {
@@ -36,7 +36,7 @@ function App() {
     } else {
       return (
         <>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard userEmail = {userEmail} isLoggedIn={isLoggedIn}/>} />
           <Route path="/home" element={<Homepage />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/roomsPage" element={<RoomsPage />} />
