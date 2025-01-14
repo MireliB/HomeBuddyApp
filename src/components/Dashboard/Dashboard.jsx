@@ -84,21 +84,15 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
       </Box>
 
       <Box
-        display={"flex"}
-        flexDirection={"row"}
-        mt={"20px"}
-        p={"0"}
-        width={"100%"}
-        height={"100%"}
-        gap={"16px"}
+       display={"grid"}
+       gridTemplateColumns={"repeat(2, 1fr)"} 
+       gap={"1.5%"}
       >
         <Box
           backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
-          display={"flex"}
-          alignItems={"center"}
-          justifyContent={"center"}
+          gridColumn={"span 1"}
           borderRadius={"10px"}
-          width={"50%"}
+          p={"20px"}
         >
           <StatBox
             title={"Latest Rooms"}
@@ -135,8 +129,9 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
         </Box>
 
         <Box
-          display={"flex"}
-          width={"50%"}
+          gridColumn={"span 1 "}
+          gridRow={"span 1"}          
+          width={"100%"}
           flexDirection={"column"}
           backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
           borderRadius={"10px"}

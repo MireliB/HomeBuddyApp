@@ -9,8 +9,9 @@ const router = express.Router();
 
 const jwtSecret = "secret"; 
 
+// add here also username
 router.post("/signUp", async (req, res) => {
-  const { email, password } = req.body;
+  const { username, email, password } = req.body;
   try {
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { Box } from "@mui/material";
 
@@ -7,11 +7,11 @@ import { useNavigate } from "react-router-dom";
 
 import { setDevices } from "../../slice/deviceSlice";
 import { setRooms } from "../../slice/roomSlice";
+import { CurrentRoom } from "./CurrentRoom";
 
 import Cookies from 'js-cookie'
 import axios from "axios";
 
-import { CurrentRoom } from "./CurrentRoom";
 
 export default function RoomsPage() {
   const nav = useNavigate();
@@ -23,14 +23,8 @@ export default function RoomsPage() {
 
   const { rooms } = useSelector((state) => state.rooms);
   const { devices } = useSelector((state) => state.devices);
-
-  useEffect(() => {
-    if (token) {
-      getRoomsAndDevices();
-    }
-  }, [token]);
-
-  const getRoomsAndDevices = async () => {
+ 
+  const getRoomsAndDevices = useCallback(async () => {
     try {
       const roomsResponse = await axios.get("http://localhost:4000/rooms", {
         headers: {
@@ -48,9 +42,17 @@ export default function RoomsPage() {
 
       dispatch(setDevices(deviceResponse.data));
     } catch (err) {
-      setErrorMsg("Failed fetching rooms and devices", err);
+      setErrorMsg("Failed fetching rooms and devices");
+      console.error(err);
     }
-  };
+  }, [dispatch, token]);
+
+  useEffect(() => {
+    if (token) {
+      getRoomsAndDevices();
+    }
+  }, [token, getRoomsAndDevices]);
+
   return (
     <Box className="rooms-page-container">
       {errorMsg && <p>{errorMsg}</p>}

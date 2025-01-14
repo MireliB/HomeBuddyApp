@@ -8,9 +8,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addRoom } from "../../../slice/roomSlice";
 
-import Cookies from 'js-cookie'
-
 import Header from "../../Header";
+
+import Cookies from 'js-cookie'
 
 export default function AddRoom() {
   const nav = useNavigate();

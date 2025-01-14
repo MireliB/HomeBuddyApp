@@ -17,6 +17,7 @@ import Top from "./components/Global/Top.jsx";
 
 import useApp from "./Hooks/useApp.js";
 import AddRoom from "./components/Rooms/AddRoom/AddRoom.jsx";
+import Profile from "./components/UserProfile/Profile.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -46,6 +47,7 @@ function App() {
           <Route path="/finances" element={<Finances />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/editRoom/:roomId" element={<EditRoom />} />
+          <Route path="/userProfile/:userId" element={<Profile />} />
         </>
       );
     }

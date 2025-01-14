@@ -9,7 +9,7 @@ export default function StatBox({ title, subtitle, icon, progress }) {
 
   return (
     <Box width="100%" m={"0 30px"}>
-      <Box display={"flex"} justifyContent={"space-between"}>
+      <Box display="flex" alignItems="center" >
         <Box>
           {icon}
           <Typography
@@ -21,8 +21,10 @@ export default function StatBox({ title, subtitle, icon, progress }) {
           </Typography>
         </Box>
 
-        <Box>
-          <ProgressCircle progress={progress} />
+        <Box mt={2}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          {progress !== undefined && <ProgressCircle progress={progress} />}
+        </Box>
         </Box>
       </Box>
       <Box display={"flex"} justifyContent={"space-between"}>
@@ -34,7 +36,6 @@ export default function StatBox({ title, subtitle, icon, progress }) {
           fontStyle={"italic"}
           sx={{ color: colors.greenAccent[600] }}
         >
-          {}
         </Typography>
       </Box>
     </Box>

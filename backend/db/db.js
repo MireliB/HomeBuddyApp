@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 // const jwtSecret = crypto.randomBytes(64).toString("base64");
 
 const initMongo = async () => {
@@ -8,10 +7,7 @@ const initMongo = async () => {
     "mongodb+srv://mireloosh2:XQDNm8EZK39RzoE9@home-buddy.vjsju.mongodb.net/";
 
   try {
-    await mongoose.connect(mongoUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(mongoUrl);
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("Mongoose connection error:", error.message);
