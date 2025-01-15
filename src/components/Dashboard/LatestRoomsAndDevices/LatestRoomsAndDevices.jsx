@@ -1,8 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
 import DeviceIcon from "@mui/icons-material/DevicesOutlined";
-import StatBox from "../../StatBox";
 
 export default function LatestRoomsAndDevices({
   latestRooms,
@@ -18,34 +17,54 @@ export default function LatestRoomsAndDevices({
         borderRadius: "10px",
       }}
     >
-      <RoomIcon
-        sx={{
-          color: isDarkMode ? colors.greenAccent[500] : colors.greenAccent[300],
-          fontSize: "2.1vw",
-        }}
-      />
-      <StatBox
-        title={"Latest Rooms"}
-        subtitle={` ${
-          latestRooms.length
+      <Box>
+        <RoomIcon
+          sx={{
+            color: isDarkMode
+              ? colors.greenAccent[500]
+              : colors.greenAccent[300],
+            fontSize: "2.1vw",
+          }}
+        />
+      </Box>
+
+      <Box>
+        <Typography variant="h5" fontWeight={"bold"}>
+          Latest Rooms
+        </Typography>
+
+        <Divider />
+        <Typography
+          color={isDarkMode ? colors.greenAccent[500] : colors.primary[100]}
+        >
+          {latestRooms.length
             ? latestRooms.map((room) => room.name).join(", ")
-            : "No rooms available"
-        }`}
-      ></StatBox>
+            : "No rooms available"}
+        </Typography>
+      </Box>
+            <br />
+<Box>
       <DeviceIcon
         sx={{
           color: isDarkMode ? colors.greenAccent[500] : colors.greenAccent[300],
           fontSize: "2.1vw",
         }}
       />
-      <StatBox
-        title={"Latest Devices"}
-        subtitle={` ${
-          latestDevices.length
+  
+</Box>
+      <Box>
+        <Typography variant="h5" fontWeight={"bold"}>
+          Latest Devices
+        </Typography>
+        <Divider />
+        <Typography
+          color={isDarkMode ? colors.greenAccent[500] : colors.primary[100]}
+        >
+          {latestDevices.length
             ? latestDevices.map((device) => device.name).join(", ")
-            : "No devices available"
-        }`}
-      ></StatBox>
+            : "No devices available"}
+        </Typography>
+      </Box>
     </Box>
   );
 }
