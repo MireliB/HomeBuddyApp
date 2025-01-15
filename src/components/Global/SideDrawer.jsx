@@ -11,6 +11,7 @@ import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
   ExitToApp as LogoutIcon,
+  People as ClientIcon
 } from "@mui/icons-material";
 
 import {
@@ -29,6 +30,7 @@ const navigationItems = [
   { path: "/home", name: "Home", icon: <HomeIcon /> },
   { path: "/dashboard", name: "Dashboard", icon: <DashboardIcon /> },
   { path: "/roomsPage", name: "Rooms", icon: <RoomIcon /> },
+  { path: "/clients", name: "Clients", icon: <ClientIcon /> },
   { path: "/aboutUs", name: "About", icon: <InfoIcon /> },
   { path: "/contacts", name: "Contact", icon: <HelpIcon /> },
   { path: "/finances", name: "Finances", icon: <MoneyIcon /> },

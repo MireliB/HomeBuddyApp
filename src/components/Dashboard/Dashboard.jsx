@@ -1,13 +1,21 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  useTheme,
+} from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { tokens } from "../../Theme";
 
 import Header from "../Header";
-import RoomIcon from "@mui/icons-material/MeetingRoom";
-import DeviceIcon from "@mui/icons-material/DevicesOutlined";
 
-import StatBox from "../StatBox";
+import LatestRoomsAndDevices from "./LatestRoomsAndDevices/LatestRoomsAndDevices";
+import AvailableRooms from "./AvailableRooms/AvailableRooms";
+import SystemStatistics from "./SystemStatistics/SystemStatistics";
+import AlertsAndNotifications from "./AlertsAndNotifications/AlertsAndNotifications";
+import QuickActions from "./QuickActions/QuickActions";
 
 // TODO :
 // Types of users permissions that need to be added
@@ -15,7 +23,7 @@ import StatBox from "../StatBox";
 // Admin
 // User
 
-// add a welcome user name in Dashboard when the user is logged in - 
+// add a welcome user name in Dashboard when the user is logged in -
 // for now - its by email
 // add an icon to admin if the user is the admin for example - crown
 // add also an icon to user if the user is with regular permissions
@@ -27,7 +35,6 @@ import StatBox from "../StatBox";
 // change email welcome to user welcome
 
 export default function Dashboard({ isLoggedIn, userEmail }) {
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -75,7 +82,6 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
               fontWeight: "bold",
               padding: "4% 10px",
             }}
-            
             onClick={handleShowRoomsPage}
           >
             Move to Rooms Page
@@ -84,95 +90,24 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
       </Box>
 
       <Box
-       display={"grid"}
-       gridTemplateColumns={"repeat(2, 1fr)"} 
-       gap={"1.5%"}
+        display={"grid"}
+        gridTemplateColumns={"repeat(2, 0.5fr)"}
+        gap={"1.2%"}
       >
-        <Box
-          backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
-          gridColumn={"span 1"}
-          borderRadius={"10px"}
-          p={"20px"}
-        >
-          <StatBox
-            title={"Latest Rooms"}
-            subtitle={` ${
-              latestRooms.length
-                ? latestRooms.map((room) => room.name).join(", ")
-                : "No rooms available"
-            }`}
-            icon={
-              <RoomIcon
-                sx={{
-                  color: isDarkMode ? "#3da58a" : "#2e7c67",
-                  fontSize: "2.1vw",
-                }}
-              />
-            }
-          ></StatBox>
-          <StatBox
-            title={"Latest Devices"}
-            subtitle={` ${
-              latestDevices.length
-                ? latestDevices.map((device) => device.name).join(", ")
-                : "No devices available"
-            }`}
-            icon={
-              <DeviceIcon
-                sx={{
-                  color: isDarkMode ? "#3da58a" : "#2e7c67",
-                  fontSize: "2.1vw",
-                }}
-              />
-            }
-          ></StatBox>
-        </Box>
+        <LatestRoomsAndDevices
+          latestDevices={latestDevices}
+          latestRooms={latestRooms}
+          isDarkMode={isDarkMode}
+          colors={colors}
+        />
 
-        <Box
-          gridColumn={"span 1 "}
-          gridRow={"span 1"}          
-          width={"100%"}
-          flexDirection={"column"}
-          backgroundColor={isDarkMode ? "#1F2A40" : "#e0e0e0"}
-          borderRadius={"10px"}
-        >
-          <Box
-            mt={"20px"}
-            p={"0 40px"}
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <Box height={"208px"}>
-              <Typography
-                variant="h3"
-                fontWeight={"bold"}
-                color={colors.grey[100]}
-              >
-                Available Rooms
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight={"500"}
-                color={colors.greenAccent[500]}
-              >
-                {rooms.length
-                  ? rooms.map((room, index) => (
-                      <Box>
-                        <Typography key={index} fontWeight={"bold"}>
-                          Room Name: {room.name}
-                        </Typography>
+        <AvailableRooms isDarkMode={isDarkMode} colors={colors} rooms={rooms} />
 
-                        <Typography key={index} fontWeight={"bold"}>
-                          Room Type: {room.roomType}
-                        </Typography>
-                      </Box>
-                    ))
-                  : "No Available Rooms"}
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
+        <SystemStatistics isDarkMode={isDarkMode} colors={colors} />
+
+        <AlertsAndNotifications isDarkMode={isDarkMode} colors={colors} />
+
+        <QuickActions isDarkMode={isDarkMode} colors={colors}/>
       </Box>
     </Box>
   );
