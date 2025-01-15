@@ -28,6 +28,7 @@ export default function StatBox({ title, subtitle, icon, progress }) {
             {progress !== undefined && <ProgressCircle progress={progress} />}
           </Box>
         </Box>
+        
       </Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: "16px" }}>
         <Typography
