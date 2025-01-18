@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 
-import { Box, Button, Input, Link, Typography } from "@mui/material";
+import { Box, Button, Input, Link, Typography, useTheme } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import Cookies from 'js-cookie'
 import "./Login.css";
+import { tokens } from "../../Theme";
 
 export default function Login({ onLogin }) {
+  const theme = useTheme();
+  const isDarkMode = theme.palette.mode === "dark";
+  const colors = tokens(theme.palette.mode);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -51,6 +56,7 @@ export default function Login({ onLogin }) {
         setLoading(false);
         return; 
       }
+
       const data = await response.json();
 
         Cookies.set("token", data.token);
@@ -67,24 +73,26 @@ export default function Login({ onLogin }) {
   };
 
   return (
-    <Box className="login-wrapper">
-      <Typography variant="h3">Login</Typography>
+    <Box className="login-wrapper" sx={{backgroundColor: colors.greenAccent[500]}}>
+      <Typography variant="h3" sx={{fontWeight:"bold"}} >Home Buddy Admin</Typography> <br />
       <Box component={"form"} onSubmit={handleLogin}>
         <Box>
-          <Typography variant="h5">Email:</Typography>
+          <Typography variant="h5" sx={{fontWeight:"bold"}}>Email:</Typography>
           <Input
             type="email"
             name="email"
+            placeholder="example@gmail.com"
             value={formData.email}
             onChange={handleInputChange}
             required
           />
         </Box>
         <Box>
-          <Typography variant="h5">Password:</Typography>
+          <Typography variant="h5" sx={{fontWeight:"bold"}}>Password:</Typography>
           <Input
             type="password"
             name="password"
+            placeholder="*********"
             value={formData.password}
             onChange={handleInputChange}
             required
@@ -99,21 +107,22 @@ export default function Login({ onLogin }) {
           LOGIN
         </Button>
       </Box>
+      
       {errorMsg && (
         <Typography variant="body2" color="error" mt={2}>
           {errorMsg}
         </Typography>
       )}
       <Box mt={2}>
-        <Typography variant="body2">
-          Don't have an account?
+        <Typography variant="body2" sx={{fontWeight:"bold"}}>
+          Don't have an account ? 
           <Link
             component="button"
             sx={{ color: "white" }}
             variant="body2"
             onClick={navigateToSignUp}
           >
-            SIGN UP
+             SIGN UP
           </Link>
         </Typography>
       </Box>

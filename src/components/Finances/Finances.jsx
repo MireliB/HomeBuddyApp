@@ -99,7 +99,6 @@ export default function Finances() {
         </CardContent>
       </Card>
 
-      {/* Chart Section */}
       <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
         <CardContent>
           <Typography variant="h5" mb={2}>
@@ -118,7 +117,6 @@ export default function Finances() {
         </CardContent>
       </Card>
 
-      {/* Detailed Expenses Section */}
       <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
         <CardContent>
           <Typography variant="h5" mb={2}>
@@ -144,7 +142,6 @@ export default function Finances() {
         </CardContent>
       </Card>
 
-      {/* Add New Expense Section */}
       <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
         <CardContent>
           <Typography variant="h5" mb={2}>

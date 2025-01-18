@@ -13,7 +13,7 @@ export default function AlertsAndNotifications({isDarkMode, colors}) {
           ? colors.primary[400]
           : colors.grey[900],
         borderRadius: "10px",
-        height: "208px",
+        height: "218px",
       }}
     >
       <Typography variant="h5" gutterBottom fontWeight={"bold"}>

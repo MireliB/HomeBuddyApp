@@ -272,13 +272,12 @@ export function CurrentRoom({ onAddRoom, rooms, devices }) {
           }}
         >
           <CardContent>
-            <Typography variant="h5">
+            <ListItem variant="h5">
               Room Name: {room.name || "No name specified"}
-            </Typography>
-            <Typography variant="body2">
+            </ListItem>
+            <ListItem variant="body2">
               Room Type: {room.roomType || "No type specified"}
-            </Typography>
-            <Typography variant="body2">Devices:</Typography>
+            </ListItem>
             <List>
               {devices
                 .filter(
@@ -290,6 +289,8 @@ export function CurrentRoom({ onAddRoom, rooms, devices }) {
                   <ListItem key={device._id}>Device: {device.name}</ListItem>
                 )) || <ListItem>No devices</ListItem>}
             </List>
+
+
           </CardContent>
         </Card>
       ))}

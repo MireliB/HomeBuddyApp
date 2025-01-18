@@ -1,9 +1,4 @@
-import {
-  Box,
-  Button,
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -107,7 +102,7 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
 
         <AlertsAndNotifications isDarkMode={isDarkMode} colors={colors} />
 
-        <QuickActions isDarkMode={isDarkMode} colors={colors}/>
+        <QuickActions isDarkMode={isDarkMode} colors={colors} />
       </Box>
     </Box>
   );
