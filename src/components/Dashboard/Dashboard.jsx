@@ -100,9 +100,19 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
 
         <SystemStatistics isDarkMode={isDarkMode} colors={colors} />
 
-        <AlertsAndNotifications isDarkMode={isDarkMode} colors={colors} />
+        <AlertsAndNotifications
+          isDarkMode={isDarkMode}
+          colors={colors}
+          rooms={rooms}
+          devices={devices}
+        />
 
-        <QuickActions isDarkMode={isDarkMode} colors={colors} />
+        <QuickActions
+          isDarkMode={isDarkMode}
+          colors={colors}
+          rooms={rooms}
+          devices={devices}
+        />
       </Box>
     </Box>
   );
