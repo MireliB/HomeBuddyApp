@@ -6,14 +6,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { setDevices } from "../../slice/deviceSlice";
-import { setRooms } from "../../slice/roomSlice";
 import { CurrentRoom } from "./CurrentRoom";
+import { setRooms } from "../../slice/roomSlice";
 
 import Cookies from 'js-cookie'
 import axios from "axios";
 
-
-export default function RoomsPage() {
+export default function RoomsPage({ handleBackToRooms,
+  selectedRoom,
+  setSelectedRoom,
+  loading,
+  deviceStatus,
+  toggleDeviceStatus,
+  handleRoomEdit,
+  handleOpenPopup,
+  isPopupOpen,
+  setIsPopupOpen,
+  handleRoomSelection,
+  confirmDelete,
+  message,
+  setMessage}) {
   const nav = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,7 +35,7 @@ export default function RoomsPage() {
 
   const { rooms } = useSelector((state) => state.rooms);
   const { devices } = useSelector((state) => state.devices);
- 
+
   const getRoomsAndDevices = useCallback(async () => {
     try {
       const roomsResponse = await axios.get("http://localhost:4000/rooms", {
@@ -60,6 +72,20 @@ export default function RoomsPage() {
         onAddRoom={() => nav("/addRoom")}
         rooms={rooms}
         devices={devices}
+        handleBackToRooms={handleBackToRooms}
+        selectedRoom={selectedRoom}
+        setSelectedRoom={setSelectedRoom}
+        loading={loading}
+        deviceStatus={deviceStatus}
+        toggleDeviceStatus={toggleDeviceStatus}
+        handleRoomEdit={handleRoomEdit}
+        handleOpenPopup={handleOpenPopup}
+        isPopupOpen={isPopupOpen}
+        setIsPopupOpen={setIsPopupOpen}
+        handleRoomSelection={handleRoomSelection}
+        confirmDelete={confirmDelete}
+        message={message}
+        setMessage={setMessage}
       />
     </Box>
   );

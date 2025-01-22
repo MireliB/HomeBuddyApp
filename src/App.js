@@ -12,17 +12,35 @@ import AboutUs from "./components/AboutUs/AboutUs.jsx";
 import Homepage from "./components/Home/Homepage.jsx";
 import Login from "./components/LoginPage/Login.jsx";
 import Room from "./components/Rooms/Room.jsx";
-import EditRoom from "./components/Rooms/EditRoom.jsx";
 import Top from "./components/Global/Top.jsx";
 import AddRoom from "./components/Rooms/AddRoom/AddRoom.jsx";
 import Profile from "./components/UserProfile/Profile.jsx";
 
 import useApp from "./Hooks/useApp.js";
+import EditRoom from "./components/Rooms/EditRoom.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
 
-  const { onSubmitLogin, handleLogout, isLoggedIn, setIsSidebarOpen, userEmail} =
+  const {     onSubmitLogin,
+    handleLogout,
+    isLoggedIn,
+    setIsSidebarOpen,
+     userEmail,
+     handleBackToRooms,
+     selectedRoom,
+     setSelectedRoom,
+     loading,
+     deviceStatus,
+     toggleDeviceStatus,
+     handleRoomEdit,
+     handleOpenPopup,
+     isPopupOpen,
+     setIsPopupOpen,
+     handleRoomSelection,
+     confirmDelete,
+     message,
+     setMessage,} =
     useApp();
 
   const renderRouterPaths = () => {
@@ -37,10 +55,35 @@ function App() {
     } else {
       return (
         <>
-          <Route path="/dashboard" element={<Dashboard userEmail = {userEmail} isLoggedIn={isLoggedIn}/>} />
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard userEmail={userEmail} isLoggedIn={isLoggedIn} />
+            }
+          />
           <Route path="/home" element={<Homepage />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/roomsPage" element={<RoomsPage />} />
+          <Route
+            path="/roomsPage"
+            element={
+              <RoomsPage
+                handleBackToRooms={handleBackToRooms}
+                selectedRoom={selectedRoom}
+                setSelectedRoom={setSelectedRoom}
+                loading={loading}
+                deviceStatus={deviceStatus}
+                toggleDeviceStatus={toggleDeviceStatus}
+                handleRoomEdit={handleRoomEdit}
+                handleOpenPopup={handleOpenPopup}
+                isPopupOpen={isPopupOpen}
+                setIsPopupOpen={setIsPopupOpen}
+                handleRoomSelection={handleRoomSelection}
+                confirmDelete={confirmDelete}
+                message={message}
+                setMessage={setMessage}
+              />
+            }
+          />
           <Route path="/addRoom" element={<AddRoom />} />
           <Route path="/room" element={<Room />} />
           <Route path="/aboutUs" element={<AboutUs />} />
