@@ -1,5 +1,4 @@
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FiAlertCircle } from 'react-icons/fi'
 
@@ -27,7 +26,7 @@ export default function AlertsAndNotifications({
   }
 
   useEffect(()=>{
-    // fetchRoomsAndDevicesAlerts();
+    fetchRoomsAndDevicesAlerts();
   },[])
 
   return (

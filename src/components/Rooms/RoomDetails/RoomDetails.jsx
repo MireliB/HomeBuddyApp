@@ -30,7 +30,7 @@ export default function RoomDetails({
       </Button>
       <Card
         sx={{
-          backgroundColor: colors.blueAccent[700],
+          backgroundColor: colors.greenAccent[600],
           color: colors.grey[100],
           mb: 2,
         }}

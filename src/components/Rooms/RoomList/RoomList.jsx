@@ -14,8 +14,8 @@ export default function RoomList({
           key={index}
           onClick={() => handleRoomSelection(room)}
           sx={{
-            width: "300px",
-            backgroundColor: colors.blueAccent[700],
+            width: "338px",
+            backgroundColor: colors.greenAccent[600],
             color: colors.grey[100],
             cursor: "pointer",
           }}
