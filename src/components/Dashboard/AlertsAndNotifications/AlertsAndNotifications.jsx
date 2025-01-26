@@ -15,44 +15,20 @@ export default function AlertsAndNotifications({
   const [errorMsg, setErrorMsg] = useState();
 
   // make here api request for alerts and statuses from backend
-  // const fetchRoomsAndDevicesAlerts = async()=>{
-  //   setLoading(true);
+  const fetchRoomsAndDevicesAlerts = async()=>{
+    setLoading(true);
 
-  //   try {
-  //     const [roomsResponse, devicesResponse] = await Promise.all([
-  //       axios.get("http://localhost:4000/rooms"),
-  //       axios.get("http://localhost:4000/devices"),
-  //     ]);
-
-  //     console.log('rooms res', roomsResponse);
-  //     console.log('devices res', devicesResponse);
+    try {
       
-  //     const updatedRooms = roomsResponse.data;
-  //     const updatedDevices = devicesResponse.data;
+    
+    } catch (err) {
+      setErrorMsg("error showing alerts...", err);
+    }
+  }
 
-  //     const newAlerts = [
-  //       ...(updatedRooms || []).map((room) => ({
-  //         id: `room-${room._id || "unknown"}`,
-  //         message: `${room.name || "Unknown Room"} was recently updated`,
-  //         severity: "green",
-  //       })),
-  //       ...(updatedDevices || []).map((device) => ({
-  //         id: `device-${device._id || "unknown"}`,
-  //         message: `${device.name || "Unknown Device"} is currently ${
-  //           device.status === "ON" ? "Turned On" : "Turned Off"
-  //         }`,
-  //         severity: device.status === "ON" ? "green" : "orange",
-  //       })),
-  //     ];
-  //     setAlerts(newAlerts);
-  //   } catch (err) {
-  //     setErrorMsg("error showing alerts...", err);
-  //   }
-  // }
-
-  // useEffect(()=>{
-  //   fetchRoomsAndDevicesAlerts();
-  // },[])
+  useEffect(()=>{
+    // fetchRoomsAndDevicesAlerts();
+  },[])
 
   return (
     <Grid item xs={12}>

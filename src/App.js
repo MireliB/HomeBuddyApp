@@ -22,26 +22,27 @@ import EditRoom from "./components/Rooms/EditRoom.jsx";
 function App() {
   const [theme, colorMode] = useMode();
 
-  const {     onSubmitLogin,
+  const {
+    onSubmitLogin,
     handleLogout,
     isLoggedIn,
     setIsSidebarOpen,
-     userEmail,
-     handleBackToRooms,
-     selectedRoom,
-     setSelectedRoom,
-     loading,
-     deviceStatus,
-     toggleDeviceStatus,
-     handleRoomEdit,
-     handleOpenPopup,
-     isPopupOpen,
-     setIsPopupOpen,
-     handleRoomSelection,
-     confirmDelete,
-     message,
-     setMessage,} =
-    useApp();
+    userEmail,
+    handleBackToRooms,
+    selectedRoom,
+    setSelectedRoom,
+    loading,
+    deviceStatus,
+    toggleDeviceStatus,
+    handleRoomEdit,
+    handleOpenPopup,
+    isPopupOpen,
+    setIsPopupOpen,
+    handleRoomSelection,
+    confirmDelete,
+    message,
+    setMessage,
+  } = useApp();
 
   const renderRouterPaths = () => {
     if (!isLoggedIn) {

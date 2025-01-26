@@ -7,25 +7,14 @@ import { tokens } from "../../Theme";
 import {
   Box,
   Button,
-  Card,
-  CardContent,
-  CircularProgress,
-  List,
-  ListItem,
   Snackbar,
-  Typography,
-  IconButton,
 } from "@mui/material";
 
-
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-
-import DeleteRoomDialog from "./DeleteRoomDialog/DeleteRoomDialog";
 import Header from "../Header";
 
 import Search from "../Global/Search";
 import RoomDetails from "./RoomDetails/RoomDetails";
+import RoomList from "./RoomList/RoomList";
 
 export function CurrentRoom({
   onAddRoom,
@@ -57,44 +46,6 @@ export function CurrentRoom({
     });
   };
 
-
-  const renderRoomList = () => (
-    <Box m="40px 0 0 0" display="flex" flexWrap="wrap" gap={2}>
-      {rooms.map((room, index) => (
-        <Card
-          key={index}
-          onClick={() => handleRoomSelection(room)}
-          sx={{
-            width: "300px",
-            backgroundColor: colors.blueAccent[700],
-            color: colors.grey[100],
-            cursor: "pointer",
-          }}
-        >
-          <CardContent>
-            <ListItem variant="h5">
-              Room Name: {room.name || "No name specified"}
-            </ListItem>
-            <ListItem variant="body2">
-              Room Type: {room.roomType || "No type specified"}
-            </ListItem>
-            <List>
-              {devices
-                .filter(
-                  (device) =>
-                    device.room &&
-                    device.room.toString() === room._id.toString()
-                )
-                .map((device) => (
-                  <ListItem key={device._id}>Device: {device.name}</ListItem>
-                )) || <ListItem>No devices</ListItem>}
-            </List>
-          </CardContent>
-        </Card>
-      ))}
-    </Box>
-  );
-
   return (
     <Box m="2dvh">
       <Header
@@ -112,15 +63,20 @@ export function CurrentRoom({
           setIsPopupOpen={setIsPopupOpen}
           handleOpenPopup={handleOpenPopup}
           confirmDelete={confirmDelete}
-          handleBackToRooms = {handleBackToRooms}
-          devices = {devices}
-          loading = {loading}
-          deviceStatus = {deviceStatus}
-          toggleDeviceStatus=  {toggleDeviceStatus}
-          handleRoomEdit = {handleRoomEdit}
+          handleBackToRooms={handleBackToRooms}
+          devices={devices}
+          loading={loading}
+          deviceStatus={deviceStatus}
+          toggleDeviceStatus={toggleDeviceStatus}
+          handleRoomEdit={handleRoomEdit}
         />
       ) : (
-        renderRoomList()
+        <RoomList
+          rooms={rooms}
+          handleRoomSelection={handleRoomSelection}
+          colors={colors}
+          devices={devices}
+        />
       )}
 
       {!selectedRoom && (
