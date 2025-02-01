@@ -13,11 +13,12 @@ export default function Login({ onLogin }) {
   const colors = tokens(theme.palette.mode);
 
   const [formData, setFormData] = useState({
+    username:"",
     email: "",
     password: "",
   });
 
-  const { email, password } = formData;
+  const { username, email, password } = formData;
   
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -35,7 +36,7 @@ export default function Login({ onLogin }) {
     setErrorMsg(""); 
     setLoading(true); 
 
-    if(!formData.email || !formData.password){
+    if(!formData.username || !formData.email || !formData.password){
       setErrorMsg("Email and Password are required");
       setLoading(false);
       return;
@@ -47,7 +48,11 @@ export default function Login({ onLogin }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: formData.email, password: formData.password }),
+        body: JSON.stringify({
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
 
       if(!response.ok){
@@ -62,8 +67,10 @@ export default function Login({ onLogin }) {
         Cookies.set("token", data.token);
         Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
         Cookies.set("userEmail", email, { expires: 7 });
+        Cookies.set("username", username, { expires: 7 });
 
         onLogin(formData.email);
+        onLogin(formData.username);
         nav("/dashboard");
     }catch(err){
       setErrorMsg("An error occured. Please try again");
@@ -74,10 +81,21 @@ export default function Login({ onLogin }) {
 
   return (
     <Box className="login-wrapper" sx={{backgroundColor: colors.greenAccent[500]}}>
-      <Typography variant="h3" sx={{fontWeight:"bold"}} >Home Buddy Admin</Typography> <br />
+      <Typography variant="h3" sx={{fontWeight:"bold"}} >Admin</Typography> <br />
       <Box component={"form"} onSubmit={handleLogin}>
         <Box>
-          <Typography variant="h5" sx={{fontWeight:"bold"}}>Email:</Typography>
+          <Typography variant="h5" sx={{fontWeight:"bold"}}>Username</Typography>
+          <Input
+            type="username"
+            name="username"
+            placeholder="example111"
+            value={formData.username}
+            onChange={handleInputChange}
+            required
+          />
+        </Box>
+        <Box>
+          <Typography variant="h5" sx={{fontWeight:"bold"}}>Email</Typography>
           <Input
             type="email"
             name="email"
@@ -88,7 +106,7 @@ export default function Login({ onLogin }) {
           />
         </Box>
         <Box>
-          <Typography variant="h5" sx={{fontWeight:"bold"}}>Password:</Typography>
+          <Typography variant="h5" sx={{fontWeight:"bold"}}>Password</Typography>
           <Input
             type="password"
             name="password"

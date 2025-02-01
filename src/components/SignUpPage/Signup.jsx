@@ -6,6 +6,7 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../../Theme";
 
 export default function Signup() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -13,6 +14,9 @@ export default function Signup() {
 
   const nav = useNavigate();
 
+  const usernameChangeHandler = (e) => {
+    setUsername(e.target.value);
+  };
   const emailChangeHandler = (e) => {
     setEmail(e.target.value);
   };
@@ -33,6 +37,7 @@ export default function Signup() {
     }
     try {
       const response = await axios.post("http://localhost:4000/signUp", {
+        username, 
         email,
         password,
       });
@@ -60,6 +65,15 @@ export default function Signup() {
     <Box p={3} bgcolor={"background.paper"} boxShadow={1} borderRadius={2}>
       <Typography variant="h3">Sign Up</Typography>
       <Box component={"form"} onSubmit={signUpHandler}>
+        <Box>
+          <Typography variant="h5">Username:</Typography>
+          <Input
+            type="usernsame"
+            value={username}
+            onChange={usernameChangeHandler}
+            required
+          />
+        </Box>
         <Box>
           <Typography variant="h5">Email:</Typography>
           <Input

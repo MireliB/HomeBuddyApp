@@ -29,7 +29,7 @@ import QuickActions from "./QuickActions/QuickActions";
 // create another project of home buddy to the clients at phone
 // change email welcome to user welcome
 
-export default function Dashboard({ isLoggedIn, userEmail }) {
+export default function Dashboard({ isLoggedIn, userEmail, username, setUsername }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -60,7 +60,7 @@ export default function Dashboard({ isLoggedIn, userEmail }) {
         />
         {isLoggedIn && (
           <Typography variant="h5" fontWeight={"bold"}>
-            Welcome {userEmail || "User"}
+            Welcome {username || "Guest"}
           </Typography>
         )}
 

@@ -18,7 +18,7 @@ router.post("/signUp", async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new UserModel({ email, password: hashedPassword });
+    const newUser = new UserModel({username, email, password: hashedPassword });
     await newUser.save();
     res.json({ message: "User registered successfully" });
   } catch (err) {
@@ -27,8 +27,8 @@ router.post("/signUp", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
+  const { username, email, password } = req.body;
+  if (!username | !email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
   }
   try {

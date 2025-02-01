@@ -19,6 +19,10 @@ const useApp = () => {
     const storedUserEmail = Cookies.get("userEmail");
     return storedUserEmail || "";
   });
+  const [username, setUsername] = useState(() => {
+    const storedUsername = Cookies.get("username");
+    return storedUsername || "";
+  });
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedIsLoggedIn = Cookies.get("isLoggedIn");
@@ -156,20 +160,23 @@ const useApp = () => {
       if (loginTime && todayDate - loginTime < expirationLoginTime) {
         setIsLoggedIn(true);
         setUserEmail(Cookies.get("userEmail"));
+        setUsername(Cookies.get("username"));
       } else {
         handleLogout();
       }
     }
   }, []);
 
-  const onSubmitLogin = (email) => {
+  const onSubmitLogin = (email, username) => {
     let todayDate = Date.now();
 
     Cookies.set("loginTime", JSON.stringify(todayDate));
     Cookies.set("isLoggedIn", JSON.stringify(true));
     Cookies.set("userEmail", email);
+    Cookies.set("username", username);
 
     setUserEmail(email);
+    setUsername(username);
     setIsLoggedIn(true);
   };
 
@@ -180,6 +187,7 @@ const useApp = () => {
     Cookies.remove("loginTime");
     Cookies.remove("isLoggedIn");
     Cookies.remove("userEmail");
+    Cookies.remove("username");
   };
 
   return {
@@ -202,6 +210,8 @@ const useApp = () => {
      confirmDelete,
      message,
      setMessage,
+     username,
+     setUsername
   };
 };
 

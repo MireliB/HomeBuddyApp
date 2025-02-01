@@ -42,6 +42,8 @@ function App() {
     confirmDelete,
     message,
     setMessage,
+    username, 
+    setUsername
   } = useApp();
 
   const renderRouterPaths = () => {
@@ -59,7 +61,12 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              <Dashboard userEmail={userEmail} isLoggedIn={isLoggedIn} />
+              <Dashboard
+                userEmail={userEmail}
+                isLoggedIn={isLoggedIn}
+                username={username}
+                setUsername={setUsername}
+              />
             }
           />
           <Route path="/home" element={<Homepage />} />
