@@ -1,25 +1,23 @@
 import React, { useState } from "react";
 
 import { Box, Button, Input, Link, Typography, useTheme } from "@mui/material";
-
 import { useNavigate } from "react-router-dom";
-import Cookies from 'js-cookie'
-import "./Login.css";
 import { tokens } from "../../Theme";
+
+import Cookies from "js-cookie";
+
+import "./Login.css";
 
 export default function Login({ onLogin }) {
   const theme = useTheme();
-  const isDarkMode = theme.palette.mode === "dark";
   const colors = tokens(theme.palette.mode);
 
   const [formData, setFormData] = useState({
-    username:"",
+    username: "",
     email: "",
     password: "",
   });
 
-  const { username, email, password } = formData;
-  
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
@@ -33,58 +31,71 @@ export default function Login({ onLogin }) {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMsg(""); 
-    setLoading(true); 
+    setErrorMsg("");
+    setLoading(true);
 
-    if(!formData.username || !formData.email || !formData.password){
+    if (!formData.username || !formData.email || !formData.password) {
       setErrorMsg("Email and Password are required");
       setLoading(false);
       return;
     }
 
-    try{
+    try {
       const response = await fetch("http://localhost:4000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        }),
+        body: JSON.stringify(
+          //   {
+          //   username: formData.username,
+          //   email: formData.email,
+          //   password: formData.password,
+          // }
+          formData
+        ),
       });
 
-      if(!response.ok){
+      if (!response.ok) {
         const data = await response.json();
+
         setErrorMsg(data.message || "Failed to login. Please try again");
         setLoading(false);
-        return; 
+        return;
       }
 
       const data = await response.json();
 
-        Cookies.set("token", data.token);
-        Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
-        Cookies.set("userEmail", email, { expires: 7 });
-        Cookies.set("username", username, { expires: 7 });
+      Cookies.set("token", data.token);
+      Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
+      Cookies.set("userEmail", data.email || formData.email, { expires: 7 });
+      Cookies.set("username", data.username || formData.username, {
+        expires: 7,
+      });
 
-        onLogin(formData.email);
-        onLogin(formData.username);
-        nav("/dashboard");
-    }catch(err){
+      onLogin(formData.email, formData.username);
+      nav("/dashboard");
+    } catch (err) {
       setErrorMsg("An error occured. Please try again");
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Box className="login-wrapper" sx={{backgroundColor: colors.greenAccent[500]}}>
-      <Typography variant="h3" sx={{fontWeight:"bold"}} >Admin</Typography> <br />
+    <Box
+      className="login-wrapper"
+      sx={{ backgroundColor: colors.greenAccent[500] }}
+    >
+      <Typography variant="h3" sx={{ fontWeight: "bold" }}>
+        Admin
+      </Typography>{" "}
+      <br />
       <Box component={"form"} onSubmit={handleLogin}>
         <Box>
-          <Typography variant="h5" sx={{fontWeight:"bold"}}>Username</Typography>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Username
+          </Typography>
           <Input
             type="username"
             name="username"
@@ -95,7 +106,9 @@ export default function Login({ onLogin }) {
           />
         </Box>
         <Box>
-          <Typography variant="h5" sx={{fontWeight:"bold"}}>Email</Typography>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Email
+          </Typography>
           <Input
             type="email"
             name="email"
@@ -106,7 +119,9 @@ export default function Login({ onLogin }) {
           />
         </Box>
         <Box>
-          <Typography variant="h5" sx={{fontWeight:"bold"}}>Password</Typography>
+          <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+            Password
+          </Typography>
           <Input
             type="password"
             name="password"
@@ -125,22 +140,21 @@ export default function Login({ onLogin }) {
           LOGIN
         </Button>
       </Box>
-      
       {errorMsg && (
         <Typography variant="body2" color="error" mt={2}>
           {errorMsg}
         </Typography>
       )}
       <Box mt={2}>
-        <Typography variant="body2" sx={{fontWeight:"bold"}}>
-          Don't have an account ? 
+        <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+          Don't have an account ?
           <Link
             component="button"
             sx={{ color: "white" }}
             variant="body2"
             onClick={navigateToSignUp}
           >
-             SIGN UP
+            SIGN UP
           </Link>
         </Typography>
       </Box>

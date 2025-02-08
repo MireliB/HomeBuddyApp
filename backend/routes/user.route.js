@@ -1,9 +1,10 @@
+const UserModel = require("../models/User");
+
 const express = require("express");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const UserModel = require("../models/User");
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const jwtSecret = "secret";
 router.post("/signUp", async (req, res) => {
   const { username, email, password } = req.body;
   try {
-    const existingUser = await UserModel.findOne({ email });
+    const existingUser = await UserModel.findOne({$or:  [{email},{username}] });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -28,11 +29,11 @@ router.post("/signUp", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { username, email, password } = req.body;
-  if (!username | !email || !password) {
+  if (!username || !email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
   }
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({$or:  [{email}, {username}] });
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
