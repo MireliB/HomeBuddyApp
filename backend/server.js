@@ -4,7 +4,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/user.route");
 const roomRoutes = require("./routes/room.route");
 const deviceRoutes = require("./routes/device.route");
-
+const adminRoutes = require('./routes/adminVerify.route');
 const initMongo = require("./db/db");
 
 const app = express();
@@ -24,6 +24,7 @@ app.options("*", cors());
 
 initMongo();
 
+app.use("/", adminRoutes);
 app.use("/",authRoutes);
 app.use("/", roomRoutes);
 app.use("/", deviceRoutes);

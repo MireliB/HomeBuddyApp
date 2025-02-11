@@ -14,6 +14,7 @@ export default function Signup() {
 
   const nav = useNavigate();
 
+  // add (already have an account?) link if user has already exists 
   const usernameChangeHandler = (e) => {
     setUsername(e.target.value);
   };
