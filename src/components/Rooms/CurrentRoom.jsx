@@ -40,7 +40,6 @@ export function CurrentRoom({
   const [searchQuery, setSearchQuery] = useState("");
 
   // fix the devices filtering
-  
   const filteredRooms = rooms.filter((room) => {
     const matchesRoomName = room.name.toLowerCase().includes(searchQuery);
     const matchesRoomType = room.roomType?.toLowerCase().includes(searchQuery);
@@ -50,6 +49,7 @@ export function CurrentRoom({
 
     return matchesRoomName || matchesRoomType || matchesDevices;
   });
+  
   const handleRoomEdit = async (room) => {
     nav(`/editRoom/${selectedRoom._id}`, {
       state: { room },
