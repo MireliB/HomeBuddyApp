@@ -39,11 +39,13 @@ export function CurrentRoom({
 
   const [searchQuery, setSearchQuery] = useState("");
 
+  // fix the devices filtering
+  
   const filteredRooms = rooms.filter((room) => {
     const matchesRoomName = room.name.toLowerCase().includes(searchQuery);
-    const matchesRoomType = room.type?.toLowerCase().includes(searchQuery);
+    const matchesRoomType = room.roomType?.toLowerCase().includes(searchQuery);
     const matchesDevices = devices
-      .filter((device) => device.roomId === room._id)
+      .filter((device) => device.devices === room._id)
       .some((device) => device.name.toLowerCase().includes(searchQuery));
 
     return matchesRoomName || matchesRoomType || matchesDevices;
