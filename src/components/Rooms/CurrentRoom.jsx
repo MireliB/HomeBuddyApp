@@ -4,17 +4,14 @@ import { CheckCircleOutline, ErrorOutline } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../Theme";
 
-import {
-  Box,
-  Button,
-  Snackbar,
-} from "@mui/material";
+import { Box, Button, Snackbar } from "@mui/material";
 
 import Header from "../Header";
 
 import Search from "../Global/Search";
 import RoomDetails from "./RoomDetails/RoomDetails";
 import RoomList from "./RoomList/RoomList";
+import { useState } from "react";
 
 export function CurrentRoom({
   onAddRoom,
@@ -40,6 +37,17 @@ export function CurrentRoom({
 
   const colors = tokens(theme.palette.mode);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredRooms = rooms.filter((room) => {
+    const matchesRoomName = room.name.toLowerCase().includes(searchQuery);
+    const matchesRoomType = room.type?.toLowerCase().includes(searchQuery);
+    const matchesDevices = devices
+      .filter((device) => device.roomId === room._id)
+      .some((device) => device.name.toLowerCase().includes(searchQuery));
+
+    return matchesRoomName || matchesRoomType || matchesDevices;
+  });
   const handleRoomEdit = async (room) => {
     nav(`/editRoom/${selectedRoom._id}`, {
       state: { room },
@@ -54,7 +62,7 @@ export function CurrentRoom({
           "This space allows you to create and manage rooms, providing you with control over various technologies within your home."
         }
       />
-      <Search />
+      <Search setSearchQuery = {setSearchQuery}/>
       {selectedRoom ? (
         <RoomDetails
           isPopupOpen={isPopupOpen}
@@ -72,7 +80,7 @@ export function CurrentRoom({
         />
       ) : (
         <RoomList
-          rooms={rooms}
+          rooms={filteredRooms}
           handleRoomSelection={handleRoomSelection}
           colors={colors}
           devices={devices}
