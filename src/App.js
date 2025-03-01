@@ -120,7 +120,7 @@ function App() {
           <div className="app" style={{ display: "flex", height: "100vh" }}>
             {renderTopHeader()}
             <main className="content" style={{ flex: 1 }}>
-              {isLoggedIn && <Top setIsSidebar={setIsSidebarOpen} />}
+              {isLoggedIn && <Top setIsSidebar={setIsSidebarOpen} onLogout={handleLogout}/>}
               <Routes>{renderRouterPaths()}</Routes>
             </main>
           </div>
