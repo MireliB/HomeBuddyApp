@@ -52,49 +52,58 @@ const handleLogout = ()=>{
 }
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
-    <Box display="flex" ml="auto">
-      <Tooltip title="Toggle Theme">
-        <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton>
-      </Tooltip>
+      <Box display="flex" ml="auto">
+        <Tooltip title="Toggle Theme">
+          <IconButton onClick={colorMode.toggleColorMode}>
+            {theme.palette.mode === "dark" ? (
+              <DarkModeOutlinedIcon />
+            ) : (
+              <LightModeOutlinedIcon />
+            )}
+          </IconButton>
+        </Tooltip>
 
-      <Tooltip title="Notifications">
-        <IconButton onClick={handleNotificationMenuOpen}>
-          <NotificationsOutlinedIcon />
-        </IconButton>
-      </Tooltip>
-      <Menu anchorEl={notificationAnchorEl} open={Boolean(notificationAnchorEl)} onClose={handleMenuClose}>
-        <MenuItem onClick={handleMenuClose}>No new notifications</MenuItem>
-      </Menu>
-
-      <Tooltip title="Settings">
-        <IconButton onClick={() => nav("/settings")}>
-          <SettingsOutlinedIcon />
-        </IconButton>
-      </Tooltip>
-
-      <Box display="flex" alignItems="center" gap={1}>
-        <IconButton onClick={handleProfileMenuOpen}>
-          <PersonOutlineOutlinedIcon />
-        </IconButton>
-        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-          <MenuItem onClick={() => nav("/profile")}>
-            Profile
-          </MenuItem>
-          <MenuItem onClick={() => nav("/settings")}>
-            Settings
-          </MenuItem>
-          <MenuItem onClick={handleLogout}>
-            <LogoutIcon sx={{ mr: 1 }} /> Logout
-          </MenuItem>
+        <Tooltip title="Notifications">
+          <IconButton onClick={handleNotificationMenuOpen}>
+            <NotificationsOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+        <Menu
+          anchorEl={notificationAnchorEl}
+          open={Boolean(notificationAnchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMenuClose}>No new notifications</MenuItem>
         </Menu>
+
+        <Tooltip title="Settings">
+          <IconButton onClick={() => nav("/settings")}>
+            <SettingsOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Box display="flex" alignItems="center" gap={1}>
+          <IconButton onClick={handleProfileMenuOpen}>
+            <PersonOutlineOutlinedIcon />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+          >
+            <MenuItem onClick={() => nav("/profile")}>
+              <PersonOutlineOutlinedIcon sx={{ mr: 1 }} />
+              Profile
+            </MenuItem>
+            <MenuItem onClick={() => nav("/settings")}>
+              <SettingsOutlinedIcon sx={{ mr: 1 }} /> Settings
+            </MenuItem>
+            <MenuItem onClick={handleLogout}>
+              <LogoutIcon sx={{ mr: 1 }} /> Logout
+            </MenuItem>
+          </Menu>
+        </Box>
       </Box>
     </Box>
-  </Box>
   );
 }
