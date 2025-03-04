@@ -38,14 +38,19 @@ export function CurrentRoom({
   const colors = tokens(theme.palette.mode);
 
   const [searchQuery, setSearchQuery] = useState("");
+  const lowerCaseQuery = searchQuery.toLowerCase();
 
   // fix the devices filtering
   const filteredRooms = rooms.filter((room) => {
-    const matchesRoomName = room.name.toLowerCase().includes(searchQuery);
-    const matchesRoomType = room.roomType?.toLowerCase().includes(searchQuery);
-    const matchesDevices = devices
-      .filter((device) => device.devices === room._id)
-      .some((device) => device.name.toLowerCase().includes(searchQuery));
+    const matchesRoomName = room.name.toLowerCase().includes(lowerCaseQuery);
+    const matchesRoomType = room.roomType
+      ?.toLowerCase()
+      .includes(lowerCaseQuery);
+    const matchesDevices = devices.some(
+      (device) =>
+        device.roomId === room._id &&
+        device.name.toLowerCase().includes(lowerCaseQuery)
+    );
 
     return matchesRoomName || matchesRoomType || matchesDevices;
   });
