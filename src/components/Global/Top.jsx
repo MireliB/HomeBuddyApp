@@ -19,13 +19,12 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
 
-export default function Top({onLogout}) {
-
+export default function Top({ onLogout }) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const nav = useNavigate();
   // add here :
-  // notification alerts 
+  // notification alerts
   // user profile navigation - build also component for user profile
   // user profile settings
   // user profile logout
@@ -33,23 +32,23 @@ export default function Top({onLogout}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
-  const handleProfileMenuOpen = (e)=>{
+  const handleProfileMenuOpen = (e) => {
     setAnchorEl(e.currentTarget);
-  }
-  
-  const handleNotificationMenuOpen = (e)=>{
-    setNotificationAnchorEl(e.currentTarget);
-  }
+  };
 
-  const handleMenuClose = ()=>{
+  const handleNotificationMenuOpen = (e) => {
+    setNotificationAnchorEl(e.currentTarget);
+  };
+
+  const handleMenuClose = () => {
     setAnchorEl(null);
     setNotificationAnchorEl(null);
-  }
+  };
 
-const handleLogout = ()=>{
-  onLogout();
-  nav("/login");
-}
+  const handleLogout = () => {
+    onLogout();
+    nav("/login");
+  };
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
       <Box display="flex" ml="auto">
@@ -75,12 +74,6 @@ const handleLogout = ()=>{
         >
           <MenuItem onClick={handleMenuClose}>No new notifications</MenuItem>
         </Menu>
-
-        <Tooltip title="Settings">
-          <IconButton onClick={() => nav("/settings")}>
-            <SettingsOutlinedIcon />
-          </IconButton>
-        </Tooltip>
 
         <Box display="flex" alignItems="center" gap={1}>
           <IconButton onClick={handleProfileMenuOpen}>

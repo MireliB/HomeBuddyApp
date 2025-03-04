@@ -26,8 +26,8 @@ import Header from "../Header";
 export default function Finances() {
   const [expenses, setExpenses] = useState([
     { id: 1, name: "Electrical Bill", amount: 120, date: "2024-07-01" },
-    { id: 1, name: "Water Bill", amount: 50, date: "2024-07-05" },
-    { id: 1, name: "Internet Bill", amount: 75, date: "2024-07-10" },
+    { id: 2, name: "Water Bill", amount: 50, date: "2024-07-05" },
+    { id: 3, name: "Internet Bill", amount: 75, date: "2024-07-10" },
   ]);
 
   const [newExpense, setNewExpense] = useState({
@@ -40,7 +40,6 @@ export default function Finances() {
 
   useEffect(() => {
     const calculateMonthlyExpenses = () => {
-      // Initialize an array with 12 months, starting with Jan, with initial expense 0
       const months = Array.from({ length: 12 }, (_, i) => ({
         name: new Date(0, i).toLocaleString("default", { month: "short" }),
         Expenses: 0,
@@ -61,14 +60,13 @@ export default function Finances() {
 
   const addExpenseHandler = () => {
     if (!newExpense.name || !newExpense.amount || !newExpense.date) return;
+    if (Number(newExpense.amount) <= 0) return;
 
-    setExpenses([
-      ...expenses,
+    setExpenses((prev) => [
+      ...prev,
       {
         ...newExpense,
-
-        id: expenses.length + 1,
-
+        id: prev.length + 1,
         amount: Number(newExpense.amount),
       },
     ]);
@@ -76,14 +74,10 @@ export default function Finances() {
     setNewExpense({ name: "", amount: "", date: "" });
   };
 
-  const newExpenseNameHandler = (event) =>
-    setNewExpense({ ...newExpense, name: event.target.value });
-
-  const newExpenseAmountHandler = (event) =>
-    setNewExpense({ ...newExpense, amount: event.target.value });
-
-  const newExpenseDateHandler = (event) =>
-    setNewExpense({ ...newExpense, date: event.target.value });
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewExpense((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
     <Box p={2}>
@@ -123,8 +117,8 @@ export default function Finances() {
             Detailed Expenses
           </Typography>
           <Grid container spacing={2}>
-            {expenses.map((expense, index) => (
-              <Grid item xs={12} md={4} key={index}>
+            {expenses.map((expense) => (
+              <Grid item xs={12} md={4} key={expense.id}>
                 <Card sx={{ backgroundColor: "#616161" }}>
                   <CardContent>
                     <Typography variant="h6">{expense.name}</Typography>
@@ -152,8 +146,9 @@ export default function Finances() {
               label="Name"
               variant="outlined"
               fullWidth
+              name="name"
               value={newExpense.name}
-              onChange={newExpenseNameHandler}
+              onChange={handleInputChange}
               inputProps={{ style: { color: "white" } }}
             />
             <TextField
@@ -161,8 +156,9 @@ export default function Finances() {
               variant="outlined"
               fullWidth
               type="number"
+              name="amount"
               value={newExpense.amount}
-              onChange={newExpenseAmountHandler}
+              onChange={handleInputChange}
               inputProps={{ style: { color: "white" } }}
             />
             <TextField
@@ -170,11 +166,13 @@ export default function Finances() {
               variant="outlined"
               fullWidth
               type="date"
+              name="date"
               value={newExpense.date}
-              onChange={newExpenseDateHandler}
+              onChange={handleInputChange}
               InputLabelProps={{ shrink: true }}
               inputProps={{ style: { color: "white" } }}
             />
+
             <Button
               variant="contained"
               color="primary"

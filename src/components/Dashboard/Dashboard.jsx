@@ -17,19 +17,13 @@ import QuickActions from "./QuickActions/QuickActions";
 // Owner
 // Admin
 // User
-
-// add a welcome user name in Dashboard when the user is logged in -
-// for now - its by email
 // add an icon to admin if the user is the admin for example - crown
 // add also an icon to user if the user is with regular permissions
-// add an icon to Available Rooms
-// make the lines of latest rooms + devices in the same line like Available rooms
 // check about adding more features into dashboard
 // change login page to Home Buddy Admin
 // create another project of home buddy to the clients at phone
-// change email welcome to user welcome
 
-export default function Dashboard({ isLoggedIn, userEmail, username, setUsername }) {
+export default function Dashboard({ isLoggedIn, username, setUsername }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
