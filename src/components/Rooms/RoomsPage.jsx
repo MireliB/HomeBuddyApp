@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Box } from "@mui/material";
 
@@ -30,44 +30,59 @@ export default function RoomsPage({ handleBackToRooms,
   const dispatch = useDispatch();
 
   const [errorMsg, setErrorMsg] = useState("");
-
-  const token = Cookies.get("token");
+  const [isLoading, setIsLoading] = useState(false); 
+  const [token, setToken] = useState(()=> Cookies.get("token"));
 
   const { rooms } = useSelector((state) => state.rooms);
   const { devices } = useSelector((state) => state.devices);
 
-  const getRoomsAndDevices = useCallback(async () => {
-    try {
-      const roomsResponse = await axios.get("http://localhost:4000/rooms", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  const headers = useMemo(() => {
+    return token ? { Authorization: `Bearer ${token}` } : null;
+  }, [token]);
 
-      dispatch(setRooms(roomsResponse.data));
+  const getRoomsAndDevices = useCallback(
+    async (controller) => {
+      try {
+        if (!headers) {
+          setErrorMsg("Authentication token is missing");
+          return;
+        }
+        setIsLoading(true);
+        
+        const [roomsResponse, deviceResponse] = await Promise.all([
+          axios.get("http://localhost:4000/rooms", {
+            headers,
+            signal: controller.signal,
+          }),
+          axios.get("http://localhost:4000/devices", {
+            headers,
+            signal: controller.signal,
+          }),
+        ]);
 
-      const deviceResponse = await axios.get("http://localhost:4000/devices", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      dispatch(setDevices(deviceResponse.data));
-    } catch (err) {
-      setErrorMsg("Failed fetching rooms and devices");
-      console.error(err);
-    }
-  }, [dispatch, token]);
+        dispatch(setRooms(roomsResponse.data));
+        dispatch(setDevices(deviceResponse.data));
+      } catch (err) {
+        if (axios.isCancel(err)) return;
+        setErrorMsg(
+          err.response?.data?.message || "Failed fetching rooms and devices"
+        );
+        console.error("Error fetching data:", err);
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
-    if (token) {
-      getRoomsAndDevices();
-    }
-  }, [token, getRoomsAndDevices]);
+    const controller = new AbortController();
+    getRoomsAndDevices(controller);
+
+    return () => controller.abort();
+  }, [getRoomsAndDevices]);
 
   return (
     <Box className="rooms-page-container">
-      {errorMsg && <p>{errorMsg}</p>}
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
       <CurrentRoom
         onAddRoom={() => nav("/addRoom")}
         rooms={rooms}

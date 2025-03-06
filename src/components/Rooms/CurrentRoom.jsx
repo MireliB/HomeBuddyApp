@@ -1,17 +1,17 @@
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { CheckCircleOutline, ErrorOutline } from "@mui/icons-material";
-
-import { useNavigate } from "react-router-dom";
-import { tokens } from "../../Theme";
-
 import { Box, Button, Snackbar } from "@mui/material";
 
-import Header from "../Header";
+import { tokens } from "../../Theme";
+
+
 
 import Search from "../Global/Search";
 import RoomDetails from "./RoomDetails/RoomDetails";
 import RoomList from "./RoomList/RoomList";
-import { useMemo, useState } from "react";
+import Header from "../Header";
 
 export function CurrentRoom({
   onAddRoom,
@@ -74,6 +74,7 @@ export function CurrentRoom({
         }
       />
       <Search setSearchQuery={setSearchQuery} />
+      
       {selectedRoom ? (
         <RoomDetails
           isPopupOpen={isPopupOpen}
