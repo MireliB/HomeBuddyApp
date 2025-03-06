@@ -11,11 +11,11 @@ import Header from "../Header";
 import Search from "../Global/Search";
 import RoomDetails from "./RoomDetails/RoomDetails";
 import RoomList from "./RoomList/RoomList";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 export function CurrentRoom({
   onAddRoom,
-  rooms,
+  rooms = [],
   devices,
   selectedRoom,
   setSelectedRoom,
@@ -38,15 +38,18 @@ export function CurrentRoom({
   const colors = tokens(theme.palette.mode);
 
   const [searchQuery, setSearchQuery] = useState("");
-  const lowerCaseQuery = searchQuery.toLowerCase();
 
-  // fix the devices filtering
-  const filteredRooms = rooms.filter((room) => {
+  const lowerCaseQuery = useMemo(
+    () => searchQuery.toLowerCase().trim(),
+    [searchQuery]
+  );
+
+  const filteredRooms = (rooms ?? []).filter((room) => {
     const matchesRoomName = room.name.toLowerCase().includes(lowerCaseQuery);
-    const matchesRoomType = room.roomType
-      ?.toLowerCase()
-      .includes(lowerCaseQuery);
-    const matchesDevices = devices.some(
+    const matchesRoomType =
+      room.roomType?.toLowerCase()?.includes(lowerCaseQuery) || false;
+
+    const matchesDevices = (devices ?? []).some(
       (device) =>
         device.roomId === room._id &&
         device.name.toLowerCase().includes(lowerCaseQuery)
@@ -54,9 +57,10 @@ export function CurrentRoom({
 
     return matchesRoomName || matchesRoomType || matchesDevices;
   });
-  
+
   const handleRoomEdit = async (room) => {
-    nav(`/editRoom/${selectedRoom._id}`, {
+    if (!room || !room._id) return;
+    nav(`/editRoom/${room._id}`, {
       state: { room },
     });
   };
@@ -69,7 +73,7 @@ export function CurrentRoom({
           "This space allows you to create and manage rooms, providing you with control over various technologies within your home."
         }
       />
-      <Search setSearchQuery = {setSearchQuery}/>
+      <Search setSearchQuery={setSearchQuery} />
       {selectedRoom ? (
         <RoomDetails
           isPopupOpen={isPopupOpen}
@@ -105,17 +109,17 @@ export function CurrentRoom({
       )}
 
       <Snackbar
-        open={message.show}
+        open={message?.show}
         autoHideDuration={3000}
         onClose={() => setMessage({ ...message, show: false })}
         message={
-          <span style={{ color: message.color }}>
+          <span style={{ color: message?.color || "black" }}>
             {message.color === "green" ? (
               <CheckCircleOutline />
             ) : (
               <ErrorOutline />
             )}
-            {message.text}
+            {message?.text}
           </span>
         }
       />
