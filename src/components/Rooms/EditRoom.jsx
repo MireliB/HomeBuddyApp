@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import {
   Box,
@@ -25,10 +25,15 @@ export default function EditRoom() {
 
   const { room } = state;
 
-  const [roomName, setRoomName] = useState("");
-  const [roomType, setRoomType] = useState("");
+  const [roomName, setRoomName] = useState(room?.name || "");
+  const [roomType, setRoomType] = useState(room?.roomType || "");
+  const [devices, setDevices] = useState(room?.devices || []);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  const [devices, setDevices] = useState([]);
+  
+  const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const token = useMemo(() => Cookies.get("token"), []); 
 
   useEffect(() => {
     if (room) {
@@ -46,7 +51,6 @@ export default function EditRoom() {
       devices: devices,
     };
 
-    const token = Cookies.get("token");
     try {
       const response = await axios.put(
         `http://localhost:4000/room/${room._id}`,

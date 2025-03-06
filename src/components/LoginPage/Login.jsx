@@ -33,9 +33,13 @@ export default function Login({ onLogin }) {
 
   const handleGoogleLogin = async()=>{
     try{
+      const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
       const result = await signInWithPopup(auth, provider);
-      const user =result.user; 
+      const user = result.user; 
 
+      if(!user) {
+        throw new Error("Google Authentication Failed")
+      }
       const response = await fetch("http://localhost:4000/verify-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -45,10 +49,10 @@ export default function Login({ onLogin }) {
       const data = await response.json();
       if (!data.success) throw new Error("Token verification failed");
   
-      Cookies.set("token", user.accessToken);
+      Cookies.set("token", user.accessToken, {secure: true, sameSite: "Strict"});
       Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
       Cookies.set("userEmail", user.email, { expires: 7 });
-      Cookies.set("username", user.displayName, { expires: 7 });
+      Cookies.set("username", user.displayName || "Google User", { expires: 7 });
       
       onLogin(user.email, user.displayName);
       nav("/dashboard");
