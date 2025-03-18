@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { Box, Button, Input, Link, Typography, useTheme } from "@mui/material";
-import GoogleIcon from '@mui/icons-material/Google';
+import GoogleIcon from "@mui/icons-material/Google";
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../Theme";
 import Cookies from "js-cookie";
@@ -31,36 +31,41 @@ export default function Login({ onLogin }) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleGoogleLogin = async()=>{
-    try{
-      const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+  const handleGoogleLogin = async () => {
+    try {
+      const API_BASE_URL =
+        process.env.REACT_APP_API_URL || "http://localhost:4000";
       const result = await signInWithPopup(auth, provider);
-      const user = result.user; 
+      const user = result.user;
 
-      if(!user) {
-        throw new Error("Google Authentication Failed")
+      if (!user) {
+        throw new Error("Google Authentication Failed");
       }
       const response = await fetch("http://localhost:4000/verify-token", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token: user.accessToken }),
       });
-  
+
       const data = await response.json();
       if (!data.success) throw new Error("Token verification failed");
-  
-      Cookies.set("token", user.accessToken, {secure: true, sameSite: "Strict"});
+
+      Cookies.set("token", user.accessToken, {
+        secure: true,
+        sameSite: "Strict",
+      });
       Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
       Cookies.set("userEmail", user.email, { expires: 7 });
-      Cookies.set("username", user.displayName || "Google User", { expires: 7 });
-      
+      Cookies.set("username", user.displayName || "Google User", {
+        expires: 7,
+      });
+
       onLogin(user.email, user.displayName);
       nav("/dashboard");
-
-    }catch(err){
+    } catch (err) {
       setErrorMsg("Google login failed. Please try again");
     }
-  }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -108,6 +113,13 @@ export default function Login({ onLogin }) {
     }
   };
 
+  const responseMessage = (response) => {
+    console.log(response);
+  };
+
+  const errorMessage = (error) => {
+    console.log(error);
+  };
   return (
     <Box
       className="login-wrapper"
@@ -166,15 +178,9 @@ export default function Login({ onLogin }) {
           LOGIN
         </Button>
 
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ color: "white", mt: 2, display: "flex", alignItems: "center" }}
-          onClick={handleGoogleLogin}
-        >
-          <GoogleIcon sx={{ mr: 1 }} />
-          Login with Google
-        </Button>
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+          <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+        </GoogleOAuthProvider>
       </Box>
       {errorMsg && (
         <Typography variant="body2" color="error" mt={2}>
