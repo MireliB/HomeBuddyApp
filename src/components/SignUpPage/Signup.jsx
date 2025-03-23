@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Box, Button, Input, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { useTheme } from "@emotion/react";
-import { tokens } from "../../Theme";
+import { Box, Button, Input, Typography, Link } from "@mui/material";
+
+import {useNavigate} from "react-router-dom";
 
 export default function Signup() {
   const [username, setUsername] = useState("");
@@ -14,7 +13,8 @@ export default function Signup() {
 
   const nav = useNavigate();
 
-  // add (already have an account?) link if user has already exists 
+  const navigateToLogin = ()=> nav("/login"); ;
+
   const usernameChangeHandler = (e) => {
     setUsername(e.target.value);
   };
@@ -69,7 +69,7 @@ export default function Signup() {
         <Box>
           <Typography variant="h5">Username:</Typography>
           <Input
-            type="usernsame"
+            type="text"
             value={username}
             onChange={usernameChangeHandler}
             required
@@ -103,6 +103,7 @@ export default function Signup() {
           />
         </Box>
         <Button
+          disabled={!username || !email || !password || !confirmPassword}
           variant="contained"
           color="primary"
           sx={{ color: "white", mt: 2 }}
@@ -110,12 +111,28 @@ export default function Signup() {
         >
           SIGN UP
         </Button>
+
       </Box>
+      
       {message && (
         <Typography variant="body2" color="error" mt={2}>
           {message}
         </Typography>
       )}
+
+            <Box mt={2}>
+              <Typography variant="body2" sx={{ fontWeight: "bold", textDecoration: "none" }}>
+                Already have an account ?
+                <Link
+                  component="button"
+                  sx={{ color: "white" }}
+                  variant="body2"
+                  onClick={navigateToLogin}
+                >
+                  LOGIN HERE
+                </Link>
+              </Typography>
+            </Box>      
     </Box>
   );
 }

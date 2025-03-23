@@ -22,49 +22,16 @@ export default function Login({ onLogin }) {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  
   const nav = useNavigate();
 
   const navigateToSignUp = () => nav("/signup");
 
+  const navigateToForgotPassword = () => nav("/signup");
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const API_BASE_URL =
-        process.env.REACT_APP_API_URL || "http://localhost:4000";
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      if (!user) {
-        throw new Error("Google Authentication Failed");
-      }
-      const response = await fetch("http://localhost:4000/verify-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: user.accessToken }),
-      });
-
-      const data = await response.json();
-      if (!data.success) throw new Error("Token verification failed");
-
-      Cookies.set("token", user.accessToken, {
-        secure: true,
-        sameSite: "Strict",
-      });
-      Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
-      Cookies.set("userEmail", user.email, { expires: 7 });
-      Cookies.set("username", user.displayName || "Google User", {
-        expires: 7,
-      });
-
-      onLogin(user.email, user.displayName);
-      nav("/dashboard");
-    } catch (err) {
-      setErrorMsg("Google login failed. Please try again");
-    }
   };
 
   const handleLogin = async (e) => {
@@ -181,6 +148,7 @@ export default function Login({ onLogin }) {
         <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
         </GoogleOAuthProvider>
+
       </Box>
       {errorMsg && (
         <Typography variant="body2" color="error" mt={2}>
@@ -197,6 +165,21 @@ export default function Login({ onLogin }) {
             onClick={navigateToSignUp}
           >
             SIGN UP
+          </Link>
+        </Typography>
+      </Box>
+      <Box mt={2}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: "bold", textDecoration: "none" }}
+        >
+          <Link
+            component="button"
+            sx={{ color: "white" }}
+            variant="body2"
+            onClick={navigateToForgotPassword}
+          >
+            FORGOT YOUR PASSWORD ?
           </Link>
         </Typography>
       </Box>
