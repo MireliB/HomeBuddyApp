@@ -40,8 +40,8 @@ export default function AvailableRooms({ isDarkMode, colors, rooms }) {
             >
               {rooms.length
                 ? rooms.map((room, index) => (
-                    <Box>
-                      <Typography key={index} fontWeight={"bold"}>
+                    <Box key={index}>
+                      <Typography fontWeight={"bold"}>
                         Room Name: {room.name}, Room Type: {room.roomType}
                       </Typography>
                     </Box>
