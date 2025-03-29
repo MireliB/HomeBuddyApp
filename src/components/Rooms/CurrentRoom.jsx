@@ -43,20 +43,22 @@ export function CurrentRoom({
     () => searchQuery.toLowerCase().trim(),
     [searchQuery]
   );
-
-  const filteredRooms = (rooms ?? []).filter((room) => {
-    const matchesRoomName = room.name.toLowerCase().includes(lowerCaseQuery);
-    const matchesRoomType =
-      room.roomType?.toLowerCase()?.includes(lowerCaseQuery) || false;
-
-    const matchesDevices = (devices ?? []).some(
-      (device) =>
-        device.roomId === room._id &&
-        device.name.toLowerCase().includes(lowerCaseQuery)
-    );
-
-    return matchesRoomName || matchesRoomType || matchesDevices;
-  });
+  
+  const filteredRooms = useMemo(() => {
+    return (rooms ?? []).filter((room) => {
+      const matchesRoomName = room?.name?.toLowerCase().includes(lowerCaseQuery);
+      const matchesRoomType = room?.roomType?.toLowerCase()?.includes(lowerCaseQuery) || false;
+  
+      const matchesDevices = (room.devices ?? []).some(
+        (device) =>
+          device?.roomId === room?._id &&
+          device?.name?.toLowerCase()?.includes(lowerCaseQuery)
+      );
+  
+      return matchesRoomName || matchesRoomType || matchesDevices;
+    });
+  }, [rooms, devices, lowerCaseQuery]);
+  
 
   const handleRoomEdit = async (room) => {
     if (!room || !room._id) return;
