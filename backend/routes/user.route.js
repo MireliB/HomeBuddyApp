@@ -10,7 +10,7 @@ const router = express.Router();
 const jwtSecret = "secret";
 
 router.post("/signUp", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
 
   if (!username || !email || !password) {
     return res
@@ -28,28 +28,31 @@ router.post("/signUp", async (req, res) => {
         .status(400)
         .json({ message: "Username or email already taken" });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new UserModel({
       username,
       email,
       password: hashedPassword,
     });
-
+  
     await newUser.save();
-    res.json({ message: "User registered successfully" });
+    res.status(201).json({message: `User registered successfully ${username}`});
+    
   } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+    res.status(500).json({ message: "Something went wrong", error: err.message });
   }
 });
 
 router.post("/login", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
+
+  if (!username || !email) {
+    return res.status(400).json({ message: "Email and username are required" });
+  }
 
   if (!password) {
     return res.status(400).json({ message: "Password is required" });
-  }
-  if (!username || !email) {
-    return res.status(400).json({ message: "Email and username are required" });
   }
 
   try {
@@ -63,10 +66,10 @@ router.post("/login", async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: "Incorrect password" });
+      return res.status(400).json({ message: `Incorrect password` });
     }
-    const token = jwt.sign({ id: user._id }, jwtSecret, { expiresIn: "8h" });
-    res.json({ token });
+    const token = jwt.sign({ id: user._id, role : user.role }, jwtSecret, { expiresIn: "2h" });
+    res.status(200).json({ token });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
