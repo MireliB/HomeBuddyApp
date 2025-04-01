@@ -147,8 +147,6 @@ const useApp = () => {
       }
     };
   
-
-
   useEffect(() => {
     const token = Cookies.get("token");
 
@@ -159,7 +157,6 @@ const useApp = () => {
 
       if (loginTime && todayDate - loginTime < expirationLoginTime) {
         setIsLoggedIn(true);
-        // setUserEmail(Cookies.get("userEmail"));
         setUsername(Cookies.get("username"));
       } else {
         handleLogout();

@@ -8,14 +8,19 @@ const UserModel = require("../models/User");
 const router = express.Router();
 
 const jwtSecret = "secret";
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 router.post("/signUp", async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, role } = req.body;
 
   if (!username || !email || !password) {
     return res
       .status(400)
       .json({ message: "Username, email, and password are required" });
+  }
+
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: "Invalid email format" });
   }
 
   try {
@@ -33,6 +38,7 @@ router.post("/signUp", async (req, res) => {
       username,
       email,
       password: hashedPassword,
+      role,
     });
 
     await newUser.save();
@@ -45,11 +51,11 @@ router.post("/signUp", async (req, res) => {
 router.post("/login", async (req, res) => {
   const { username, email, password } = req.body;
 
-  if (!password) {
-    return res.status(400).json({ message: "Password is required" });
-  }
   if (!username || !email) {
     return res.status(400).json({ message: "Email and username are required" });
+  }
+  if (!password) {
+    return res.status(400).json({ message: "Password is required" });
   }
 
   try {
