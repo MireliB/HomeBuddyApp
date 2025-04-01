@@ -5,15 +5,14 @@ import { useSelector } from "react-redux";
 import { tokens } from "../../Theme";
 
 import Header from "../Header";
+
 import LatestRoomsAndDevices from "./LatestRoomsAndDevices/LatestRoomsAndDevices";
 import AvailableRooms from "./AvailableRooms/AvailableRooms";
 import SystemStatistics from "./SystemStatistics/SystemStatistics";
 import AlertsAndNotifications from "./AlertsAndNotifications/AlertsAndNotifications";
 import QuickActions from "./QuickActions/QuickActions";
-import RecentActions from "./RecentActions/RecentActions";
 
 // TODO :
-// הוספת פעולות אחרונות בDASHBOARD - לגרום לזה לעבוד 
 // Types of users permissions that need to be added
 // Owner
 // Admin
@@ -22,6 +21,7 @@ import RecentActions from "./RecentActions/RecentActions";
 // add also an icon to user if the user is with regular permissions
 // check about adding more features into dashboard
 // change login page to Home Buddy Admin
+// create another project of home buddy to the clients at phone
 
 export default function Dashboard({ isLoggedIn, username, setUsername }) {
   const theme = useTheme();
@@ -54,11 +54,7 @@ export default function Dashboard({ isLoggedIn, username, setUsername }) {
         />
         {isLoggedIn && (
           <Typography variant="h5" fontWeight={"bold"}>
-            Welcome {username || "Guest"}{" "}
-            {/* {role === "admin" && (
-              <PersonIcon sx={{alignItems:"center", background: "gold" }} />
-            )} */}
-            {/* {role === "user" && <PersonIcon sx={{ textAlign:"center", mt:1}} />} */}
+            Welcome {username || "Guest"}
           </Typography>
         )}
 
@@ -111,8 +107,6 @@ export default function Dashboard({ isLoggedIn, username, setUsername }) {
           rooms={rooms}
           devices={devices}
         />
-
-        <RecentActions isDarkMode={isDarkMode} colors={colors} />
       </Box>
     </Box>
   );
