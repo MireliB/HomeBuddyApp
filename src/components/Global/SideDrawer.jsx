@@ -11,7 +11,7 @@ import {
   Menu as MenuIcon,
   Notifications as NotificationsIcon,
   ExitToApp as LogoutIcon,
-  People as ClientIcon
+  People as ClientIcon,
 } from "@mui/icons-material";
 
 import {
@@ -25,6 +25,7 @@ import {
 import "react-pro-sidebar/dist/css/styles.css";
 import './SideDrawer.module.css'
 import { useNavigate } from "react-router-dom";
+import Chat from "../ChatBot/Chat";
 
 const navigationItems = [
   { path: "/home", name: "Home", icon: <HomeIcon /> },
@@ -139,6 +140,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                 </MenuItem>
               ))}
             </Menu>
+            <Chat/>
           </ProSidebar>
         </Box>
       )}

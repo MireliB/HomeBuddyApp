@@ -5,6 +5,7 @@ const authRoutes = require("./routes/user.route");
 const roomRoutes = require("./routes/room.route");
 const deviceRoutes = require("./routes/device.route");
 const adminRoutes = require('./routes/adminVerify.route');
+const authenticate = require("./middleware/authenticate");
 const initMongo = require("./db/db");
 
 const app = express();
