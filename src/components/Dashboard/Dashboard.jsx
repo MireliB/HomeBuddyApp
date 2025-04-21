@@ -11,6 +11,7 @@ import AvailableRooms from "./AvailableRooms/AvailableRooms";
 import SystemStatistics from "./SystemStatistics/SystemStatistics";
 import AlertsAndNotifications from "./AlertsAndNotifications/AlertsAndNotifications";
 import QuickActions from "./QuickActions/QuickActions";
+import UserRoles from "../UserRoles/UserRoles";
 
 // TODO :
 // Types of users permissions that need to be added
@@ -32,8 +33,8 @@ export default function Dashboard({ isLoggedIn, username, setUsername }) {
   const { rooms } = useSelector((state) => state.rooms || []);
   const { devices } = useSelector((state) => state.devices || []);
 
-  const latestRooms = rooms.slice(-3) || [];
-  const latestDevices = devices.slice(-3) || [];
+  const latestRooms = rooms?.slice(-3) || [];
+  const latestDevices = devices?.slice(-3) || [];
 
   const isDarkMode = theme.palette.mode === "dark";
 
@@ -49,14 +50,16 @@ export default function Dashboard({ isLoggedIn, username, setUsername }) {
         alignItems={"center"}
       >
         <Header
+          userRole="Admin"
           title="DASHBOARD"
           subtitle="Welcome to your smart home Dashboard panel! From here, you can manage your home's devices with ease."
         />
-        {isLoggedIn && (
-          <Typography variant="h5" fontWeight={"bold"}>
+        {/* {isLoggedIn && (
+          <Typography variant="h5" fontWeight="bold">
             Welcome {username || "Guest"}
+            <UserRoles userRole={'Admin'}/>
           </Typography>
-        )}
+        )} */}
 
         <Box>
           <Button
@@ -80,7 +83,7 @@ export default function Dashboard({ isLoggedIn, username, setUsername }) {
 
       <Box
         display={"grid"}
-        gridTemplateColumns={"repeat(2, 0.5fr)"}
+        gridTemplateColumns="repeat(auto-fit, minmax(350px, 1fr))"
         gap={"1.2%"}
       >
         <LatestRoomsAndDevices

@@ -1,4 +1,6 @@
 import { useContext, useState } from "react";
+import Cookies from "js-cookie";
+
 import {
   Box,
   IconButton,
@@ -18,8 +20,10 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
+import SwitchLanguage from "../Language/SwitchLanguage";
+import UserRoles from "../UserRoles/UserRoles";
 
-export default function Top({ onLogout }) {
+export default function Top({ onLogout, isLoggedIn, username }) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const nav = useNavigate();
@@ -29,6 +33,7 @@ export default function Top({ onLogout }) {
   // user profile settings
   // user profile logout
 
+  const role = Cookies.get("userRole");
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
@@ -49,9 +54,23 @@ export default function Top({ onLogout }) {
     onLogout();
     nav("/login");
   };
+
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" alignItems="center" gap={1}>
+        <Typography variant="h6" fontWeight="bold">
+          Welcome,
+        </Typography>
+        <Typography variant="h6" color="secondary" fontWeight="bold">
+          {username || "Guest"}
+        </Typography>
+        <UserRoles userRole={role}/>
+      </Box>
       <Box display="flex" ml="auto">
+        <Select sx={{ mr: 2 }}>
+          <SwitchLanguage />
+        </Select>
+
         <Tooltip title="Toggle Theme">
           <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? (

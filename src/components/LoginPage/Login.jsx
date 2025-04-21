@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { Box, Button, Input, Link, Typography, useTheme } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../Theme";
 import Cookies from "js-cookie";
 
 import "./Login.css";
-import { auth, provider, signInWithPopup } from "../../firebase/firebaseConfig";
 
 // add google auth for login also
 export default function Login({ onLogin }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // TODO : make google auth to work + add signup with google auth
+  // TODO : continue to work on the roles - make it work
+  // TODO : 
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -70,7 +71,7 @@ export default function Login({ onLogin }) {
       Cookies.set("username", data.username || formData.username, {
         expires: 7,
       });
-
+      Cookies.set("userRole", data.role || "User", { expires: 7 });
       onLogin(formData.email, formData.username);
       nav("/dashboard");
     } catch (err) {
