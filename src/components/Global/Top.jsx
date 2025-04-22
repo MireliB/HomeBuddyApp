@@ -22,7 +22,7 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import LogoutIcon from "@mui/icons-material/ExitToApp";
 import UserRoles from "../UserRoles/UserRoles";
 
-export default function Top({ onLogout, isLoggedIn, username, userRole, setUserRole }) {
+export default function Top({ onLogout, username, userRole, setUserRole }) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const nav = useNavigate();
