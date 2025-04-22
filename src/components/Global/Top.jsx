@@ -20,10 +20,9 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
-import SwitchLanguage from "../Language/SwitchLanguage";
 import UserRoles from "../UserRoles/UserRoles";
 
-export default function Top({ onLogout, isLoggedIn, username }) {
+export default function Top({ onLogout, isLoggedIn, username, userRole, setUserRole }) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const nav = useNavigate();
@@ -33,7 +32,6 @@ export default function Top({ onLogout, isLoggedIn, username }) {
   // user profile settings
   // user profile logout
 
-  const role = Cookies.get("userRole");
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
 
@@ -58,18 +56,15 @@ export default function Top({ onLogout, isLoggedIn, username }) {
   return (
     <Box display="flex" justifyContent="space-between" alignItems="center">
       <Box display="flex" alignItems="center" gap={1}>
-        <Typography variant="h6" fontWeight="bold">
+        <Typography variant="h6" fontWeight="bold" ml={2}>
           Welcome,
         </Typography>
         <Typography variant="h6" color="secondary" fontWeight="bold">
           {username || "Guest"}
         </Typography>
-        <UserRoles userRole={role}/>
+        <UserRoles userRole={userRole} username={username}/>
       </Box>
       <Box display="flex" ml="auto">
-        <Select sx={{ mr: 2 }}>
-          <SwitchLanguage />
-        </Select>
 
         <Tooltip title="Toggle Theme">
           <IconButton onClick={colorMode.toggleColorMode}>

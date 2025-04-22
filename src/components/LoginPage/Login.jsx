@@ -3,6 +3,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { Box, Button, Input, Link, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../Theme";
+
 import Cookies from "js-cookie";
 
 import "./Login.css";
@@ -72,6 +73,7 @@ export default function Login({ onLogin }) {
         expires: 7,
       });
       Cookies.set("userRole", data.role || "User", { expires: 7 });
+
       onLogin(formData.email, formData.username);
       nav("/dashboard");
     } catch (err) {

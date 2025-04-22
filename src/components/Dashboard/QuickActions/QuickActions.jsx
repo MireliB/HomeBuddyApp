@@ -3,6 +3,11 @@ import React from 'react'
 
 export default function QuickActions({isDarkMode, colors}) {
   return (
+    <Box  style={{
+      padding: "16px",
+      backgroundColor: isDarkMode ? colors.primary[400] : colors.grey[900],
+      borderRadius: "10px",
+    }}>
     <Grid item xs={12} md={4}>
     <Box
       elevation={3}
@@ -28,5 +33,8 @@ export default function QuickActions({isDarkMode, colors}) {
         </Button>
       </Stack>
     </Box>
-  </Grid>  )
+  </Grid>  
+
+    </Box>
+  )
 }

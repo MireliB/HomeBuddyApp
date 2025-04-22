@@ -3,9 +3,13 @@ import React from "react";
 
 export default function SystemStatistics({ isDarkMode, colors }) {
   return (
-    <Grid item xs={12}>
-      {/* what im going to add in backend is total users math, active devices, rooms monitoring, and alerts  */}
 
+    <Box  style={{
+      padding: "16px",
+      backgroundColor: isDarkMode ? colors.primary[400] : colors.grey[900],
+      borderRadius: "10px",
+    }}>
+    <Grid item xs={12}>
       <Box
         elevation={3}
         style={{
@@ -94,5 +98,8 @@ export default function SystemStatistics({ isDarkMode, colors }) {
         </Stack>
       </Box>
     </Grid>
+
+
+    </Box>
   );
 }

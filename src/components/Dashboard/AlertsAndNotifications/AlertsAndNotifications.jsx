@@ -30,6 +30,12 @@ export default function AlertsAndNotifications({
   },[])
 
   return (
+    <Box style={{
+      padding: "16px",
+      backgroundColor: isDarkMode ? colors.primary[400] : colors.grey[900],
+      borderRadius: "10px",
+    }}>
+
     <Grid item xs={12}>
       <Box
         elevation={3}
@@ -84,5 +90,7 @@ export default function AlertsAndNotifications({
         </Stack>
       </Box>
     </Grid>
+
+    </Box>
   );
 }

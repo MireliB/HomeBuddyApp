@@ -43,7 +43,9 @@ function App() {
     message,
     setMessage,
     username, 
-    setUsername
+    setUsername,
+    userRole,
+    setUserRole
   } = useApp();
 
   const renderRouterPaths = () => {
@@ -120,7 +122,7 @@ function App() {
           <div className="app" style={{ display: "flex", height: "100vh" }}>
             {renderTopHeader()}
             <main className="content" style={{ flex: 1 }}>
-              {isLoggedIn && <Top setIsSidebar={setIsSidebarOpen} onLogout={handleLogout} isLoggedIn={isLoggedIn} username={username}/>}
+              {isLoggedIn && <Top setIsSidebar={setIsSidebarOpen} onLogout={handleLogout} isLoggedIn={isLoggedIn} username={username} userRole = {userRole} setUserRole = {setUserRole}/>}
               <Routes>{renderRouterPaths()}</Routes>
             </main>
           </div>

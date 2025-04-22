@@ -27,8 +27,14 @@ const useApp = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     const storedIsLoggedIn = Cookies.get("isLoggedIn");
 
-    return storedIsLoggedIn ? JSON.parse(storedIsLoggedIn) : false;
+    return storedIsLoggedIn ? JSON.parse(storedIsLoggedIn) : null;
   });
+
+  const [userRole, setUserRole] = useState(()=>{
+    const storedUserRole = Cookies.get("userRole");
+
+    return storedUserRole.trim() ? storedUserRole : false;
+  })
 
   const { devices } = useSelector((state) => state.devices);
 
@@ -45,7 +51,6 @@ const useApp = () => {
   const handleRoomSelection = (room) => setSelectedRoom(room);
 
   const handleBackToRooms = () => setSelectedRoom(null);
-
 
   const toggleDeviceStatus = (device) => {
     setLoadDevice((prevState) => ({
@@ -164,16 +169,18 @@ const useApp = () => {
     }
   }, []);
 
-  const onSubmitLogin = (email, username) => {
+  const onSubmitLogin = (email, username, role) => {
     let todayDate = Date.now();
 
     Cookies.set("loginTime", JSON.stringify(todayDate));
     Cookies.set("isLoggedIn", JSON.stringify(true));
     Cookies.set("userEmail", email);
     Cookies.set("username", username);
+    Cookies.set("userRole", role);
 
     setUserEmail(email);
     setUsername(username);
+    setUserRole(role);
     setIsLoggedIn(true);
   };
 
@@ -185,6 +192,8 @@ const useApp = () => {
     Cookies.remove("isLoggedIn");
     Cookies.remove("userEmail");
     Cookies.remove("username");
+    Cookies.remove("userRole");
+    setUserRole(null);
   };
 
   return {
@@ -208,7 +217,9 @@ const useApp = () => {
      message,
      setMessage,
      username,
-     setUsername
+     setUsername,
+     userRole, 
+     setUserRole
   };
 };
 
