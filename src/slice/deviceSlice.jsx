@@ -14,15 +14,6 @@ const filteredDeviceFromRoom = (device, deviceId) => {
   return device.devices.filter((device) => device.deviceId !== deviceId);
 };
 
-// const updateDevicesInRoom = (device, deviceId, updatedDevice) => {
-//   return {
-//     ...device,
-//     devices: device.devices.map((device) =>
-//       device.deviceId === deviceId ? { ...device, ...updatedDevice } : device
-//     ),
-//   };
-// };
-
 const deviceSlice = createSlice({
   name: "devices",
   initialState,

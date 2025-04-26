@@ -5,9 +5,11 @@ const authRoutes = require("./routes/user.route");
 const roomRoutes = require("./routes/room.route");
 const deviceRoutes = require("./routes/device.route");
 const adminRoutes = require('./routes/adminVerify.route');
-const initMongo = require("./db/db");
+
+const dbConnect = require("./db/db");
 
 const app = express();
+
 const PORT = 4000;
 
 app.use(express.json());
@@ -22,7 +24,7 @@ app.use(
 
 app.options("*", cors());
 
-initMongo();
+dbConnect();
 
 app.use("/", adminRoutes);
 app.use("/",authRoutes);

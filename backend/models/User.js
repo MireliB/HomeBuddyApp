@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
+// 676164519262-9lc5tq1hj50jbkumfk7ro137grqqsdsj.apps.googleusercontent.com
 
 const userSchema = new mongoose.Schema({
   username: {type: String, required: true, unique: true},
-  email: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true, 
+    // validate: {function(v){
+    // return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+  // }}
+ },
+  // message: props=> `${props.value} is not a valid email!`,
   password: { type: String, required: true },
-  role: {type: String, required: true, enum: ["admin", "manager", "user"], default: "user"},
+  role: {type: String, required: true, enum: ["admin", "manager", "user"], default:"user"},
 }, 
 {
   timestamps: true

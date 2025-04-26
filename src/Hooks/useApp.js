@@ -33,7 +33,7 @@ const useApp = () => {
   const [userRole, setUserRole] = useState(()=>{
     const storedUserRole = Cookies.get("userRole");
 
-    return storedUserRole.trim() ? storedUserRole : false;
+    return storedUserRole ? storedUserRole : false;
   })
 
   const { devices } = useSelector((state) => state.devices);

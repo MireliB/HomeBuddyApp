@@ -1,27 +1,27 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const jwtSecret = process.env.JWT_SECRET || "secret";
+// const crypto = require('crypto');
 
-if (!jwtSecret) {
-  throw new Error(
-    "Missing JWT_SECRET in environment variables. Server shutting down."
-  );
-}
+// const secret = crypto.randomBytes(64).toString('base64url');
+// console.log(secret);
+
 const authenticate = (req, res, next) => {
   const authHeader = req.header("Authorization");
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res
       .status(401)
-      .json({ message: "Access denied: No token provided" });
+      .json({ message: "Access denied: No token provided." });
   }
 
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, jwtSecret);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.id;
-    
+    console.log("The decoded user is:", req.userId);
+
     next();
   } catch (error) {
     let errorMessage = "Invalid token";
@@ -33,5 +33,6 @@ const authenticate = (req, res, next) => {
     return res.status(401).json({ message: errorMessage });
   }
 };
+
 
 module.exports = authenticate;

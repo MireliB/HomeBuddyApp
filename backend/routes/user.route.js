@@ -2,12 +2,13 @@ const express = require("express");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const authenticate = require("../middleware/authenticate");
 const UserModel = require("../models/User");
+require("dotenv").config();
 
 const router = express.Router();
 
-const jwtSecret = "secret";
+// const jwtSecret = "secret";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 router.post("/signUp", async (req, res) => {
@@ -61,7 +62,7 @@ router.post("/login", async (req, res) => {
   try {
     const userQuery = email ? { email } : username ? { username } : null;
     if (!userQuery) {
-      return res.status(400).json({ message: "Email or username is required" });
+      return res.status(404).json({ message: `user ${username} not found` });
     }
 
     const user = await UserModel.findOne(userQuery);
@@ -71,11 +72,25 @@ router.post("/login", async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: "Incorrect password" });
     }
-    const token = jwt.sign({ id: user._id, role: user.role }, jwtSecret, { expiresIn: "8h" });
+
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "8h" });
     res.json({ token,role: user.role, username: user.username });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
+
+
+router.get("/manager", (req, res)=>{
+  res.json({message: "Welcome Manager"});
+})
+
+router.get("/admin", authenticate,  (req, res)=>{
+  res.json({message: "Welcome Admin"});
+})
+
+router.get("/user",authenticate, (req, res)=>{
+  res.json({message: "Welcome User"});
+})
 
 module.exports = router;

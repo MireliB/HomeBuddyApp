@@ -1,12 +1,9 @@
 import { useContext, useState } from "react";
-import Cookies from "js-cookie";
-
 import {
   Box,
   IconButton,
   Menu,
   MenuItem,
-  Select,
   Tooltip,
   Typography,
   useTheme,
@@ -20,6 +17,7 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
+
 import UserRoles from "../UserRoles/UserRoles";
 
 export default function Top({ onLogout, username, userRole, setUserRole }) {
@@ -31,6 +29,7 @@ export default function Top({ onLogout, username, userRole, setUserRole }) {
   // user profile navigation - build also component for user profile
   // user profile settings
   // user profile logout
+  // add 2 client functions for Google auth - 1 for me the owner and second one for the user 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
