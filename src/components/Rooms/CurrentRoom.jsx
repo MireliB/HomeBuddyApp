@@ -66,9 +66,9 @@ export function CurrentRoom({
       const matchesRoomName = room?.name?.toLowerCase().includes(lowerCaseQuery);
       const matchesRoomType = room?.roomType?.toLowerCase()?.includes(lowerCaseQuery) || false;
   
-      const matchesDevices = (room.devices ?? []).some(
+      const matchesDevices = (devices ?? []).some(
         (device) =>
-          device?.roomId === room?._id &&
+          device?.room === room?._id &&
           device?.name?.toLowerCase()?.includes(lowerCaseQuery)
       );
   
