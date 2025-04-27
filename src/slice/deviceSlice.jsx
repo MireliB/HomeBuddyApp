@@ -6,14 +6,6 @@ const initialState = {
   error: null,
 };
 
-const findDeviceByIndexName = (device, deviceName) => {
-  return device.findIndex((device) => device.deviceName === deviceName);
-};
-
-const filteredDeviceFromRoom = (device, deviceId) => {
-  return device.devices.filter((device) => device.deviceId !== deviceId);
-};
-
 const deviceSlice = createSlice({
   name: "devices",
   initialState,
@@ -27,15 +19,8 @@ const deviceSlice = createSlice({
     },
 
     deleteDevice: (state, action) => {
-      const { deviceName, device } = action.payload;
-      const deviceIndex = findDeviceByIndexName(state.devices, deviceName);
-      if (deviceIndex !== -1) {
-        const updateDevices = filteredDeviceFromRoom(
-          state.devices[deviceIndex],
-          device.deviceId
-        );
-        state.devices[deviceIndex].devices = [...updateDevices];
-      }
+      const deviceId = action.payload;
+      state.devices = state.devices.filter(device=> device._id !== deviceId)
     },
 
     editDeviceSuccess: (state, action) => {
@@ -54,8 +39,7 @@ const deviceSlice = createSlice({
   },
 });
 
-export const { setDevices, addDevice, deleteDevices, editDeviceSuccess } =
-  deviceSlice.actions;
+export const { setDevices, addDevice, deleteDevice, editDeviceSuccess } = deviceSlice.actions;
 
 export const editDevice = (device) => async (dispatch) => {};
 export default deviceSlice.reducer;

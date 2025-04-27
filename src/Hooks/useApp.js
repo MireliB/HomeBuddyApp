@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { deleteRoom } from "../slice/roomSlice";
-import { setDevices } from "../slice/deviceSlice";
+import { deleteDevice, setDevices } from "../slice/deviceSlice";
 
 import Cookies from 'js-cookie'
 import axios from "axios";
@@ -135,9 +135,18 @@ const useApp = () => {
         console.log("Room deleted successfully", response.data);
   
         dispatch(deleteRoom({ roomId }));
-  
+
+        const devicesToDelete = devices.filter(device => device.room === roomId);
+        for (const device of devicesToDelete) {
+          await axios.delete(`http://localhost:4000/device/${device._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          dispatch(deleteDevice(device._id)); 
+        }
+    
         const updateDevices = devices.filter((device) => device.room !== roomId);
-  
         dispatch(setDevices(updateDevices));
   
         setMessage({
@@ -151,6 +160,39 @@ const useApp = () => {
         console.error("Error Deleting Room:", err);
       }
     };
+
+    // const handleDeleteDevice = async (deviceId)=>{
+    //   const token = Cookies.get("token");
+
+    //   if (!token) {
+    //     console.error("No Token found. Please log in again.");
+    //     return;
+    //   }
+
+    //   try {
+    //     const response = await axios.delete(
+    //       `http://localhost:4000/device/${deviceId}`,
+    //       {
+    //         headers: {
+    //           Authorization: `Bearer ${token}`,
+    //         },
+    //       }
+    //     );
+
+    //     console.log("Device deleted successfully", response.data);
+
+    //     dispatch(deleteDevice({ deviceId }));
+
+    //     setMessage({
+    //       show: true,
+    //       text: "Device deleted successfully",
+    //       color: "red",
+    //     });
+    //   } catch (err) {
+    //     console.error("Error Deleting Device:", err);
+    //   }
+
+    // }
   
   useEffect(() => {
     const token = Cookies.get("token");

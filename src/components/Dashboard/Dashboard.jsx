@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -22,8 +22,8 @@ import QuickActions from "./QuickActions/QuickActions";
 // check about adding more features into dashboard
 // change login page to Home Buddy Admin
 // create another project of home buddy to the clients at phone
-
-export default function Dashboard({ isLoggedIn, username, setUsername }) {
+// TODO - LEARN PYTHON AND C#
+export default function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -79,6 +79,7 @@ export default function Dashboard({ isLoggedIn, username, setUsername }) {
         gridTemplateColumns="repeat(auto-fit, minmax(350px, 1fr))"
         gap={"1.2%"}
       >
+        {/* fix the devices  */}
         <LatestRoomsAndDevices
           latestDevices={latestDevices}
           latestRooms={latestRooms}

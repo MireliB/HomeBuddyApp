@@ -3,12 +3,13 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const authenticate = require("../middleware/authenticate");
+
 const UserModel = require("../models/User");
+
 require("dotenv").config();
 
 const router = express.Router();
 
-// const jwtSecret = "secret";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 router.post("/signUp", async (req, res) => {
