@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { ColorModeContext } from "../../Theme";
 import { useNavigate } from "react-router-dom";
+import { FaCrown } from "react-icons/fa";
 
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -18,9 +19,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutIcon from "@mui/icons-material/ExitToApp";
 
-import UserRoles from "../UserRoles/UserRoles";
-
-export default function Top({ onLogout, username, userRole, setUserRole }) {
+export default function Top({ onLogout, username, userRole, setUserRole, userEmail }) {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const nav = useNavigate();
@@ -29,7 +28,7 @@ export default function Top({ onLogout, username, userRole, setUserRole }) {
   // user profile navigation - build also component for user profile
   // user profile settings
   // user profile logout
-  // add 2 client functions for Google auth - 1 for me the owner and second one for the user 
+  // add 2 client functions for Google auth - 1 for me the owner and second one for the user
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationAnchorEl, setNotificationAnchorEl] = useState(null);
@@ -58,13 +57,29 @@ export default function Top({ onLogout, username, userRole, setUserRole }) {
         <Typography variant="h6" fontWeight="bold" ml={2}>
           Welcome,
         </Typography>
-        <Typography variant="h6" color="secondary" fontWeight="bold">
-          {username || "Guest"}
+        <Typography
+          variant="h6"
+          color="secondary"
+          fontWeight="bold"
+          display="flex"
+          alignItems="center"
+        >
+          {username}
+          {userRole === "manager" && userEmail === "mireloosh2@gmail.com" && (
+            <FaCrown
+              style={{
+                color: "gold",
+                marginLeft: "7px",
+                marginBottom: "2px",
+                fontSize: "1.2rem",
+              }}
+            />
+          )}
         </Typography>
-        <UserRoles userRole={userRole} username={username}/>
+        {/* <UserRoles userRole={userRole} username={username} /> */}
+
       </Box>
       <Box display="flex" ml="auto">
-
         <Tooltip title="Toggle Theme">
           <IconButton onClick={colorMode.toggleColorMode}>
             {theme.palette.mode === "dark" ? (

@@ -160,40 +160,7 @@ const useApp = () => {
         console.error("Error Deleting Room:", err);
       }
     };
-
-    // const handleDeleteDevice = async (deviceId)=>{
-    //   const token = Cookies.get("token");
-
-    //   if (!token) {
-    //     console.error("No Token found. Please log in again.");
-    //     return;
-    //   }
-
-    //   try {
-    //     const response = await axios.delete(
-    //       `http://localhost:4000/device/${deviceId}`,
-    //       {
-    //         headers: {
-    //           Authorization: `Bearer ${token}`,
-    //         },
-    //       }
-    //     );
-
-    //     console.log("Device deleted successfully", response.data);
-
-    //     dispatch(deleteDevice({ deviceId }));
-
-    //     setMessage({
-    //       show: true,
-    //       text: "Device deleted successfully",
-    //       color: "red",
-    //     });
-    //   } catch (err) {
-    //     console.error("Error Deleting Device:", err);
-    //   }
-
-    // }
-  
+    
   useEffect(() => {
     const token = Cookies.get("token");
 
@@ -214,18 +181,20 @@ const useApp = () => {
   const onSubmitLogin = (email, username, role) => {
     let todayDate = Date.now();
 
+    const finalRole = email === process.env.REACT_APP_MANAGER_EMAIL ? "manager" : role;
+    
     Cookies.set("loginTime", JSON.stringify(todayDate));
     Cookies.set("isLoggedIn", JSON.stringify(true));
     Cookies.set("userEmail", email);
     Cookies.set("username", username);
-    Cookies.set("userRole", role);
+    Cookies.set("userRole", finalRole);
 
     setUserEmail(email);
     setUsername(username);
-    setUserRole(role);
+    setUserRole(finalRole);
     setIsLoggedIn(true);
   };
-
+  
   const handleLogout = () => {
     setIsLoggedIn(false);
 

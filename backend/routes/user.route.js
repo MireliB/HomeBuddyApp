@@ -2,6 +2,7 @@ const express = require("express");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
 const authenticate = require("../middleware/authenticate");
 
 const UserModel = require("../models/User");
@@ -11,7 +12,7 @@ require("dotenv").config();
 const router = express.Router();
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+const managerEmail = process.env.MANAGER_EMAIL; 
 router.post("/signUp", async (req, res) => {
   const { username, email, password, role } = req.body;
 
@@ -36,11 +37,18 @@ router.post("/signUp", async (req, res) => {
         .json({ message: "Username or email already taken" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
+    
+    let finalRole = role; 
+
+    if(email === managerEmail ){
+      finalRole = "manager";
+    }
+
     const newUser = new UserModel({
       username,
       email,
       password: hashedPassword,
-      role,
+      role: finalRole,
     });
 
     await newUser.save();
@@ -74,10 +82,30 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "Incorrect password" });
     }
 
+    if(user.email === managerEmail && user.role !== "manager"){
+      user.role = "manager"; 
+      await user.save();
+    }
+
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "8h" });
     res.json({ token,role: user.role, username: user.username });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+router.get("/me", authenticate, async (req, res) => {
+  try {
+    const user = await UserModel.findById(req.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 
