@@ -65,7 +65,7 @@ export default function Top({ onLogout, username, userRole, setUserRole, userEma
           alignItems="center"
         >
           {username}
-          {userRole === "manager" && userEmail === "mireloosh2@gmail.com" && (
+          {userRole === "manager" && userEmail === process.env.REACT_APP_MANAGER_EMAIL && (
             <FaCrown
               style={{
                 color: "gold",
@@ -76,8 +76,7 @@ export default function Top({ onLogout, username, userRole, setUserRole, userEma
             />
           )}
         </Typography>
-        {/* <UserRoles userRole={userRole} username={username} /> */}
-
+        
       </Box>
       <Box display="flex" ml="auto">
         <Tooltip title="Toggle Theme">
