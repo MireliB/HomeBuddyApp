@@ -3,6 +3,7 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { Box, Button, Input, Link, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../Theme";
+import {jwtDecode} from "jwt-decode";
 
 import Cookies from "js-cookie";
 
@@ -15,7 +16,7 @@ export default function Login({ onLogin }) {
 
   // TODO : make google auth to work + add signup with google auth
   // TODO : continue to work on the roles - make it work
-  // TODO : 
+  // TODO :
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -24,7 +25,7 @@ export default function Login({ onLogin }) {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const nav = useNavigate();
 
   const navigateToSignUp = () => nav("/signup");
@@ -83,8 +84,37 @@ export default function Login({ onLogin }) {
     }
   };
 
-  const responseMessage = (response) => {
-    console.log(response);
+  const responseMessage = async (credentialResponse) => {
+    try {
+      const decoded = jwtDecode(credentialResponse.credential);
+      const { email, name } = decoded;
+
+      const response = await fetch("http://localhost:4000/google-auth", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, username: name }),
+      });
+
+      if (!response.ok) {
+        console.error("Google Login Failed", response.statusText);
+      }
+      const data = await response.json();
+
+      Cookies.set("token", data.token);
+      Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
+      Cookies.set("userEmail", data.email, { expires: 7 });
+      Cookies.set("username", data.username, { expires: 7 });
+      Cookies.set("userRole", data.role || "User", { expires: 7 });
+
+      onLogin(email, name, data.role);
+
+      nav("/dashboard");
+    } catch (err) {
+      console.error("Google Login Failed", err);
+    }
+
   };
 
   const errorMessage = (error) => {
@@ -151,7 +181,6 @@ export default function Login({ onLogin }) {
         <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
           <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
         </GoogleOAuthProvider>
-
       </Box>
       {errorMsg && (
         <Typography variant="body2" color="error" mt={2}>

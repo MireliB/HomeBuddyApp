@@ -9,6 +9,7 @@ const UserModel = require("../models/User");
 const DeviceModel = require("../models/Device");
 const RoomModel = require("../models/Room");
 const AlertModel = require("../models/Alert");
+
 require("dotenv").config();
 
 const router = express.Router();
@@ -96,6 +97,48 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/google-auth", async (req, res) => {
+  const { email, username } = req.body;
+
+  if (!email || !username) {
+    return res.status(400).json({ message: "Missing email or username" });
+  }
+
+  try {
+    let user = await UserModel.findOne({ email });
+
+    if (!user) {
+      const isManager = email === process.env.MANAGER_EMAIL;
+
+      user = new UserModel({
+        email,
+        username,
+        password: "",
+        role: isManager ? "manager" : "user",
+      });
+
+      await user.save();
+    }
+
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "8h" }
+    );
+
+    res.json({
+      token,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+    });
+  } catch (err) {
+    console.error("Google Auth Error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+
 router.get("/me", authenticate, async (req, res) => {
   try {
     const user = await UserModel.findById(req.userId).select("-password");
@@ -110,7 +153,6 @@ router.get("/me", authenticate, async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
 
 router.get("/manager", (req, res)=>{
   res.json({message: "Welcome Manager"});
