@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -11,21 +11,19 @@ import AvailableRooms from "./AvailableRooms/AvailableRooms";
 import SystemStatistics from "./SystemStatistics/SystemStatistics";
 import AlertsAndNotifications from "./AlertsAndNotifications/AlertsAndNotifications";
 import QuickActions from "./QuickActions/QuickActions";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 // TODO :
-// Types of users permissions that need to be added
-// Owner
-// Admin
-// User
-// add an icon to admin if the user is the admin for example - crown
 // add also an icon to user if the user is with regular permissions
 // check about adding more features into dashboard
-// change login page to Home Buddy Admin
 // create another project of home buddy to the clients at phone
 // TODO - LEARN PYTHON AND C#
 export default function Dashboard() {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const [stats, setStats] = useState(null); 
 
   const navigate = useNavigate();
 
@@ -41,6 +39,28 @@ export default function Dashboard() {
     navigate("/roomsPage");
   };
 
+  useEffect(()=>{
+    const fetchStats = async()=>{
+      try{
+        const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
+        if(!token) {
+          console.error("No token found in cookies.");
+          return;
+        }
+        const response = await axios.get("http://localhost:4000/system-statistics", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+        setStats(response.data);
+
+      }catch(err){
+        console.error(" Failede to fetch system statistics:", err);
+      }
+    };
+
+    fetchStats();
+  },[])
   return (
     <Box m={"2vh"}>
       <Box
@@ -79,7 +99,6 @@ export default function Dashboard() {
         gridTemplateColumns="repeat(auto-fit, minmax(350px, 1fr))"
         gap={"1.2%"}
       >
-        {/* fix the devices  */}
         <LatestRoomsAndDevices
           latestDevices={latestDevices}
           latestRooms={latestRooms}
@@ -89,7 +108,14 @@ export default function Dashboard() {
 
         <AvailableRooms isDarkMode={isDarkMode} colors={colors} rooms={rooms} />
 
-        <SystemStatistics isDarkMode={isDarkMode} colors={colors} />
+       {
+        stats ? (
+          <SystemStatistics isDarkMode={isDarkMode} colors={colors} stats= {stats}/>
+
+        ): (
+          <Typography>Loading statistics...</Typography>
+        )
+       }
 
         <AlertsAndNotifications
           isDarkMode={isDarkMode}

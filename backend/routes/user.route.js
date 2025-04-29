@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 const authenticate = require("../middleware/authenticate");
 
 const UserModel = require("../models/User");
-
+const DeviceModel = require("../models/Device");
+const RoomModel = require("../models/Room");
+const AlertModel = require("../models/Alert");
 require("dotenv").config();
 
 const router = express.Router();
@@ -120,6 +122,31 @@ router.get("/admin", authenticate,  (req, res)=>{
 
 router.get("/user",authenticate, (req, res)=>{
   res.json({message: "Welcome User"});
+})
+
+router.get("/system-statistics",authenticate, async (req, res) => {
+  try{
+    const user = await UserModel.findById(req.userId); 
+    if(!user) return res.status(404).json({ message: "User not found" });
+
+    if(user.role !== "manager" && user.email !== managerEmail) {
+      return res.status(403).json({ message: "Access denied. Manager Only" });
+    }
+    const totalUsers = await UserModel.countDocuments();
+    const activeDevices = await DeviceModel.countDocuments({status:"ON"});
+    const totalRooms = await RoomModel.countDocuments();
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+    const alertsToday = await AlertModel.countDocuments({createdAt: {$gte: today}});
+
+    res.json({totalUsers, activeDevices, totalRooms, alertsToday});
+  }catch(err){
+    console.error("Error fetching system statistics:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+    
+  }
 })
 
 module.exports = router;
