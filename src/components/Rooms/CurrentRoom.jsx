@@ -2,12 +2,11 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 import { CheckCircleOutline, ErrorOutline } from "@mui/icons-material";
-import { Box, Button, Snackbar } from "@mui/material";
+import { Box, Button, CircularProgress, Snackbar } from "@mui/material";
 
 import { tokens } from "../../Theme";
 
 // TODO
-// הוספת פעולות אחרונות בDASHBOARD - לגרום לזה לעבוד 
 // להתחיל לעבוד על דף הלקוחות 
 // לקשר API אמיתי למכשירים כגון מזגן טלויזיה וכדומה - לפענח איך לגרום להכל להתחבר בצורה מאובטחת וטובה 
 // בעמוד של הלקוחות להוסיף חיפוש לכל קטגוריה, לדוגמה שם לקוח, מכשיר, טלפון, סטטוס, פעולות
@@ -44,6 +43,7 @@ export function CurrentRoom({
   confirmDelete,
   message,
   setMessage,
+  isLoading
 }) {
   const nav = useNavigate();
 

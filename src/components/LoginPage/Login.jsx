@@ -9,14 +9,10 @@ import Cookies from "js-cookie";
 
 import "./Login.css";
 
-// add google auth for login also
 export default function Login({ onLogin }) {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  // TODO : make google auth to work + add signup with google auth
-  // TODO : continue to work on the roles - make it work
-  // TODO :
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -43,7 +39,7 @@ export default function Login({ onLogin }) {
     setLoading(true);
 
     if (!formData.username || !formData.email || !formData.password) {
-      setErrorMsg("Email and Password are required");
+      setErrorMsg("All fields are required.");
       setLoading(false);
       return;
     }
@@ -56,16 +52,14 @@ export default function Login({ onLogin }) {
         },
         body: JSON.stringify(formData),
       });
-
+      
+      const data = await response.json();
       if (!response.ok) {
-        const data = await response.json();
 
-        setErrorMsg(data.message || "Failed to login. Please try again");
+        setErrorMsg(data.message || "Login Failed");
         setLoading(false);
         return;
       }
-
-      const data = await response.json();
 
       Cookies.set("token", data.token);
       Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
@@ -73,9 +67,9 @@ export default function Login({ onLogin }) {
       Cookies.set("username", data.username || formData.username, {
         expires: 7,
       });
-      Cookies.set("userRole", data.role || "User", { expires: 7 });
+      Cookies.set("userRole", data.role, { expires: 7 });
 
-      onLogin(formData.email, formData.username);
+      onLogin(formData.email, formData.username, data.role);
       nav("/dashboard");
     } catch (err) {
       setErrorMsg("An error occured. Please try again");
@@ -140,7 +134,6 @@ export default function Login({ onLogin }) {
             placeholder="example111"
             value={formData.username}
             onChange={handleInputChange}
-            required
           />
         </Box>
         <Box>
@@ -153,7 +146,6 @@ export default function Login({ onLogin }) {
             placeholder="example@gmail.com"
             value={formData.email}
             onChange={handleInputChange}
-            required
           />
         </Box>
         <Box>
@@ -166,7 +158,6 @@ export default function Login({ onLogin }) {
             placeholder="*********"
             value={formData.password}
             onChange={handleInputChange}
-            required
           />
         </Box>
         <Button

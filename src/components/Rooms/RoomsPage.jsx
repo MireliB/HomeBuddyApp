@@ -101,6 +101,7 @@ export default function RoomsPage({ handleBackToRooms,
         confirmDelete={confirmDelete}
         message={message}
         setMessage={setMessage}
+        isLoading={isLoading}
       />
     </Box>
   );
