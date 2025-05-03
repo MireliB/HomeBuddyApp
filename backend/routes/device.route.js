@@ -4,6 +4,7 @@ const router = express.Router();
 
 const RoomModel = require("../models/Room");
 const DeviceModel = require("../models/Device");
+const AlertModel = require("../models/Alert");
 
 const authenticate = require("../middleware/authenticate");
 
@@ -22,7 +23,14 @@ router.post("/device", authenticate, async (req, res) => {
     await newDevice.save();
 
     associatedRoom.devices.push(newDevice._id);
+    
     await associatedRoom.save();
+
+    await AlertModel.create({
+      message: `Device ${name} created successfully`, 
+      deviceId: newDevice._id,
+      type: "create", 
+    });
 
     res.status(201).json(newDevice);
 
@@ -53,6 +61,7 @@ router.get("/device/:id", authenticate, async (req, res) => {
       _id: req.params.id,
       user: req.userId,
     });
+
     if (!device) {
       return res
         .status(404)
@@ -83,6 +92,12 @@ router.put("/device/:id", authenticate, async (req, res) => {
         .json({ message: "Device not found or access denied" });
     }
 
+    await AlertModel.create({
+      message: `Device ${updatedDevice.name} updated successfully`, 
+      deviceId: updatedDevice._id,
+      type: "update",
+    })
+
     res.json(updatedDevice);
   } catch (error) {
     console.error("Error updating device:", error);
@@ -110,6 +125,13 @@ router.delete("/device/:id", authenticate, async (req, res) => {
       { _id: device.room },
       { $pull: { devices: device._id } }
     );
+
+    await AlertModel.create({
+      message: `Device "${device.name}" was deleted`,
+      deviceId: device._id,
+      roomId: device.room,
+      type: "delete"
+    });
 
     res.json({ message: "Device deleted and unlinked from room" });
   } catch (error) {

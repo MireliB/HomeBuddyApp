@@ -4,6 +4,7 @@ const RoomModel = require("../models/Room");
 const DeviceModel = require("../models/Device");
 
 const authenticate = require("../middleware/authenticate");
+const AlertModel = require("../models/Alert");
 
 const router = express.Router();
 
@@ -50,6 +51,14 @@ router.post("/room", authenticate, async (req, res) => {
     }
 
     await newRoom.save();
+
+    await AlertModel.create({
+      message: `Room ${roomName} created successfully`,
+      deviceId: devices.length > 0 ? devices[0] : null,
+      roomId: newRoom._id,
+      type: "create", 
+    });
+
     res.json(newRoom);
   } catch (err) {
     res.status(500).json({ message: "Error adding room", error: err.message });
@@ -124,6 +133,13 @@ router.put("/room/:id", authenticate, async (req, res) => {
     }
 
     await room.save();
+
+    await AlertModel.create({
+      message: `Room ${name} updated successfully`, 
+      roomId: room._id,
+      type: "update", 
+    })
+
     res.json(room);
   } catch (error) {
     res
@@ -155,6 +171,12 @@ router.delete("/room/:id", authenticate, async (req, res) => {
     );
 
     await room.deleteOne();
+
+    await AlertModel.create({
+      message: `Room ${room.name} deleted successfully`, 
+      roomId: room._id,
+      type: "delete", 
+    })
     res.json({ message: "Room deleted successfully, devices unlinked." });
   } catch (error) {
     res

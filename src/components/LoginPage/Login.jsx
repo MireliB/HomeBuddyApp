@@ -127,7 +127,7 @@ export default function Login({ onLogin }) {
     >
       <Typography variant="h3" sx={{ fontWeight: "bold" }}>
         Admin
-      </Typography>{" "}
+      </Typography>
       <br />
       <Box component={"form"} onSubmit={handleLogin}>
         <Box>

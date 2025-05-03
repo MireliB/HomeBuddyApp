@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Box, Button, Input, Typography, Link } from "@mui/material";
-
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 import {useNavigate} from "react-router-dom";
 
 export default function Signup() {
+// TODO : add google auth for signup 
+// Fix the google auth in login page
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -62,6 +66,35 @@ export default function Signup() {
     }
   };
 
+  const handleGoogleSignup = async (credentialResponse) =>{
+    try{
+      const decoded = jwtDecode(credentialResponse.credential);
+      const {email, name} = decoded; 
+
+      const response = await axios.post("http://localhost:4000/google-auth", {
+        email, 
+        username: name,
+      });
+      const data = response.data; 
+
+      Cookies.set("token", data.token);
+      Cookies.set("loginTime", JSON.stringify(Date.now()), { expires: 7 });
+      Cookies.set("userEmail", data.email || email, { expires: 7 });
+      Cookies.set("username", data.username, { expires: 7 });
+      Cookies.set("userRole", data.role || "User", { expires: 7 });
+
+      nav("/dashboard");
+
+    }catch(err){
+      console.error("Google Signup Failed", err);
+      setMessage("Google Signup Failed. Please try again.");
+    }
+  };
+
+  const handleGoogleError = ()=>{
+    setMessage("Google Signup Failed. Please try again.");
+  }
+
   return (
     <Box p={3} bgcolor={"background.paper"} boxShadow={1} borderRadius={2}>
       <Typography variant="h3">Sign Up</Typography>
@@ -112,27 +145,42 @@ export default function Signup() {
           SIGN UP
         </Button>
 
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+          <Box mt={2}>
+            <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+              Or Sign Up With Google
+            </Typography>
+            <GoogleLogin width={"200px"}
+              onSuccess={handleGoogleSignup}
+              onError={handleGoogleError}
+            />
+
+          </Box>
+        </GoogleOAuthProvider>
       </Box>
-      
+
       {message && (
         <Typography variant="body2" color="error" mt={2}>
           {message}
         </Typography>
       )}
 
-            <Box mt={2}>
-              <Typography variant="body2" sx={{ fontWeight: "bold", textDecoration: "none" }}>
-                Already have an account ?
-                <Link
-                  component="button"
-                  sx={{ color: "white" }}
-                  variant="body2"
-                  onClick={navigateToLogin}
-                >
-                  LOGIN HERE
-                </Link>
-              </Typography>
-            </Box>      
+      <Box mt={2}>
+        <Typography
+          variant="body2"
+          sx={{ fontWeight: "bold", textDecoration: "none" }}
+        >
+          Already have an account ?
+          <Link
+            component="button"
+            sx={{ color: "white" }}
+            variant="body2"
+            onClick={navigateToLogin}
+          >
+            LOGIN HERE
+          </Link>
+        </Typography>
+      </Box>
     </Box>
   );
 }

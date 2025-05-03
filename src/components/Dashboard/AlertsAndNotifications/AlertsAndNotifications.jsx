@@ -1,4 +1,5 @@
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
+import { Box, CircularProgress, Divider, Grid, Stack, Typography } from '@mui/material'
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FiAlertCircle } from 'react-icons/fi'
 
@@ -18,10 +19,19 @@ export default function AlertsAndNotifications({
     setLoading(true);
 
     try {
-      
-    
+      const token = document.cookie.split("; ").find(row => row.startsWith("token="))?.split("=")[1];
+      const response = await axios.get("http://localhost:4000/alerts", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+
+      setAlerts(response.data);
     } catch (err) {
-      setErrorMsg("error showing alerts...", err);
+      console.error("Failed to fetch alerts:", err);
+      setErrorMsg("Failed to fetch alerts...", err);
+    }finally {
+      setLoading(false);
     }
   }
 
@@ -53,11 +63,14 @@ export default function AlertsAndNotifications({
         <Divider style={{ marginBottom: "16px" }} />
         <Stack spacing={2}>
           {loading ? (
-            <Typography
-              color={isDarkMode ? colors.greenAccent[500] : colors.primary[100]}
-            >
-              Loading Alerts...
-            </Typography>
+                 <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      height="100%"
+                    >
+                      <CircularProgress color="secondary" />
+                    </Box>
           ) : alerts.length > 0 ? (
             alerts.map((alert) => (
               <Stack direction="row" alignItems="center" key={alert.id}>
@@ -74,18 +87,17 @@ export default function AlertsAndNotifications({
                       : colors.primary[100]
                   }
                 >
-                  {alert.message}
+                 {alert.message}
                 </Typography>
               </Stack>
             ))
           ) : (
             <Typography
-              color={
-                isDarkMode ? colors.greenAccent[500] : colors.primary[100]
-              }
-            >
-              No Alerts at the Moment
-            </Typography>
+            color={isDarkMode ? colors.greenAccent[500] : colors.primary[100]}
+          >
+            No alerts at the moment.
+          </Typography>
+          
           )}
         </Stack>
       </Box>

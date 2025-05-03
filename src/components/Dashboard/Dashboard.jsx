@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, CircularProgress, Typography, useTheme } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -108,14 +108,22 @@ export default function Dashboard() {
 
         <AvailableRooms isDarkMode={isDarkMode} colors={colors} rooms={rooms} />
 
-       {
-        stats ? (
-          <SystemStatistics isDarkMode={isDarkMode} colors={colors} stats= {stats}/>
-
-        ): (
-          <Typography>Loading statistics...</Typography>
-        )
-       }
+        {stats ? (
+          <SystemStatistics
+            isDarkMode={isDarkMode}
+            colors={colors}
+            stats={stats}
+          />
+        ) : (
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
+            <CircularProgress color="secondary" />
+          </Box>
+        )}
 
         <AlertsAndNotifications
           isDarkMode={isDarkMode}

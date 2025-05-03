@@ -100,8 +100,8 @@ router.post("/login", async (req, res) => {
 router.post("/google-auth", async (req, res) => {
   const { email, username } = req.body;
 
-  if (!email || !username) {
-    return res.status(400).json({ message: "Missing email or username" });
+  if (!email || !username ) {
+    return res.status(400).json({ message: "Missing Email and Usesername" });
   }
 
   try {
@@ -113,8 +113,8 @@ router.post("/google-auth", async (req, res) => {
       user = new UserModel({
         email,
         username,
-        password: "",
         role: isManager ? "manager" : "user",
+        authProvider: "google",
       });
 
       await user.save();
@@ -132,12 +132,12 @@ router.post("/google-auth", async (req, res) => {
       email: user.email,
       role: user.role,
     });
+    
   } catch (err) {
     console.error("Google Auth Error:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
-
 
 router.get("/me", authenticate, async (req, res) => {
   try {
@@ -186,6 +186,27 @@ router.get("/system-statistics",authenticate, async (req, res) => {
     res.json({totalUsers, activeDevices, totalRooms, alertsToday});
   }catch(err){
     console.error("Error fetching system statistics:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+    
+  }
+})
+
+router.get("/alerts", authenticate, async (req, res) =>  {
+  try{
+    const alerts = await AlertModel.find().populate("deviceId", "name status").sort({createdAt: -1}).limit(10);
+
+    const formattedAlerts = alerts.map(alert =>({
+      id: alert._id, 
+      message: alert.message, 
+      createdAt: alert.createdAt, 
+      everity: alert.deviceId?.status === 'OFF' ? "red" : "orange", 
+      deviceName: alert.deviceId?.name, 
+    })); 
+
+    res.json(formattedAlerts); 
+
+  }catch(err){
+    console.error("Error fetching alerts:", err);
     res.status(500).json({ message: "Server error", error: err.message });
     
   }

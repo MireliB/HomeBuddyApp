@@ -27,6 +27,7 @@ export default function SystemStatistics({ isDarkMode, colors, stats }) {
             {label: "Active Devices", value: stats.activeDevices},
             {label: "Rooms Monitored", value: stats.roomsMonitored},
             {label: "Alerts Today", value: stats.alertsToday},
+            
           ].map(({label, value})=>(
             <Box
               display="flex"
