@@ -198,8 +198,9 @@ router.get("/alerts", authenticate, async (req, res) =>  {
     const formattedAlerts = alerts.map(alert =>({
       id: alert._id, 
       message: alert.message, 
-      createdAt: alert.createdAt, 
-      everity: alert.deviceId?.status === 'OFF' ? "red" : "orange", 
+      createdAt: alert.createdAt,
+      type: alert.type,
+      severity: alert.deviceId?.status === 'OFF' ? "red" : "orange", 
       deviceName: alert.deviceId?.name, 
     })); 
 
