@@ -26,7 +26,7 @@ export default function Login({ onLogin }) {
 
   const navigateToSignUp = () => nav("/signup");
 
-  const navigateToForgotPassword = () => nav("/signup");
+  const navigateToForgotPassword = () => nav("/forgotPassword");
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

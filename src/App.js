@@ -18,6 +18,8 @@ import Profile from "./components/UserProfile/Profile.jsx";
 
 import useApp from "./Hooks/useApp.js";
 import EditRoom from "./components/Rooms/EditRoom.jsx";
+import ForgotPassword from "./components/LoginPage/ForgotPassword/ForgotPassword.jsx";
+import ResetPassword from "./components/LoginPage/ResetPassword/ResetPassword.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -54,6 +56,9 @@ function App() {
         <>
           <Route path="/login" element={<Login onLogin={onSubmitLogin} />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+
           <Route path="*" element={<Navigate to="/login" />} />
         </>
       );
@@ -73,6 +78,8 @@ function App() {
           />
           <Route path="/home" element={<Homepage />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
           <Route
             path="/roomsPage"
             element={

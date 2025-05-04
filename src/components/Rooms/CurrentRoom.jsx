@@ -21,6 +21,7 @@ import { tokens } from "../../Theme";
 // להוסיף כפתורי פלטור
 // להוסיף בדף של הלקוחות גם משתמשים חדשים שנרשמו, משתמשים, ביטולים, לקוחות פעילים, לקוחות לא פעילים
 // לעבוד על הרספונסיביות של האתר שיותאם גם לטלפון לפי מסך, למחשב, טאבלט, טלפון וכדומה
+// לתקן את הalertsand notifications - שיציג את ההתראות פר משתמש 
 import Search from "../Global/Search";
 import RoomDetails from "./RoomDetails/RoomDetails";
 import RoomList from "./RoomList/RoomList";

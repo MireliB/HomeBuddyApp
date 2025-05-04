@@ -115,14 +115,15 @@ export default function Dashboard() {
             stats={stats}
           />
         ) : (
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            height="100%"
-          >
-            <CircularProgress color="secondary" />
-          </Box>
+          ""
+          // <Box
+          //   display="flex"
+          //   justifyContent="center"
+          //   alignItems="center"
+          //   height="100%"
+          // >
+          //   {/* <CircularProgress color="secondary" /> */}
+          // </Box>
         )}
 
         <AlertsAndNotifications
