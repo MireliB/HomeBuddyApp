@@ -276,4 +276,15 @@ router.get("/alerts", authenticate, async (req, res) =>  {
   }
 })
 
+router.get("/clients", authenticate, async(req, res)=>{
+  try{
+    const user = await UserModel.find().select("_id username email role createdAt");
+    res.json(user);
+
+  }catch(err){
+    console.error("Error fetching clients:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+})
+
 module.exports = router;

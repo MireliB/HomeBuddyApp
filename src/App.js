@@ -20,6 +20,7 @@ import useApp from "./Hooks/useApp.js";
 import EditRoom from "./components/Rooms/EditRoom.jsx";
 import ForgotPassword from "./components/LoginPage/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./components/LoginPage/ResetPassword/ResetPassword.jsx";
+import Clients from "./components/Clients/Clients.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -108,6 +109,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/editRoom/:roomId" element={<EditRoom />} />
           <Route path="/userProfile/:userId" element={<Profile />} />
+          <Route path="/clients" element={<Clients />} />
         </>
       );
     }
