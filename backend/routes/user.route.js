@@ -168,7 +168,6 @@ router.get("/user",authenticate, (req, res)=>{
   res.json({message: "Welcome User"});
 })
 
-// add here forgot password route
 router.post("/forgot-password", async (req, res)=>{
   const {email} = req.body;
   try{
@@ -204,6 +203,7 @@ router.post("/forgot-password", async (req, res)=>{
   }
 })
 
+// doesnt work - need to fix with the forgot-password
 router.post("/reset-password/:token", async (req, res)=>{
   const {token} = req.params;
   const {password} = req.body;
@@ -229,6 +229,7 @@ router.post("/reset-password/:token", async (req, res)=>{
   }
 })
 
+// system stats get router
 router.get("/system-statistics",authenticate, async (req, res) => {
   try{
     const user = await UserModel.findById(req.userId); 
@@ -254,6 +255,7 @@ router.get("/system-statistics",authenticate, async (req, res) => {
   }
 })
 
+// alerts get router
 router.get("/alerts", authenticate, async (req, res) =>  {
   try{
     const alerts = await AlertModel.find().populate("deviceId", "name status").sort({createdAt: -1}).limit(10);
@@ -276,6 +278,7 @@ router.get("/alerts", authenticate, async (req, res) =>  {
   }
 })
 
+// clients get router
 router.get("/clients", authenticate, async(req, res)=>{
   try{
     const user = await UserModel.find().select("_id username email role createdAt");
@@ -286,5 +289,28 @@ router.get("/clients", authenticate, async(req, res)=>{
     res.status(500).json({ message: "Server error", error: err.message });
   }
 })
+
+router.get("/clients/statistics", authenticate, async(req, res)=>{
+  try{
+    const totalUsers = await UserModel.countDocuments();
+    const newUsers = await UserModel.countDocuments({createdAt: {
+      $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+    }});
+
+    const activeUsers = await UserModel.countDocuments({isActive: true});
+    const inactiveUsers = await UserModel.countDocuments({isActive: false});
+    const canceledUsers = await UserModel.countDocuments({role: "canceled"});
+
+    res.json({
+      totalUsers,
+      newUsers,
+      activeUsers,
+      inactiveUsers,
+      canceledUsers,
+    })
+  }catch(err){
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
 
 module.exports = router;

@@ -18,6 +18,7 @@ import axios from "axios";
 // add also an icon to user if the user is with regular permissions
 // check about adding more features into dashboard
 // create another project of home buddy to the clients at phone
+//  on sidebar Change from Home To Statistics and make Dashboard first 
 // TODO - LEARN PYTHON AND C#
 export default function Dashboard() {
   const theme = useTheme();

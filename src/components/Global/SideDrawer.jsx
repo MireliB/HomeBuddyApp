@@ -12,6 +12,7 @@ import {
   Notifications as NotificationsIcon,
   ExitToApp as LogoutIcon,
   People as ClientIcon,
+  Leaderboard as LeaderboardIcon,
 } from "@mui/icons-material";
 
 import {
@@ -23,12 +24,12 @@ import {
 } from "@mui/material";
 
 import "react-pro-sidebar/dist/css/styles.css";
-import './SideDrawer.module.css'
+import "./SideDrawer.module.css";
 import { useNavigate } from "react-router-dom";
 
 const navigationItems = [
-  { path: "/home", name: "Home", icon: <HomeIcon /> },
   { path: "/dashboard", name: "Dashboard", icon: <DashboardIcon /> },
+  { path: "/leaderboard", name: "Leaderboard", icon: <LeaderboardIcon /> },
   { path: "/roomsPage", name: "Rooms", icon: <RoomIcon /> },
   { path: "/clients", name: "Clients", icon: <ClientIcon /> },
   { path: "/aboutUs", name: "About", icon: <InfoIcon /> },
@@ -69,11 +70,10 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
   };
 
   return (
-    <Box height="100%">
+    <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       {isLoggedIn && (
         <Box
           sx={{
-            height: "100vh",
             "& .pro-sidebar-inner, & .pro-icon-wrapper": {
               background: `${isDarkMode ? "#1f2a40" : "#e0e0e0"} !important`,
             },
@@ -84,7 +84,10 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
           }}
         >
           <CssBaseline />
-          <ProSidebar collapsed={isCollapsed}>
+          <ProSidebar
+            collapsed={isCollapsed}
+            style={{ height: "100vh", zIndex: 1000 }}
+          >
             <Menu iconShape="square">
               <MenuItem
                 onClick={collapsedHandler}

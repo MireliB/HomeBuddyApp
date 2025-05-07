@@ -9,7 +9,6 @@ import Settings from "./components/Settings/Settings.jsx";
 import RoomsPage from "./components/Rooms/RoomsPage.jsx";
 import Signup from "./components/SignUpPage/Signup.jsx";
 import AboutUs from "./components/AboutUs/AboutUs.jsx";
-import Homepage from "./components/Home/Homepage.jsx";
 import Login from "./components/LoginPage/Login.jsx";
 import Room from "./components/Rooms/Room.jsx";
 import Top from "./components/Global/Top.jsx";
@@ -21,6 +20,7 @@ import EditRoom from "./components/Rooms/EditRoom.jsx";
 import ForgotPassword from "./components/LoginPage/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "./components/LoginPage/ResetPassword/ResetPassword.jsx";
 import Clients from "./components/Clients/Clients.jsx";
+import Statistics from "./components/Statistics/Statistics.jsx";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -77,7 +77,7 @@ function App() {
               />
             }
           />
-          <Route path="/home" element={<Homepage />} />
+          <Route path="/leaderboard" element={<Statistics />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgotPassword" element={<ForgotPassword />} />
           <Route path="/reset-password/:token" element={<ResetPassword />} />
@@ -128,7 +128,7 @@ function App() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <div className="app" style={{ display: "flex", height: "100vh" }}>
+          <div className="app">
             {renderTopHeader()}
             <main className="content" style={{ flex: 1 }}>
               {isLoggedIn && 

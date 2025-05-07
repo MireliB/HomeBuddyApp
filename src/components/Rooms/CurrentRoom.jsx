@@ -7,21 +7,21 @@ import { Box, Button, CircularProgress, Snackbar } from "@mui/material";
 import { tokens } from "../../Theme";
 
 // TODO
-// להתחיל לעבוד על דף הלקוחות 
-// לקשר API אמיתי למכשירים כגון מזגן טלויזיה וכדומה - לפענח איך לגרום להכל להתחבר בצורה מאובטחת וטובה 
+// לעבוד על העיצוב של הלקוחות - ולתקן את הפונקציות הנמצאות כגון עריכה ומחיקה
+// לקשר API אמיתי למכשירים כגון מזגן טלויזיה וכדומה - לפענח איך לגרום להכל להתחבר בצורה מאובטחת וטובה
 // בעמוד של הלקוחות להוסיף חיפוש לכל קטגוריה, לדוגמה שם לקוח, מכשיר, טלפון, סטטוס, פעולות
-// לעבוד על הפיננסים באתר, להתחיל לבצע חישובים בהתאם, 
-// לפענח איך לקשר חשבון ולשלם תשלום חודשי קבוע בתאריך קבוע 
-// לסדר את ההתחברות של GOOGLE AUTH בצורה תקינה 
-// להוסיף בSIGN UP - המשך הרשמה עם מס' טלפון, כתובת, ת.ז וכדומה 
+// לעבוד על הפיננסים באתר, להתחיל לבצע חישובים בהתאם,
+// לפענח איך לקשר חשבון ולשלם תשלום חודשי קבוע בתאריך קבוע
+// לסדר את ההתחברות של GOOGLE AUTH בצורה תקינה
+// להוסיף בSIGN UP - המשך הרשמה עם מס' טלפון, כתובת, ת.ז וכדומה
 // להוסיף עמוד של היסטוריית פעולות
 // להוסיף אפשרות גם של ביטול תשלום וזיכוי במידת הצורך לאחר שנוסיף את ביצוע אפשרות התשלום
-// לשבת עם פאמפקין על הלוגו העיצובי לאתר של הADMIN - לרשום HOME BUDDY - ADMIN 
+// לשבת עם פאמפקין על הלוגו העיצובי לאתר של הADMIN - לרשום HOME BUDDY - ADMIN
 // להוסיף עמוד של היסטוריית פעולות - מה עשינו באתר, מה הוספנו, מה מחקנו, מה שינינו
 // להוסיף כפתורי פלטור
 // להוסיף בדף של הלקוחות גם משתמשים חדשים שנרשמו, משתמשים, ביטולים, לקוחות פעילים, לקוחות לא פעילים
 // לעבוד על הרספונסיביות של האתר שיותאם גם לטלפון לפי מסך, למחשב, טאבלט, טלפון וכדומה
-// לתקן את הalertsand notifications - שיציג את ההתראות פר משתמש 
+// לתקן את הalertsand notifications - שיציג את ההתראות פר משתמש
 import Search from "../Global/Search";
 import RoomDetails from "./RoomDetails/RoomDetails";
 import RoomList from "./RoomList/RoomList";
@@ -44,7 +44,7 @@ export function CurrentRoom({
   confirmDelete,
   message,
   setMessage,
-  isLoading
+  isLoading,
 }) {
   const nav = useNavigate();
 
@@ -58,22 +58,24 @@ export function CurrentRoom({
     () => searchQuery.toLowerCase().trim(),
     [searchQuery]
   );
-  
+
   const filteredRooms = useMemo(() => {
     return (rooms ?? []).filter((room) => {
-      const matchesRoomName = room?.name?.toLowerCase().includes(lowerCaseQuery);
-      const matchesRoomType = room?.roomType?.toLowerCase()?.includes(lowerCaseQuery) || false;
-  
+      const matchesRoomName = room?.name
+        ?.toLowerCase()
+        .includes(lowerCaseQuery);
+      const matchesRoomType =
+        room?.roomType?.toLowerCase()?.includes(lowerCaseQuery) || false;
+
       const matchesDevices = (devices ?? []).some(
         (device) =>
           device?.room === room?._id &&
           device?.name?.toLowerCase()?.includes(lowerCaseQuery)
       );
-  
+
       return matchesRoomName || matchesRoomType || matchesDevices;
     });
   }, [rooms, devices, lowerCaseQuery]);
-  
 
   const handleRoomEdit = async (room) => {
     if (!room || !room._id) return;
@@ -90,8 +92,9 @@ export function CurrentRoom({
           "This space allows you to create and manage rooms, providing you with control over various technologies within your home."
         }
       />
+
       <Search setSearchQuery={setSearchQuery} />
-      
+
       {selectedRoom ? (
         <RoomDetails
           isPopupOpen={isPopupOpen}
