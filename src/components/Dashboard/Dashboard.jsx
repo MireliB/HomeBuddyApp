@@ -16,6 +16,8 @@ import axios from "axios";
 
 // TODO :
 // add also an icon to user if the user is with regular permissions
+// work on language translation
+// add a button to the user to change the language of the app
 // check about adding more features into dashboard
 // create another project of home buddy to the clients at phone
 //  on sidebar Change from Home To Statistics and make Dashboard first 

@@ -22,6 +22,9 @@ import ResetPassword from "./components/LoginPage/ResetPassword/ResetPassword.js
 import Clients from "./components/Clients/Clients.jsx";
 import Statistics from "./components/Statistics/Statistics.jsx";
 
+import './i18n.js';
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 function App() {
   const [theme, colorMode] = useMode();
 
@@ -50,6 +53,13 @@ function App() {
     userRole,
     setUserRole
   } = useApp();
+
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    const dir = i18n.language === "ar" || i18n.language === "he" ? "rtl" : "ltr";
+    document.documentElement.dir = dir;
+  }, [i18n.language]);
 
   const renderRouterPaths = () => {
     if (!isLoggedIn) {
