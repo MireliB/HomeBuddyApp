@@ -1,0 +1,10 @@
+{
+    "settings": {
+      "title": "Settings",
+      "subtitle": "Customize your preferences here",
+      "darkMode": "Dark Mode",
+      "language": "Language",
+      "saveChanges": "Save Changes"
+    }
+  }
+  
