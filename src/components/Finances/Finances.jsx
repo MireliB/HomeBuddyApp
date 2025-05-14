@@ -8,6 +8,7 @@ import {
   Grid,
   Button,
   TextField,
+  useTheme,
 } from "@mui/material";
 
 import {
@@ -22,167 +23,144 @@ import {
 } from "recharts";
 
 import Header from "../Header";
+import { tokens } from "../../Theme";
 
 export default function Finances() {
-  const [expenses, setExpenses] = useState([
-    { id: 1, name: "Electrical Bill", amount: 120, date: "2024-07-01" },
-    { id: 2, name: "Water Bill", amount: 50, date: "2024-07-05" },
-    { id: 3, name: "Internet Bill", amount: 75, date: "2024-07-10" },
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const isDarkMode = theme.palette.mode === "dark";
+  const [payments, setPayments] = useState([
+    {
+      id: 1,
+      amount: 99.99,
+      date: Date(),
+      method: "Credit Card",
+      user: "John Doe",
+    },
+    {
+      id: 2,
+      amount: 49.99,
+      date: Date(),
+      method: "Credit Card",
+      user: "Alice Smith",
+    },
   ]);
 
-  const [newExpense, setNewExpense] = useState({
-    name: "",
-    amount: "",
-    date: "",
-  });
+  const [monthlyRevenue, setMonthlyRevenue] = useState([]);
+  
+  useEffect(()=>{
+    const months = Array.from({length: 12}, (_, index)=>({
+      name: new Date(0,index).toLocaleString("default", {month: "short"}),
+      Revenue: 0,
+    }));
 
-  const [monthlyExpenses, setMonthlyExpenses] = useState([]);
+    payments.forEach((payment)=>{
+      const monthIndex = new Date(payment.date).getMonth();
+      months[monthIndex].Revenue += payment.amount;
+    });
 
-  useEffect(() => {
-    const calculateMonthlyExpenses = () => {
-      const months = Array.from({ length: 12 }, (_, i) => ({
-        name: new Date(0, i).toLocaleString("default", { month: "short" }),
-        Expenses: 0,
-      }));
+    setMonthlyRevenue(months);
+  },[payments]);
 
-      expenses.forEach((expense) => {
-        const date = new Date(expense.date);
-        const monthIndex = date.getMonth();
-        months[monthIndex].Expenses += expense.amount;
-      });
-
-      const currentMonth = new Date().getMonth();
-      setMonthlyExpenses(months.slice(0, currentMonth + 1));
-    };
-
-    calculateMonthlyExpenses();
-  }, [expenses]);
-
-  const addExpenseHandler = () => {
-    if (!newExpense.name || !newExpense.amount || !newExpense.date) return;
-    if (Number(newExpense.amount) <= 0) return;
-
-    setExpenses((prev) => [
-      ...prev,
-      {
-        ...newExpense,
-        id: prev.length + 1,
-        amount: Number(newExpense.amount),
-      },
-    ]);
-
-    setNewExpense({ name: "", amount: "", date: "" });
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewExpense((prev) => ({ ...prev, [name]: value }));
-  };
+  const totalRevenue = payments.reduce((acc, p)=> acc + p.amount, 0);
 
   return (
     <Box p={2}>
-      <Header title="Finances" subtitle="Check your Bills" />
-
-      <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
-        <CardContent>
-          <Typography variant="h5">Monthly Summary</Typography>
-          <Typography variant="body1">
-            Total Expenses: $
-            {expenses.reduce((acc, expense) => acc + expense.amount, 0)}
-          </Typography>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
-        <CardContent>
-          <Typography variant="h5" mb={2}>
-            Expense Overview
-          </Typography>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={monthlyExpenses}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line type="monotone" dataKey="Expenses" stroke="#8884d8" />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
-        <CardContent>
-          <Typography variant="h5" mb={2}>
-            Detailed Expenses
-          </Typography>
-          <Grid container spacing={2}>
-            {expenses.map((expense) => (
-              <Grid item xs={12} md={4} key={expense.id}>
-                <Card sx={{ backgroundColor: "#616161" }}>
-                  <CardContent>
-                    <Typography variant="h6">{expense.name}</Typography>
-                    <Typography variant="body2">
-                      Amount: ${expense.amount}
-                    </Typography>
-                    <Typography variant="body2">
-                      Date: {expense.date}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
+      <Header title="Finances" subtitle="Check Users Payments" />
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={4}>
+          <Grid
+            style={{
+              backgroundColor: isDarkMode
+                ? colors.primary[400]
+                : colors.grey[900],
+            }}
+          >
+            <CardContent>
+              <Typography variant="h6">Total Revenue</Typography>
+              <Typography variant="h4">${totalRevenue.toFixed(2)}</Typography>
+            </CardContent>
           </Grid>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mb: 2, backgroundColor: "#424242" }}>
-        <CardContent>
-          <Typography variant="h5" mb={2}>
-            Add New Expense
-          </Typography>
-          <Box display="flex" flexDirection="column" gap={2}>
-            <TextField
-              label="Name"
-              variant="outlined"
-              fullWidth
-              name="name"
-              value={newExpense.name}
-              onChange={handleInputChange}
-              inputProps={{ style: { color: "white" } }}
-            />
-            <TextField
-              label="Amount"
-              variant="outlined"
-              fullWidth
-              type="number"
-              name="amount"
-              value={newExpense.amount}
-              onChange={handleInputChange}
-              inputProps={{ style: { color: "white" } }}
-            />
-            <TextField
-              label="Date"
-              variant="outlined"
-              fullWidth
-              type="date"
-              name="date"
-              value={newExpense.date}
-              onChange={handleInputChange}
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ style: { color: "white" } }}
-            />
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={addExpenseHandler}
-            >
-              Add Expense
-            </Button>
-          </Box>
-        </CardContent>
-      </Card>
+          <br />
+        </Grid>
+      </Grid>
+      <Grid item sx={12}>
+        <Card>
+          <CardContent
+            style={{
+              backgroundColor: isDarkMode
+                ? colors.primary[400]
+                : colors.grey[900],
+            }}
+          >
+            <Typography variant="h6" gutterBottom>
+              Monthly Revenue
+            </Typography>
+            <ResponsiveContainer width={"100%"} height={300}>
+              <LineChart data={monthlyRevenue}>
+                <CartesianGrid strokeDasharray={"3 3"} />
+                <XAxis dataKey={"name"} />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type={"monotone"} dataKey={"Revenue"} stroke={isDarkMode ? colors.greenAccent[500] : colors.greenAccent[300]} />
+              </LineChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </Grid>
+      <br />
+      <Grid item sx={12}>
+        <Card>
+          <CardContent
+            style={{
+              backgroundColor: isDarkMode
+                ? colors.primary[400]
+                : colors.grey[900],
+            }}
+          >
+            <Typography variant="h6" gutterBottom>
+              All Transactions
+            </Typography>
+            <Grid container spacing={2}>
+              {payments.map((payment) => (
+                <Grid item xs={12} md={4} key={payment.id}>
+                  <Card
+                    variant="outlined"
+                    style={{
+                      backgroundColor: isDarkMode
+                        ? colors.primary[500]
+                        : colors.grey[800],
+                    }}
+                  >
+                    <CardContent>
+                      <Typography>
+                        <strong>User: </strong>
+                        {payment.user}
+                      </Typography>
+                      <Typography>
+                        <strong>Amount: </strong>${payment.amount}
+                      </Typography>
+                      <Typography>
+                        <strong>Date: </strong>
+                        {new Date(payment.date).toLocaleString("en-US", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </Typography>
+                      <Typography>
+                        <strong>Method: </strong>
+                        {payment.method}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </CardContent>
+        </Card>
+      </Grid>
     </Box>
   );
 }
