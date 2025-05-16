@@ -119,14 +119,6 @@ export default function Dashboard() {
           />
         ) : (
           ""
-          // <Box
-          //   display="flex"
-          //   justifyContent="center"
-          //   alignItems="center"
-          //   height="100%"
-          // >
-          //   {/* <CircularProgress color="secondary" /> */}
-          // </Box>
         )}
 
         <AlertsAndNotifications
