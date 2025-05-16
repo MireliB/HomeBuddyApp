@@ -71,7 +71,7 @@ export default function Profile({
       </Paper>
 
       <Divider />
-
+      <br />
       <Box display={"flex"} gap={2}>
         <Button variant="contained" color="primary">
           Edit
