@@ -8,6 +8,9 @@ const userSchema = new mongoose.Schema({
   role: {type: String, required: true, enum: ["admin", "manager", "user", "viewer"], default:"viewer"},
   resetToken: { type: String}, 
   resetTokenExpiration:{type: Date},
+  // add here activeUsers
+  // add totalCancelledUsers
+  // add inActive
 },
 {
   timestamps: true

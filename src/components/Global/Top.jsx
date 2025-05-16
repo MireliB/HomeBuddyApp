@@ -111,7 +111,7 @@ export default function Top({ onLogout, username, userRole, setUserRole, userEma
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={() => nav("/profile")}>
+            <MenuItem onClick={() => nav("/userProfile/:userId")}>
               <PersonOutlineOutlinedIcon sx={{ mr: 1 }} />
               Profile
             </MenuItem>

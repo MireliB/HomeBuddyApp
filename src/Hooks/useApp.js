@@ -214,6 +214,7 @@ const useApp = () => {
     isSidebarOpen,
     setIsSidebarOpen,
      userEmail,
+     setUserEmail,
      handleBackToRooms,
      selectedRoom,
      setSelectedRoom,

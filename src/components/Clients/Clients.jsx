@@ -23,7 +23,6 @@ import {
 import Search from "../Global/Search";
 
 import { Edit, Delete } from "@mui/icons-material";
-import axios from "axios";
 import { tokens } from "../../Theme";
 import useClients from "../../Hooks/useClients";
 // להוסיף בדף של הלקוחות גם משתמשים חדשים שנרשמו, משתמשים, ביטולים, לקוחות פעילים, לקוחות לא פעילים
@@ -109,9 +108,9 @@ const Clients = () => {
                   : colors.grey[900],
               }}
             >
-              <strong>New This Week:</strong> {statistics.newUsers}
+              <strong>New Users This Week:</strong> {statistics.newUsers}
             </Paper>
-            <Paper
+            {/* <Paper
               sx={{ p: 2 }}
               style={{
                 backgroundColor: isDarkMode
@@ -119,9 +118,9 @@ const Clients = () => {
                   : colors.grey[900],
               }}
             >
-              <strong>Active Users:</strong> {statistics.activeUsers}
-            </Paper>
-            <Paper
+              <strong>Total Active Users:</strong> {statistics.activeUsers}
+            </Paper> */}
+            {/* <Paper
               sx={{ p: 2 }}
               style={{
                 backgroundColor: isDarkMode
@@ -129,9 +128,9 @@ const Clients = () => {
                   : colors.grey[900],
               }}
             >
-              <strong>Inactive Users:</strong> {statistics.inactiveUsers}
-            </Paper>
-            <Paper
+              <strong>Total Inactive Users:</strong> {statistics.inactiveUsers}
+            </Paper> */}
+            {/* <Paper
               sx={{ p: 2 }}
               style={{
                 backgroundColor: isDarkMode
@@ -139,8 +138,8 @@ const Clients = () => {
                   : colors.grey[900],
               }}
             >
-              <strong>Canceled:</strong> {statistics.canceledUsers}
-            </Paper>
+              <strong>Total Canceled:</strong> {statistics.canceledUsers}
+            </Paper> */}
           </Box>
         )}
 
@@ -159,6 +158,7 @@ const Clients = () => {
                   <TableCell>User</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Role</TableCell>
+                  {/* <TableCell>Active Users</TableCell> */}
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -168,6 +168,7 @@ const Clients = () => {
                     <TableCell>{client.username}</TableCell>
                     <TableCell>{client.email}</TableCell>
                     <TableCell>{client.role}</TableCell>
+                    <TableCell>{client.active}</TableCell>
                     <TableCell>
                       <Tooltip title="Edit">
                         <IconButton onClick={() => handleEditClick(client)}>

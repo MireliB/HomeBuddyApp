@@ -34,6 +34,7 @@ function App() {
     isLoggedIn,
     setIsSidebarOpen,
     userEmail,
+    setUserEmail,
     handleBackToRooms,
     selectedRoom,
     setSelectedRoom,
@@ -118,7 +119,7 @@ function App() {
           <Route path="/finances" element={<Finances />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/editRoom/:roomId" element={<EditRoom />} />
-          <Route path="/userProfile/:userId" element={<Profile />} />
+          <Route path="/userProfile/:userId" element={<Profile username = {username} setUsername = {setUsername} userEmail={userEmail} setUserEmail = {setUserEmail} userRole = {userRole} setUserRole = {setUserRole}/>} />
           <Route path="/clients" element={<Clients />} />
         </>
       );
