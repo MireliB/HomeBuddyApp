@@ -24,7 +24,6 @@ const getRoomImage = (type) => {
       return officeImg;
     default:
       return defaultImg;
-      // return kitchenImg;
   }
 };
 
@@ -39,8 +38,8 @@ const getRoomImage = (type) => {
           sx={{
             width: "308px",
             backgroundImage: getRoomImage(room.roomType),
-            // backgroundColor: colors.greenAccent[600],
-            // color: colors.grey[100],
+            backgroundColor: colors.primary[500],
+            color: colors.grey[100],
             cursor: "pointer",
           }}
         >

@@ -94,7 +94,16 @@ export function CurrentRoom({
       />
 
       <Search setSearchQuery={setSearchQuery} />
-
+      
+      {!selectedRoom && (
+        <Button
+          variant="contained"
+          style={{ marginTop: "3dvh", backgroundColor: "#3da58a" }}
+          onClick={onAddRoom}
+        >
+          + Add A Room
+        </Button>
+      )}
       {selectedRoom ? (
         <RoomDetails
           isPopupOpen={isPopupOpen}
@@ -119,15 +128,7 @@ export function CurrentRoom({
         />
       )}
 
-      {!selectedRoom && (
-        <Button
-          variant="contained"
-          style={{ marginTop: "2dvh" }}
-          onClick={onAddRoom}
-        >
-          + Add A Room
-        </Button>
-      )}
+
 
       <Snackbar
         open={message?.show}
