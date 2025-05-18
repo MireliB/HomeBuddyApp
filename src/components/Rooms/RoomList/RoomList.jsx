@@ -4,6 +4,7 @@ import kitchenImg from '../../../media/kitchen.jpg'
 import bedroomImg from '../../../media/bedroom.jpg'
 import officeImg from '../../../media/office.jpg'
 import livingRoomImg from '../../../media/livingRoom.jpg'
+import defaultImg from '../../../media/defaultRoom.jpg';
 export default function RoomList({
   rooms,
   handleRoomSelection,
@@ -22,8 +23,8 @@ const getRoomImage = (type) => {
     case "office":
       return officeImg;
     default:
-      // return defaultImg;
-      return kitchenImg;
+      return defaultImg;
+      // return kitchenImg;
   }
 };
 
