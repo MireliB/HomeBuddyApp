@@ -7,8 +7,6 @@ import {
   CardContent,
   CircularProgress,
   IconButton,
-  List,
-  ListItem,
   Typography,
   useTheme,
 } from "@mui/material";

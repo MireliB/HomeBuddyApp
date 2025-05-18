@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Typography, useTheme } from "@mui/material";
+import { Box, Button, useTheme } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";

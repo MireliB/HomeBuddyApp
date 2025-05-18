@@ -1,5 +1,5 @@
-import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
+import { Box, Divider, Typography } from "@mui/material";
 import RoomIcon from "@mui/icons-material/MeetingRoom";
 import DeviceIcon from "@mui/icons-material/DevicesOutlined";
 
@@ -42,16 +42,17 @@ export default function LatestRoomsAndDevices({
             : "No rooms available"}
         </Typography>
       </Box>
-            <br />
-<Box>
-      <DeviceIcon
-        sx={{
-          color: isDarkMode ? colors.greenAccent[500] : colors.greenAccent[300],
-          fontSize: "2.1vw",
-        }}
-      />
-  
-</Box>
+      <br />
+      <Box>
+        <DeviceIcon
+          sx={{
+            color: isDarkMode
+              ? colors.greenAccent[500]
+              : colors.greenAccent[300],
+            fontSize: "2.1vw",
+          }}
+        />
+      </Box>
       <Box>
         <Typography variant="h5" fontWeight={"bold"}>
           Latest Devices

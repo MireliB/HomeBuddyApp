@@ -1,12 +1,34 @@
-import { Box, Card, CardContent, List, ListItem } from "@mui/material";
 import React from "react";
-
+import { Box, Card, CardContent, CardMedia, List, ListItem } from "@mui/material";
+import kitchenImg from '../../../media/kitchen.jpg'
+import bedroomImg from '../../../media/bedroom.jpg'
+import officeImg from '../../../media/office.jpg'
+import livingRoomImg from '../../../media/livingRoom.jpg'
 export default function RoomList({
   rooms,
   handleRoomSelection,
   colors,
   devices,
 }) {
+
+const getRoomImage = (type) => {
+  switch (type?.toLowerCase()) {
+    case "kitchen":
+      return kitchenImg;
+    case "living room":
+      return livingRoomImg;
+    case "bedroom":
+      return bedroomImg;
+    case "office":
+      return officeImg;
+    default:
+      // return defaultImg;
+      return kitchenImg;
+  }
+};
+
+
+
   return (
     <Box m="40px 0 0 0" display="flex" flexWrap="wrap" gap={2}>
       {rooms.map((room, index) => (
@@ -14,12 +36,19 @@ export default function RoomList({
           key={index}
           onClick={() => handleRoomSelection(room)}
           sx={{
-            width: "338px",
-            backgroundColor: colors.greenAccent[600],
-            color: colors.grey[100],
+            width: "308px",
+            backgroundImage: getRoomImage(room.roomType),
+            // backgroundColor: colors.greenAccent[600],
+            // color: colors.grey[100],
             cursor: "pointer",
           }}
         >
+          <CardMedia
+            component={"img"}
+            height={"180"}
+            image={getRoomImage(room.roomType)}
+            alt={`Room Type: ${room.roomType}`}
+          />
           <CardContent>
             <ListItem variant="h5">
               Room Name: {room.name || "No name specified"}
