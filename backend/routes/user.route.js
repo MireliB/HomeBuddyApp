@@ -313,4 +313,39 @@ router.get("/clients/statistics", authenticate, async(req, res)=>{
   }
 });
 
+router.put("/clients/:id", authenticate, async (req, res)=>{
+  const {id} = req.params; 
+  const {username, email, role} = req.body;
+
+  try{
+    const updatedClient = await UserModel.findByIdAndUpdate(id, 
+      {  username, email, role},
+      {  new: true}
+    );
+
+    if( !updatedClient){
+      return res.status(404).json({message: "Client not found" }); 
+    }
+    res.json(updatedClient);
+
+  }catch(err){
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
+router.delete("/clients/:id", authenticate, async (req, res)=>{
+  const {id} = req.params; 
+
+  try{
+    const deletedClient = await UserModel.findByIdAndDelete( id);
+    if(!deletedClient) {
+      return res.status(404).status({message: "Client not found"});
+    }
+    res.json({message: "Client deleted successfully"});
+
+  }catch(err){
+    res.status(500).json({message: "Server error", error: err.message});
+  }
+})
+
 module.exports = router;

@@ -14,8 +14,23 @@ const [statistics, setStatistics] = useState(null);
 const [filteredClients, setFilteredClients] = useState([]);
 const [searchQuery, setSearchQuery] = useState("");
 const [loading, setLoading] = useState(true);
+const [selectedUser, setSelectedUser] = useState(null);
+const [isPopupOpen, setIsPopupOpen] = useState(false);
 
 const token = document.cookie.split("; ").find((row) => row.startsWith("token="))?.split("=")[1];
+
+  const handlePopupOpen = (client) =>{
+    setSelectedUser(client); 
+    setIsPopupOpen(true);
+  };
+
+  const confirmDeleteUser = async ()=>{
+    if(!selectedUser) return;  
+      await deleteClient(selectedUser);
+      setIsPopupOpen(false);
+      setSelectedUser(null);
+    
+  }
 
     const handleEditSubmit = async () => {
         try {
@@ -124,6 +139,12 @@ const token = document.cookie.split("; ").find((row) => row.startsWith("token=")
     fetchClients,
     deleteClient,
     fetchStatiscitcs,
+    handlePopupOpen,
+    isPopupOpen,
+    setIsPopupOpen,
+    selectedUser,
+    setSelectedUser,
+    confirmDeleteUser
   }
 }
 

@@ -25,6 +25,7 @@ import Search from "../Global/Search";
 import { Edit, Delete } from "@mui/icons-material";
 import { tokens } from "../../Theme";
 import useClients from "../../Hooks/useClients";
+import DeletePopup from "./DeletePopup";
 // להוסיף בדף של הלקוחות גם משתמשים חדשים שנרשמו, משתמשים, ביטולים, לקוחות פעילים, לקוחות לא פעילים
 
 const Clients = () => {
@@ -52,6 +53,12 @@ const Clients = () => {
     fetchClients,
     deleteClient,
     fetchStatiscitcs,
+    isPopupOpen,
+    setIsPopupOpen,
+    selectedUser,
+    setSelectedUser,
+    confirmDeleteUser, 
+    handlePopupOpen,
   } = useClients();
 
   const handleEditClick = (client) => {
@@ -146,12 +153,14 @@ const Clients = () => {
         {loading ? (
           <CircularProgress />
         ) : (
-          <Paper sx={{ p: 2 }}
-          style={{
-            backgroundColor: isDarkMode
-              ? colors.primary[400]
-              : colors.grey[900],
-          }}>
+          <Paper
+            sx={{ p: 2 }}
+            style={{
+              backgroundColor: isDarkMode
+                ? colors.primary[400]
+                : colors.grey[900],
+            }}
+          >
             <Table>
               <TableHead>
                 <TableRow>
@@ -168,7 +177,7 @@ const Clients = () => {
                     <TableCell>{client.username}</TableCell>
                     <TableCell>{client.email}</TableCell>
                     <TableCell>{client.role}</TableCell>
-                    <TableCell>{client.active}</TableCell>
+                    {/* <TableCell>{client.active}</TableCell> */}
                     <TableCell>
                       <Tooltip title="Edit">
                         <IconButton onClick={() => handleEditClick(client)}>
@@ -178,7 +187,7 @@ const Clients = () => {
                       <Tooltip title="Delete">
                         <IconButton
                           color="error"
-                          onClick={() => deleteClient(client._id)}
+                          onClick={() => handlePopupOpen(client._id)}
                         >
                           <Delete />
                         </IconButton>
@@ -248,6 +257,15 @@ const Clients = () => {
             },
           }}
         />
+        {isPopupOpen && (
+          <DeletePopup
+            isPopupOpen={isPopupOpen}
+            selectedUser={selectedUser}
+            setSelectedUser={setSelectedUser}
+            confirmDeleteUser ={confirmDeleteUser}
+            handlePopupOpen={handlePopupOpen}
+          />
+        )}
       </Box>
     </Box>
   );
