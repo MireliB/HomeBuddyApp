@@ -258,7 +258,12 @@ router.get("/system-statistics",authenticate, async (req, res) => {
 // alerts get router
 router.get("/alerts", authenticate, async (req, res) =>  {
   try{
-    const alerts = await AlertModel.find().populate("deviceId", "name status").sort({createdAt: -1}).limit(10);
+    const userId = req.userId;
+
+    const userDevices = await DeviceModel.find({user: userId}).select("_id");
+
+    const deviceIds = userDevices.map((device)=> device._id); 
+    const alerts = await AlertModel.find({deviceId: {$in: deviceIds}}).populate("deviceId", "name status").sort({createdAt: -1}).limit(10);
 
     const formattedAlerts = alerts.map(alert =>({
       id: alert._id, 
