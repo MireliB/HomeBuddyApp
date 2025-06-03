@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import {
-  HomeOutlined as HomeIcon,
   Dashboard as DashboardIcon,
+  Leaderboard as LeaderboardIcon,
   Room as RoomIcon,
+  People as ClientIcon,
   Info as InfoIcon,
   HelpOutline as HelpIcon,
   AttachMoney as MoneyIcon,
-  Settings as SettingsIcon,
-  Menu as MenuIcon,
   Notifications as NotificationsIcon,
+  Settings as SettingsIcon,
   ExitToApp as LogoutIcon,
-  People as ClientIcon,
-  Leaderboard as LeaderboardIcon,
+  Menu as MenuIcon,
 } from "@mui/icons-material";
-
 import {
   Box,
   CssBaseline,
@@ -22,10 +20,8 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-
-import "react-pro-sidebar/dist/css/styles.css";
-import "./SideDrawer.module.css";
 import { useNavigate } from "react-router-dom";
+import "react-pro-sidebar/dist/css/styles.css";
 
 const navigationItems = [
   { path: "/dashboard", name: "Dashboard", icon: <DashboardIcon /> },
@@ -46,20 +42,13 @@ const navigationItems = [
 
 export default function SideDrawer({ onLogout, isLoggedIn }) {
   const theme = useTheme();
-
   const isDarkMode = theme.palette.mode === "dark";
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
   const nav = useNavigate();
 
-  const collapsedHandler = () => setIsCollapsed(!isCollapsed);
-
-  const handleMouseEnter = (name) => setSelected(name);
-
-  const handleMouseLeave = () => setSelected("");
-
+  const collapsedHandler = () => setIsCollapsed((prev) => !prev);
   const handleLogOut = (path) => {
     if (path === "/logout") {
       onLogout();
@@ -74,13 +63,22 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
       {isLoggedIn && (
         <Box
           sx={{
-            "& .pro-sidebar-inner, & .pro-icon-wrapper": {
-              background: `${isDarkMode ? "#1f2a40" : "#e0e0e0"} !important`,
+            "& .pro-sidebar-inner": {
+              background: isDarkMode ? "#1f2a40 !important" : "#e0e0e0 !important",
             },
-            "& .pro-inner-item:hover, & .pro-inner-item.active": {
+            "& .pro-icon-wrapper": {
+              backgroundColor: "transparent !important",
+            },
+            "& .pro-menu-item.active .pro-inner-item": {
               color: "#868dfb !important",
             },
-            "& .pro-inner-item.active": { color: "#868dfb !important" },
+            "& .pro-inner-item:hover": {
+              color: "#868dfb !important",
+            },
+            "& .pro-inner-item": {
+              color: isDarkMode ? "#e0e0e0 !important" : "#1f2a40 !important",
+              fontWeight: "bold",
+            },
           }}
         >
           <CssBaseline />
@@ -128,14 +126,10 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                 <MenuItem
                   key={index}
                   icon={icon}
-                  onClick={() => handleLogOut(path)}
                   active={selected === name}
-                  onMouseEnter={() => handleMouseEnter(name)}
-                  onMouseLeave={handleMouseLeave}
-                  style={{
-                    color: isDarkMode ? "#e0e0e0" : "#1f2a40",
-                    fontWeight: "bold",
-                    textAlign: "left",
+                  onClick={() => {
+                    setSelected(name);
+                    handleLogOut(path);
                   }}
                 >
                   {name}
