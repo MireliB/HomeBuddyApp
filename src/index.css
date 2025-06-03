@@ -15,7 +15,6 @@ body,
 
 .app {
   display: flex;
-  /* position: sticky; */
   min-height: 100vh;
 }
 

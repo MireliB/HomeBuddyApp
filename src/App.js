@@ -1,5 +1,5 @@
 import { ColorModeContext, useMode } from "./Theme.js";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import SideDrawer from "./components/Global/SideDrawer.jsx";
@@ -139,7 +139,7 @@ function App() {
       <ColorModeContext.Provider value={colorMode}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <div className="app">
+          <Box className="app">
             {renderTopHeader()}
             <main className="content" style={{ flex: 1 }}>
               {isLoggedIn && 
@@ -156,7 +156,7 @@ function App() {
               }
               <Routes>{renderRouterPaths()}</Routes>
             </main>
-          </div>
+          </Box>
         </ThemeProvider>
       </ColorModeContext.Provider>
     </BrowserRouter>

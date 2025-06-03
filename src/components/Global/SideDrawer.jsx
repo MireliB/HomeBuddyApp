@@ -50,7 +50,7 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
   const [selected, setSelected] = useState("Dashboard");
   const nav = useNavigate();
 
-  const collapsedHandler = () => setIsCollapsed((prev) => !prev);
+  const collapsedHandler = () => setIsCollapsed(!isCollapsed);
   const handleLogOut = (path) => {
     if (path === "/logout") {
       onLogout();
@@ -102,8 +102,8 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                     <MenuIcon
                       sx={{
                         color: isDarkMode
-                          ? `${colors.grey[900]}`
-                          : `${colors.primary[400]}`,
+                          ? `#e0e0e0 !important`
+                          : `#1F2A40 !important`,
                       }}
                     />
                   ) : undefined
@@ -121,8 +121,8 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                       variant="h4"
                       color={
                         isDarkMode
-                          ? `${colors.grey[900]}`
-                          : `${colors.primary[400]}`
+                          ? `#e0e0e0 !important`
+                          : `#1F2A40 !important`
                       }
                       fontWeight="bold"
                     >
@@ -132,8 +132,8 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                       onClick={collapsedHandler}
                       sx={{
                         color: isDarkMode
-                          ? `${colors.grey[900]}`
-                          : `${colors.primary[400]}`,
+                          ? `#e0e0e0 !important`
+                          : `#1F2A40 !important`,
                       }}
                     >
                       <MenuIcon />
