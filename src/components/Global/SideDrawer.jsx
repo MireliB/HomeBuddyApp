@@ -22,6 +22,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
+import { tokens } from "../../Theme";
 
 const navigationItems = [
   { path: "/dashboard", name: "Dashboard", icon: <DashboardIcon /> },
@@ -42,6 +43,7 @@ const navigationItems = [
 
 export default function SideDrawer({ onLogout, isLoggedIn }) {
   const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const isDarkMode = theme.palette.mode === "dark";
 
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -64,19 +66,25 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
         <Box
           sx={{
             "& .pro-sidebar-inner": {
-              background: isDarkMode ? "#1f2a40 !important" : "#e0e0e0 !important",
+              background: isDarkMode
+                ? `${colors.primary[400]} !important`
+                : `${colors.grey[900]} !important`,
             },
             "& .pro-icon-wrapper": {
               backgroundColor: "transparent !important",
             },
             "& .pro-menu-item.active .pro-inner-item": {
-              color: "#868dfb !important",
+              color: isDarkMode
+                ? `${colors.blueAccent[500]} !important`
+                : `${colors.blueAccent[600]} !important`,
             },
             "& .pro-inner-item:hover": {
-              color: "#868dfb !important",
+              color: `${colors.blueAccent[600]} !important`,
             },
             "& .pro-inner-item": {
-              color: isDarkMode ? "#e0e0e0 !important" : "#1f2a40 !important",
+              color: isDarkMode
+                ? `${colors.grey[100]} !important`
+                : `${colors.primary[400]} !important`,
               fontWeight: "bold",
             },
           }}
@@ -92,7 +100,11 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                 icon={
                   isCollapsed ? (
                     <MenuIcon
-                      sx={{ color: isDarkMode ? "#e0e0e0" : "#1f2a40" }}
+                      sx={{
+                        color: isDarkMode
+                          ? `${colors.grey[900]}`
+                          : `${colors.primary[400]}`,
+                      }}
                     />
                   ) : undefined
                 }
@@ -107,14 +119,22 @@ export default function SideDrawer({ onLogout, isLoggedIn }) {
                   >
                     <Typography
                       variant="h4"
-                      color={isDarkMode ? "#e0e0e0" : "#1f2a40"}
+                      color={
+                        isDarkMode
+                          ? `${colors.grey[900]}`
+                          : `${colors.primary[400]}`
+                      }
                       fontWeight="bold"
                     >
                       HOME BUDDY
                     </Typography>
                     <IconButton
                       onClick={collapsedHandler}
-                      sx={{ color: isDarkMode ? "#e0e0e0" : "#1f2a40" }}
+                      sx={{
+                        color: isDarkMode
+                          ? `${colors.grey[900]}`
+                          : `${colors.primary[400]}`,
+                      }}
                     >
                       <MenuIcon />
                     </IconButton>
