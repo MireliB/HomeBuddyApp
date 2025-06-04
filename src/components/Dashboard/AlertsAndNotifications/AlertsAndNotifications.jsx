@@ -14,6 +14,8 @@ export default function AlertsAndNotifications({
   const [alerts, setAlerts] = useState([]);
   const [errorMsg, setErrorMsg] = useState();
 
+  // TODO - 
+  // fix alerts and notifications - shows only the devices - needs to show also the rooms
   const fetchRoomsAndDevicesAlerts = async()=>{
     setLoading(true);
 
