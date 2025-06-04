@@ -1,13 +1,12 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react'
-import useClients from '../../Hooks/useClients';
 
 export default function DeletePopup({
   isPopupOpen,
   setIsPopupOpen,
   confirmDeleteUser,
-  selectedUser,
-  setSelectedUser,
+  // selectedUser,
+  // setSelectedUser,
 }) {
   return (
     <Dialog

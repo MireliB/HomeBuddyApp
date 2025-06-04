@@ -54,6 +54,7 @@ router.post("/signUp", async (req, res) => {
       email,
       password: hashedPassword,
       role: finalRole,
+      isActive: true,
     });
 
     await newUser.save();
@@ -117,6 +118,7 @@ router.post("/google-auth", async (req, res) => {
         username,
         role: isManager ? "manager" : "user",
         authProvider: "google",
+        isActive: true,
       });
 
       await user.save();
@@ -304,7 +306,7 @@ router.get("/clients/statistics", authenticate, async(req, res)=>{
 
     const activeUsers = await UserModel.countDocuments({isActive: true});
     const inactiveUsers = await UserModel.countDocuments({isActive: false});
-    const canceledUsers = await UserModel.countDocuments({role: "canceled"});
+    const canceledUsers = await UserModel.countDocuments({role: "canceled", isActive: false});
 
     res.json({
       totalUsers,
@@ -320,15 +322,16 @@ router.get("/clients/statistics", authenticate, async(req, res)=>{
 
 router.put("/clients/:id", authenticate, async (req, res)=>{
   const {id} = req.params; 
-  const {username, email, role} = req.body;
+  const {username, email, role, isActive} = req.body;
 
   try{
-    const updatedClient = await UserModel.findByIdAndUpdate(id, 
-      {  username, email, role},
+    const updatedClient = await UserModel.findByIdAndUpdate(
+      id, 
+      {  username, email, role, isActive},
       {  new: true}
     );
 
-    if( !updatedClient){
+    if(!updatedClient){
       return res.status(404).json({message: "Client not found" }); 
     }
     res.json(updatedClient);

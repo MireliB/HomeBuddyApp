@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Header from "../Header";
 import {
   Box,
@@ -19,6 +19,9 @@ import {
   DialogTitle,
   DialogContent,
   useTheme,
+  FormControl,
+  InputLabel,
+  Select,
 } from "@mui/material";
 import Search from "../Global/Search";
 
@@ -26,8 +29,15 @@ import { Edit, Delete } from "@mui/icons-material";
 import { tokens } from "../../Theme";
 import useClients from "../../Hooks/useClients";
 import DeletePopup from "./DeletePopup";
+import { MenuItem } from "react-pro-sidebar";
 // להוסיף בדף של הלקוחות גם משתמשים חדשים שנרשמו, משתמשים, ביטולים, לקוחות פעילים, לקוחות לא פעילים
+/*
 
+  TODO : 
+  Move Edit Dialog to separate File - EditDialog.jsx
+  Fix isActive - in DB shows active correctly (true) - while in front shows "No" 
+  - to be fixed 
+*/ 
 const Clients = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -57,7 +67,7 @@ const Clients = () => {
     setIsPopupOpen,
     selectedUser,
     setSelectedUser,
-    confirmDeleteUser, 
+    confirmDeleteUser,
     handlePopupOpen,
   } = useClients();
 
@@ -117,7 +127,7 @@ const Clients = () => {
             >
               <strong>New Users This Week:</strong> {statistics.newUsers}
             </Paper>
-            {/* <Paper
+            <Paper
               sx={{ p: 2 }}
               style={{
                 backgroundColor: isDarkMode
@@ -126,8 +136,8 @@ const Clients = () => {
               }}
             >
               <strong>Total Active Users:</strong> {statistics.activeUsers}
-            </Paper> */}
-            {/* <Paper
+            </Paper>
+            <Paper
               sx={{ p: 2 }}
               style={{
                 backgroundColor: isDarkMode
@@ -136,8 +146,8 @@ const Clients = () => {
               }}
             >
               <strong>Total Inactive Users:</strong> {statistics.inactiveUsers}
-            </Paper> */}
-            {/* <Paper
+            </Paper>
+            <Paper
               sx={{ p: 2 }}
               style={{
                 backgroundColor: isDarkMode
@@ -146,7 +156,7 @@ const Clients = () => {
               }}
             >
               <strong>Total Canceled:</strong> {statistics.canceledUsers}
-            </Paper> */}
+            </Paper>
           </Box>
         )}
 
@@ -167,7 +177,7 @@ const Clients = () => {
                   <TableCell>User</TableCell>
                   <TableCell>Email</TableCell>
                   <TableCell>Role</TableCell>
-                  {/* <TableCell>Active Users</TableCell> */}
+                  <TableCell>Active Users</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHead>
@@ -177,7 +187,7 @@ const Clients = () => {
                     <TableCell>{client.username}</TableCell>
                     <TableCell>{client.email}</TableCell>
                     <TableCell>{client.role}</TableCell>
-                    {/* <TableCell>{client.active}</TableCell> */}
+                    <TableCell>{client.isActive ? "Yes" : "No"}</TableCell>
                     <TableCell>
                       <Tooltip title="Edit">
                         <IconButton onClick={() => handleEditClick(client)}>
@@ -237,6 +247,22 @@ const Clients = () => {
                 setEditClientData({ ...editClientData, role: e.target.value })
               }
             />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Active</InputLabel>
+              <Select
+                value={editClientData?.isActive ? true : false}
+                label="Active"
+                onChange={(e) =>
+                  setEditClientData({
+                    ...editClientData,
+                    isActive: e.target.value ? true : false,
+                  })
+                }
+              >
+                <MenuItem value={true}>Yes</MenuItem>
+                <MenuItem value={false}>No</MenuItem>
+              </Select>
+            </FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setEditClientData(null)}>Cancel</Button>
@@ -262,7 +288,7 @@ const Clients = () => {
             isPopupOpen={isPopupOpen}
             selectedUser={selectedUser}
             setSelectedUser={setSelectedUser}
-            confirmDeleteUser ={confirmDeleteUser}
+            confirmDeleteUser={confirmDeleteUser}
             handlePopupOpen={handlePopupOpen}
           />
         )}
