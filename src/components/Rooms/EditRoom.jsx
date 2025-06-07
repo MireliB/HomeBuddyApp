@@ -24,10 +24,6 @@ export default function EditRoom({ editRoomData: room, open, onClose }) {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
-  const { state } = useLocation();
-
-  // const { room } = state;
-
   const [roomName, setRoomName] = useState(room?.name || "");
   const [roomType, setRoomType] = useState(room?.roomType || "");
   const [devices, setDevices] = useState(room?.devices || []);
@@ -74,10 +70,7 @@ export default function EditRoom({ editRoomData: room, open, onClose }) {
       );
     }
   };
-  const handleCancel = () => {
-    nav("/roomsPage");
-  };
-
+  
   const confirmEdit = () => {
     handleSave();
     setIsEditPopupOpen(false);
