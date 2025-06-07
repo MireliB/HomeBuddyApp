@@ -57,9 +57,7 @@ const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
     if (!room || !room._id) return;
     setEditRoomData(room);
     setIsEditDialogOpen(true);
-    // nav(`/editRoom/${room._id}`, {
-    //   state: { room },
-    // });
+;
   };
 
 

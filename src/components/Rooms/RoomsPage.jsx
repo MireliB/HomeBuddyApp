@@ -12,7 +12,8 @@ import { setRooms } from "../../slice/roomSlice";
 import Cookies from 'js-cookie'
 import axios from "axios";
 
-export default function RoomsPage({ handleBackToRooms,
+export default function RoomsPage({ 
+  handleBackToRooms,
   selectedRoom,
   setSelectedRoom,
   loading,

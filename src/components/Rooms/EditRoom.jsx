@@ -20,7 +20,7 @@ import EditRoomDialog from "./EditRoomDialog/EditRoomDialog";
 import Cookies from "js-cookie";
 import axios from "axios";
 
-export default function EditRoom({ editRoomData: room, open, onClose }) {
+export default function EditRoom({ editRoomData: room, onOpen, onClose }) {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
@@ -74,11 +74,12 @@ export default function EditRoom({ editRoomData: room, open, onClose }) {
   const confirmEdit = () => {
     handleSave();
     setIsEditPopupOpen(false);
+    nav("/roomsPage");
   };
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+      <Dialog open={onOpen} onClose={onClose} maxWidth="sm" fullWidth>
         <DialogTitle>Edit Room</DialogTitle>
         <DialogContent>
           <TextField

@@ -82,13 +82,6 @@ export function CurrentRoom({
     });
   }, [rooms, devices, lowerCaseQuery]);
 
-  // const handleRoomEdit = async (room) => {
-  //   if (!room || !room._id) return;
-  //   nav(`/editRoom/${room._id}`, {
-  //     state: { room },
-  //   });
-  // };
-
   return (
     <Box m="2dvh">
       <Header

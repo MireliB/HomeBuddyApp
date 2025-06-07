@@ -139,7 +139,7 @@ export default function RoomDetails({
             {isEditDialogOpen && (
               <EditRoom
                 editRoomData={selectedRoom}
-                open={isEditDialogOpen}
+                onOpen={isEditDialogOpen}
                 onClose={() => setIsEditDialogOpen(false)}
               />
             )}
