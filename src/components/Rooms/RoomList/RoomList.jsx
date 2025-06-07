@@ -1,14 +1,15 @@
 import React from "react";
-import { Box, Card, CardContent, CardMedia, List, ListItem } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, List, ListItem, useTheme } from "@mui/material";
 import kitchenImg from '../../../media/kitchen.jpg'
 import bedroomImg from '../../../media/bedroom.jpg'
 import officeImg from '../../../media/office.jpg'
 import livingRoomImg from '../../../media/livingRoom.jpg'
 import defaultImg from '../../../media/defaultRoom.jpg';
+import { tokens } from "../../../Theme";
 export default function RoomList({
   rooms,
   handleRoomSelection,
-  colors,
+  // colors,
   devices,
 }) {
 
@@ -26,8 +27,10 @@ const getRoomImage = (type) => {
       return defaultImg;
   }
 };
+  const theme = useTheme();
 
-
+  const colors = tokens(theme.palette.mode);
+  const isDarkMode = theme.palette.mode === "dark";
 
   return (
     <Box m="40px 0 0 0" display="flex" flexWrap="wrap" gap={2}>
@@ -38,8 +41,8 @@ const getRoomImage = (type) => {
           sx={{
             width: "308px",
             backgroundImage: getRoomImage(room.roomType),
-            backgroundColor: colors.primary[500],
-            color: colors.grey[100],
+            backgroundColor: isDarkMode ? colors.primary[500] : colors.grey[800],
+            color: isDarkMode ? colors.grey[100] : colors.blueAccent[100],
             cursor: "pointer",
           }}
         >
