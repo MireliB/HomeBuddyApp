@@ -45,6 +45,11 @@ export function CurrentRoom({
   message,
   setMessage,
   isLoading,
+  handleRoomEdit,
+  editRoomData,
+  setEditRoomData,
+  isEditDialogOpen,
+  setIsEditDialogOpen,
 }) {
   const nav = useNavigate();
 
@@ -77,12 +82,12 @@ export function CurrentRoom({
     });
   }, [rooms, devices, lowerCaseQuery]);
 
-  const handleRoomEdit = async (room) => {
-    if (!room || !room._id) return;
-    nav(`/editRoom/${room._id}`, {
-      state: { room },
-    });
-  };
+  // const handleRoomEdit = async (room) => {
+  //   if (!room || !room._id) return;
+  //   nav(`/editRoom/${room._id}`, {
+  //     state: { room },
+  //   });
+  // };
 
   return (
     <Box m="2dvh">
@@ -118,6 +123,10 @@ export function CurrentRoom({
           deviceStatus={deviceStatus}
           toggleDeviceStatus={toggleDeviceStatus}
           handleRoomEdit={handleRoomEdit}
+          editRoomData={editRoomData}
+          setEditRoomData={setEditRoomData}
+          isEditDialogOpen={isEditDialogOpen}
+          setIsEditDialogOpen={setIsEditDialogOpen}
         />
       ) : (
         <RoomList

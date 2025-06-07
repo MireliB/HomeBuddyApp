@@ -52,7 +52,11 @@ function App() {
     username, 
     setUsername,
     userRole,
-    setUserRole
+    setUserRole,
+    editRoomData,
+    setEditRoomData,
+    isEditDialogOpen,
+    setIsEditDialogOpen,
   } = useApp();
 
   const { i18n } = useTranslation();
@@ -103,6 +107,10 @@ function App() {
                 deviceStatus={deviceStatus}
                 toggleDeviceStatus={toggleDeviceStatus}
                 handleRoomEdit={handleRoomEdit}
+                editRoomData={editRoomData}
+                setEditRoomData={setEditRoomData}
+                isEditDialogOpen={isEditDialogOpen}
+                setIsEditDialogOpen={setIsEditDialogOpen}
                 handleOpenPopup={handleOpenPopup}
                 isPopupOpen={isPopupOpen}
                 setIsPopupOpen={setIsPopupOpen}

@@ -14,6 +14,7 @@ import { tokens } from "../../../Theme";
 
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditRoom from "../EditRoom";
 
 export default function RoomDetails({
   isPopupOpen,
@@ -28,6 +29,10 @@ export default function RoomDetails({
   deviceStatus,
   toggleDeviceStatus,
   handleRoomEdit,
+  editRoomData,
+  setEditRoomData,
+  isEditDialogOpen,
+  setIsEditDialogOpen,
 }) {
   const theme = useTheme();
 
@@ -89,8 +94,8 @@ export default function RoomDetails({
                   borderRadius: 2,
                 }}
               >
-                <Typography fontWeight={'bold'} >
-                 {device.name} -{" "}
+                <Typography fontWeight={"bold"}>
+                  {device.name} -{" "}
                   {loading && deviceStatus[device._id] !== device.status ? (
                     <CircularProgress size={14} />
                   ) : (
@@ -130,6 +135,14 @@ export default function RoomDetails({
             >
               <DeleteIcon />
             </IconButton>
+
+            {isEditDialogOpen && (
+              <EditRoom
+                editRoomData={selectedRoom}
+                open={isEditDialogOpen}
+                onClose={() => setIsEditDialogOpen(false)}
+              />
+            )}
 
             {isPopupOpen && (
               <DeleteRoomDialog

@@ -5,6 +5,9 @@ import {
   Button,
   Card,
   CardContent,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   TextField,
   Typography,
 } from "@mui/material";
@@ -14,33 +17,31 @@ import { useDispatch } from "react-redux";
 
 import { editRoom } from "../../slice/roomSlice";
 import EditRoomDialog from "./EditRoomDialog/EditRoomDialog";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import axios from "axios";
 
-export default function EditRoom() {
+export default function EditRoom({ editRoomData: room, open, onClose }) {
   const dispatch = useDispatch();
   const nav = useNavigate();
 
   const { state } = useLocation();
 
-  const { room } = state;
+  // const { room } = state;
 
   const [roomName, setRoomName] = useState(room?.name || "");
   const [roomType, setRoomType] = useState(room?.roomType || "");
   const [devices, setDevices] = useState(room?.devices || []);
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
-  
+
   const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
-  
-  const token = useMemo(() => Cookies.get("token"), []); 
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const token = useMemo(() => Cookies.get("token"), []);
 
   useEffect(() => {
-    if (room) {
-      setRoomName(room.name || "");
-      setRoomType(room.roomType || "");
-      setDevices(room.devices || []);
-    }
+    setRoomName(room?.name || "");
+    setRoomType(room?.roomType || "");
+    setDevices(room?.devices || []);
   }, [room]);
 
   const handleSave = async () => {
@@ -48,7 +49,7 @@ export default function EditRoom() {
       _id: room._id,
       name: roomName,
       roomType,
-      devices: devices,
+      devices,
     };
 
     try {
@@ -64,7 +65,7 @@ export default function EditRoom() {
       console.log("Room updated successfully", response.data);
 
       dispatch(editRoom(updateRoom));
-
+      onClose();
       nav("/roomsPage");
     } catch (err) {
       console.error(
@@ -83,10 +84,10 @@ export default function EditRoom() {
   };
 
   return (
-    <Box m="40px 0">
-      <Card>
-        <CardContent>
-          <Typography variant="h5">Edit Room</Typography>
+    <>
+      <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
+        <DialogTitle>Edit Room</DialogTitle>
+        <DialogContent>
           <TextField
             label="Room Name"
             value={roomName}
@@ -104,31 +105,30 @@ export default function EditRoom() {
           <Typography variant="body2" mt={2}>
             Devices:
           </Typography>
-          {devices.map((device) => (
-            <Typography key={device._id} variant="body2">
-              {device.name}
+          {devices.map((d) => (
+            <Typography key={d._id} variant="body2">
+              {d.name}
             </Typography>
           ))}
-          <Box display="flex" justifyContent="space-between" mt={2}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setIsEditPopupOpen(true)}
-            >
-              Save Changes
-            </Button>
-            <Button variant="outlined" color="secondary" onClick={handleCancel}>
+          <Box display="flex" justifyContent="flex-end" mt={3} gap={2}>
+            <Button variant="outlined" onClick={onClose}>
               Cancel
             </Button>
+            <Button
+              variant="contained"
+              onClick={() => setConfirmDialogOpen(true)}
+            >
+              Save
+            </Button>
           </Box>
-        </CardContent>
-      </Card>
+        </DialogContent>
+      </Dialog>
 
       <EditRoomDialog
-        isEditPopupOpen={isEditPopupOpen}
-        setIsEditPopupOpen={setIsEditPopupOpen}
+        isEditPopupOpen={confirmDialogOpen}
+        setIsEditPopupOpen={setConfirmDialogOpen}
         confirmEdit={confirmEdit}
       />
-    </Box>
+    </>
   );
 }

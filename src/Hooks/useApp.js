@@ -14,6 +14,8 @@ const useApp = () => {
   const [loadDevice, setLoadDevice] = useState({});
   const [message, setMessage] = useState({ show: false, text: "", color: "" });
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+const [editRoomData, setEditRoomData] = useState(null);
+const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const [userEmail, setUserEmail] = useState(() => {
     const storedUserEmail = Cookies.get("userEmail");
@@ -51,6 +53,15 @@ const useApp = () => {
   const handleRoomSelection = (room) => setSelectedRoom(room);
 
   const handleBackToRooms = () => setSelectedRoom(null);
+  const handleRoomEdit = async (room) => {
+    if (!room || !room._id) return;
+    setEditRoomData(room);
+    setIsEditDialogOpen(true);
+    // nav(`/editRoom/${room._id}`, {
+    //   state: { room },
+    // });
+  };
+
 
   const toggleDeviceStatus = (device) => {
     setLoadDevice((prevState) => ({
@@ -231,7 +242,13 @@ const useApp = () => {
      username,
      setUsername,
      userRole, 
-     setUserRole
+     setUserRole,
+     handleRoomEdit,
+     editRoomData,
+     setEditRoomData,
+     isEditDialogOpen,
+     setIsEditDialogOpen,
+
   };
 };
 

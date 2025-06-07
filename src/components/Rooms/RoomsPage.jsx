@@ -25,7 +25,12 @@ export default function RoomsPage({ handleBackToRooms,
   handleRoomSelection,
   confirmDelete,
   message,
-  setMessage}) {
+  setMessage,
+  editRoomData,
+  setEditRoomData,
+  isEditDialogOpen,
+  setIsEditDialogOpen
+}) {
   const nav = useNavigate();
   const dispatch = useDispatch();
 
@@ -94,6 +99,10 @@ export default function RoomsPage({ handleBackToRooms,
         deviceStatus={deviceStatus}
         toggleDeviceStatus={toggleDeviceStatus}
         handleRoomEdit={handleRoomEdit}
+        editRoomData={editRoomData}
+        setEditRoomData={setEditRoomData}
+        isEditDialogOpen={isEditDialogOpen}
+        setIsEditDialogOpen={setIsEditDialogOpen}
         handleOpenPopup={handleOpenPopup}
         isPopupOpen={isPopupOpen}
         setIsPopupOpen={setIsPopupOpen}
