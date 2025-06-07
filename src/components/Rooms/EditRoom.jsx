@@ -73,7 +73,6 @@ export default function EditRoom() {
       );
     }
   };
-  // API KEY -  AIzaSyDmsWpGCz8BaHKxhVI3O3E7GXZWot6RZ9k
   const handleCancel = () => {
     nav("/roomsPage");
   };
