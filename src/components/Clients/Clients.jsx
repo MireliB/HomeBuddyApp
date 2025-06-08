@@ -30,6 +30,7 @@ import { tokens } from "../../Theme";
 import useClients from "../../Hooks/useClients";
 import DeletePopup from "./DeletePopup";
 import { MenuItem } from "react-pro-sidebar";
+import EditDialog from "./EditDialog";
 // להוסיף בדף של הלקוחות גם משתמשים חדשים שנרשמו, משתמשים, ביטולים, לקוחות פעילים, לקוחות לא פעילים
 /*
 
@@ -211,66 +212,11 @@ const Clients = () => {
         )}
 
         {/* Edit Dialog */}
-        <Dialog
-          open={Boolean(editClientData)}
-          onClose={() => setEditClientData(null)}
-        >
-          <DialogTitle>Edit Client</DialogTitle>
-          <DialogContent>
-            <TextField
-              label="Username"
-              fullWidth
-              margin="dense"
-              value={editClientData?.username || ""}
-              onChange={(e) =>
-                setEditClientData({
-                  ...editClientData,
-                  username: e.target.value,
-                })
-              }
-            />
-            <TextField
-              label="Email"
-              fullWidth
-              margin="dense"
-              value={editClientData?.email || ""}
-              onChange={(e) =>
-                setEditClientData({ ...editClientData, email: e.target.value })
-              }
-            />
-            <TextField
-              label="Role"
-              fullWidth
-              margin="dense"
-              value={editClientData?.role || ""}
-              onChange={(e) =>
-                setEditClientData({ ...editClientData, role: e.target.value })
-              }
-            />
-            <FormControl fullWidth margin="dense">
-              <InputLabel>Active</InputLabel>
-              <Select
-                value={editClientData?.isActive ? true : false}
-                label="Active"
-                onChange={(e) =>
-                  setEditClientData({
-                    ...editClientData,
-                    isActive: e.target.value ? true : false,
-                  })
-                }
-              >
-                <MenuItem value={true}>Yes</MenuItem>
-                <MenuItem value={false}>No</MenuItem>
-              </Select>
-            </FormControl>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setEditClientData(null)}>Cancel</Button>
-            <Button onClick={handleEditSubmit} variant="contained">
-              Save
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <EditDialog
+          editClientData={editClientData}
+          setEditClientData={setEditClientData}
+          handleEditSubmit={handleEditSubmit}
+        />
 
         <Snackbar
           open={openSnackbar.open}
